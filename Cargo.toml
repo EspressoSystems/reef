@@ -1,0 +1,14 @@
+[package]
+name = "reef"
+description = "An abstraction of an entire AAP-style network"
+version = "0.1.0"
+authors = ["Jeb Bearer <jeb.bearer@translucence.net"]
+edition = "2018"
+
+[dependencies]
+ark-serialize = { version = "0.3.0", features = ["derive"] }
+itertools = "0.10.1"
+jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "c9ded9359d82447ec5644c8df2921c16ba26c660"}
+serde = { version = "1.0", features = ["derive"] }
+snafu = { version = "0.6.10", features = ["backtraces"] }
+strum_macros = "0.20.1"
