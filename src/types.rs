@@ -11,12 +11,14 @@ pub type TransactionKind<L> = <Transaction<L> as traits::Transaction>::Kind;
 pub type NullifierSet<L> = <Transaction<L> as traits::Transaction>::NullifierSet;
 pub type NullifierProof<L> = <NullifierSet<L> as traits::NullifierSet>::Proof;
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct AuditMemoOpening {
     pub asset: AssetDefinition,
     pub inputs: Vec<AuditData>,
     pub outputs: Vec<AuditData>,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum AuditError {
     UnauditableAsset,
     NoAuditMemos,

@@ -7,8 +7,13 @@ edition = "2018"
 
 [dependencies]
 ark-serialize = { version = "0.3.0", features = ["derive"] }
+commit = { git = "ssh://git@github.com/SpectrumXYZ/commit.git", rev = "f48cd52c59755eade0605111826eef3df6abdcf8" }
 itertools = "0.10.1"
 jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "eca7b7e85718c7770c24ad90dd34b8a07209a01b"}
 serde = { version = "1.0", features = ["derive"] }
 snafu = { version = "0.6.10", features = ["backtraces"] }
 strum_macros = "0.20.1"
+
+[dev-dependencies]
+lazy_static = "1.4.0"
+rand_chacha = { version = "0.3.1", features = ["serde1"] }
