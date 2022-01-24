@@ -8,7 +8,7 @@ edition = "2018"
 [dependencies]
 ark-serialize = { version = "0.3.0", features = ["derive"] }
 itertools = "0.10.1"
-jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "1f1f11e7ed8a6e3b012de58e94ca9b905d468d9b"}
+jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "eca7b7e85718c7770c24ad90dd34b8a07209a01b"}
 serde = { version = "1.0", features = ["derive"] }
 snafu = { version = "0.6.10", features = ["backtraces"] }
 strum_macros = "0.20.1"
