@@ -6,6 +6,7 @@ authors = ["Jeb Bearer <jeb.bearer@translucence.net"]
 edition = "2018"
 
 [dependencies]
+arbitrary = { version="1.0", features=["derive"] }
 ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "ssh://git@github.com/SpectrumXYZ/commit.git", rev = "f48cd52c59755eade0605111826eef3df6abdcf8" }
 itertools = "0.10.1"

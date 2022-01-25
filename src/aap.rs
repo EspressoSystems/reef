@@ -5,6 +5,7 @@
 
 use crate::traits;
 use crate::types::{AuditError, AuditMemoOpening};
+use arbitrary::Arbitrary;
 use commit::{Commitment, Committable};
 use jf_aap::{
     keys::{AuditorKeyPair, AuditorPubKey},
@@ -194,7 +195,7 @@ impl traits::Block for Block {
 // the Validator interface, namely
 //  * compute a unique commitment after each block (this is just the count of blocks)
 //  * compute the UIDs for the outputs of each block (by counting the number of outputs total)
-#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Arbitrary, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct Validator {
     pub now: u64,
     pub num_records: u64,
