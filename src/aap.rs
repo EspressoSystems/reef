@@ -6,6 +6,7 @@
 use crate::traits;
 use crate::types::{AuditError, AuditMemoOpening};
 use arbitrary::Arbitrary;
+use arbitrary_wrappers::ArbitraryNullifier;
 use commit::{Commitment, Committable};
 use jf_aap::{
     keys::{AuditorKeyPair, AuditorPubKey},
@@ -20,14 +21,14 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 
-pub type NullifierSet = HashSet<Nullifier>;
+pub type NullifierSet = HashSet<ArbitraryNullifier>;
 
 impl traits::NullifierSet for NullifierSet {
     type Proof = ();
 
     fn multi_insert(&mut self, nullifiers: &[(Nullifier, Self::Proof)]) -> Result<(), Self::Proof> {
         for (n, _) in nullifiers {
-            self.insert(*n);
+            self.insert((*n).into());
         }
         Ok(())
     }
@@ -310,7 +311,7 @@ mod tests {
         let n = Nullifier::random_for_test(&mut rng);
         s.multi_insert(&[(n, ())]).unwrap();
         assert_eq!(s.len(), 1);
-        assert!(s.contains(&n));
+        assert!(s.contains(&n.into()));
     }
 
     #[test]
