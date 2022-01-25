@@ -237,12 +237,20 @@ impl traits::Ledger for Ledger {
     fn name() -> String {
         String::from("Minimal AAP Ledger")
     }
+
+    fn merkle_height() -> u8 {
+        5
+    }
+
+    fn record_root_history() -> usize {
+        1
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::traits::{NullifierSet as _, Transaction as _, Validator as _};
+    use crate::traits::{Ledger as _, NullifierSet as _, Transaction as _, Validator as _};
     use jf_aap::{
         freeze::{FreezeNote, FreezeNoteInput},
         keys::{FreezerKeyPair, UserKeyPair},
@@ -258,40 +266,37 @@ mod tests {
     use lazy_static::lazy_static;
     use rand_chacha::{rand_core::SeedableRng, ChaChaRng};
 
-    static MERKLE_HEIGHT: u8 = 5;
-
     lazy_static! {
-        static ref UNIVERSAL_PARAM: UniversalParam =
-            universal_setup(
-                *[
-                    compute_universal_param_size(NoteType::Transfer, 3, 3, MERKLE_HEIGHT)
-                        .unwrap_or_else(|err| {
-                            panic!(
+        static ref UNIVERSAL_PARAM: UniversalParam = universal_setup(
+            *[
+                compute_universal_param_size(NoteType::Transfer, 3, 3, Ledger::merkle_height())
+                    .unwrap_or_else(|err| {
+                        panic!(
                             "Error while computing the universal parameter size for Transfer: {}",
                             err
                         )
-                        },),
-                    compute_universal_param_size(NoteType::Mint, 0, 0, MERKLE_HEIGHT)
-                        .unwrap_or_else(|err| {
-                            panic!(
-                                "Error while computing the universal parameter size for Mint: {}",
-                                err
-                            )
-                        },),
-                    compute_universal_param_size(NoteType::Freeze, 2, 2, MERKLE_HEIGHT)
-                        .unwrap_or_else(|err| {
-                            panic!(
-                                "Error while computing the universal parameter size for Freeze: {}",
-                                err
-                            )
-                        },),
-                ]
-                .iter()
-                .max()
-                .unwrap(),
-                &mut ChaChaRng::from_seed([42u8; 32])
-            )
-            .unwrap();
+                    },),
+                compute_universal_param_size(NoteType::Mint, 0, 0, Ledger::merkle_height())
+                    .unwrap_or_else(|err| {
+                        panic!(
+                            "Error while computing the universal parameter size for Mint: {}",
+                            err
+                        )
+                    },),
+                compute_universal_param_size(NoteType::Freeze, 2, 2, Ledger::merkle_height())
+                    .unwrap_or_else(|err| {
+                        panic!(
+                            "Error while computing the universal parameter size for Freeze: {}",
+                            err
+                        )
+                    },),
+            ]
+            .iter()
+            .max()
+            .unwrap(),
+            &mut ChaChaRng::from_seed([42u8; 32])
+        )
+        .unwrap();
     }
 
     #[test]
@@ -315,20 +320,21 @@ mod tests {
         let auditor_key = AuditorKeyPair::generate(&mut rng);
 
         let xfr_proving_key =
-            jf_aap::proof::transfer::preprocess(&*UNIVERSAL_PARAM, 2, 2, MERKLE_HEIGHT)
+            jf_aap::proof::transfer::preprocess(&*UNIVERSAL_PARAM, 2, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
-        let mint_proving_key = jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, MERKLE_HEIGHT)
-            .unwrap()
-            .0;
+        let mint_proving_key =
+            jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
+                .unwrap()
+                .0;
         let freeze_proving_key =
-            jf_aap::proof::freeze::preprocess(&*UNIVERSAL_PARAM, 2, MERKLE_HEIGHT)
+            jf_aap::proof::freeze::preprocess(&*UNIVERSAL_PARAM, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
 
         // Set up a ledger. For simplicity we will use the same ledger state and fee input for each
         // transaction (mint, transfer, and freeze);
-        let mut records = MerkleTree::new(MERKLE_HEIGHT).unwrap();
+        let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
             1,
@@ -528,10 +534,11 @@ mod tests {
         // mock ledger.
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
-        let mint_proving_key = jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, MERKLE_HEIGHT)
-            .unwrap()
-            .0;
-        let mut records = MerkleTree::new(MERKLE_HEIGHT).unwrap();
+        let mint_proving_key =
+            jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
+                .unwrap()
+                .0;
+        let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
             1,
@@ -574,13 +581,19 @@ mod tests {
         let mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
         // Apply a block and check that the correct UIDs are computed.
-        assert_eq!(validator.validate_and_apply(vec![mint.clone()]).unwrap(), vec![0, 1]);
+        assert_eq!(
+            validator.validate_and_apply(vec![mint.clone()]).unwrap(),
+            vec![0, 1]
+        );
         // Make sure we have a new timestamp and commit.
         assert_eq!(validator.now(), 1);
         assert_ne!(validator.commit(), initial_commit);
 
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
-        assert_eq!(validator.validate_and_apply(vec![mint]).unwrap(), vec![2, 3]);
+        assert_eq!(
+            validator.validate_and_apply(vec![mint]).unwrap(),
+            vec![2, 3]
+        );
     }
 }
