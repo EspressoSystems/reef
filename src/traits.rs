@@ -129,4 +129,6 @@ pub trait Validator:
 pub trait Ledger: Copy + Debug + Send + Sync {
     type Validator: Validator;
     fn name() -> String;
+    fn record_root_history() -> usize;
+    fn merkle_height() -> u8;
 }
