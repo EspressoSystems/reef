@@ -127,7 +127,14 @@ pub fn open_xfr_audit_memo(
     xfr: &TransferNote,
 ) -> Result<AuditMemoOpening, AuditError> {
     for asset in assets.values() {
-        let audit_key = &keys[asset.policy_ref().auditor_pub_key()];
+        let audit_key = keys.iter().find_map(|(pub_key, key)| 
+            if pub_key == asset.policy_ref().auditor_pub_key() {
+                Some(key)
+            } else {
+                None
+            }
+        ).unwrap();
+        // let audit_key = &keys[asset.policy_ref().auditor_pub_key()];
         if let Ok((inputs, outputs)) = audit_key.open_transfer_audit_memo(asset, xfr) {
             return Ok(AuditMemoOpening {
                 asset: asset.clone(),
