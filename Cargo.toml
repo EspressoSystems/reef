@@ -12,7 +12,7 @@ ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "ssh://git@github.com/SpectrumXYZ/commit.git", rev = "f48cd52c59755eade0605111826eef3df6abdcf8" }
 funty = "=1.1.0"
 itertools = "0.10.1"
-jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", branch = "keyao-tag" }
+jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "8c32d8df3faf511e54ad89fa51627837ebcd8f20" }
 serde = { version = "1.0", features = ["derive"] }
 snafu = { version = "0.6.10", features = ["backtraces"] }
 strum_macros = "0.20.1"
