@@ -1,4 +1,4 @@
-//! Minimal implementation of the ledger traits for an AAP-style ledger. This implementation can be
+//! Minimal implementation of the ledger traits for an CAP-style ledger. This implementation can be
 //! used as an aid in implemeneting the traits for more complex, specific ledger types. It is also
 //! fully functional and can be used as a mock ledger for testing downstream modules that are
 //! parameterized by ledger type.
@@ -8,7 +8,7 @@ use crate::types::{AuditError, AuditMemoOpening};
 use arbitrary::Arbitrary;
 use arbitrary_wrappers::ArbitraryNullifier;
 use commit::{Commitment, Committable};
-use jf_aap::{
+use jf_cap::{
     keys::{AuditorKeyPair, AuditorPubKey},
     mint::MintNote,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment},
@@ -77,7 +77,7 @@ impl traits::Transaction for TransactionNote {
     type Hash = Commitment<Self>;
     type Kind = TransactionKind;
 
-    fn aap(note: TransactionNote, _proofs: Vec<()>) -> Self {
+    fn cap(note: TransactionNote, _proofs: Vec<()>) -> Self {
         note
     }
 
@@ -237,7 +237,7 @@ impl traits::Ledger for Ledger {
     type Validator = Validator;
 
     fn name() -> String {
-        String::from("Minimal AAP Ledger")
+        String::from("Minimal CAP Ledger")
     }
 
     fn merkle_height() -> u8 {
@@ -253,7 +253,7 @@ impl traits::Ledger for Ledger {
 mod tests {
     use super::*;
     use crate::traits::{Ledger as _, NullifierSet as _, Transaction as _, Validator as _};
-    use jf_aap::{
+    use jf_cap::{
         freeze::{FreezeNote, FreezeNoteInput},
         keys::{FreezerKeyPair, UserKeyPair},
         proof::{universal_setup, UniversalParam},
@@ -322,15 +322,15 @@ mod tests {
         let auditor_key = AuditorKeyPair::generate(&mut rng);
 
         let xfr_proving_key =
-            jf_aap::proof::transfer::preprocess(&*UNIVERSAL_PARAM, 2, 2, Ledger::merkle_height())
+            jf_cap::proof::transfer::preprocess(&*UNIVERSAL_PARAM, 2, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
         let mint_proving_key =
-            jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
+            jf_cap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
                 .unwrap()
                 .0;
         let freeze_proving_key =
-            jf_aap::proof::freeze::preprocess(&*UNIVERSAL_PARAM, 2, Ledger::merkle_height())
+            jf_cap::proof::freeze::preprocess(&*UNIVERSAL_PARAM, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
 
@@ -429,7 +429,7 @@ mod tests {
             xfr_inputs,
             &[xfr_ro],
             fee_info,
-            2u64.pow(jf_aap::constants::MAX_TIMESTAMP_LEN as u32) - 1,
+            2u64.pow(jf_cap::constants::MAX_TIMESTAMP_LEN as u32) - 1,
             &xfr_proving_key,
             vec![],
         )
@@ -537,7 +537,7 @@ mod tests {
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
         let mint_proving_key =
-            jf_aap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
+            jf_cap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
                 .unwrap()
                 .0;
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();

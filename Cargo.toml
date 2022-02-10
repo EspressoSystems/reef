@@ -1,6 +1,6 @@
 [package]
 name = "reef"
-description = "An abstraction of an entire AAP-style network"
+description = "An abstraction of an entire CAP-style network"
 version = "0.1.0"
 authors = ["Jeb Bearer <jeb.bearer@translucence.net"]
 edition = "2018"
@@ -12,7 +12,7 @@ ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "ssh://git@github.com/SpectrumXYZ/commit.git", rev = "f48cd52c59755eade0605111826eef3df6abdcf8" }
 funty = "=1.1.0"
 itertools = "0.10.1"
-jf-aap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git", rev = "c789791d61b46e69367f07bb375c1ae2cf66e0d9" }
+jf-cap = { features=["std"], git = "ssh://git@github.com/SpectrumXYZ/cap.git", rev = "5d9f71ea796a3107700809bd0cd343ad48bb5166" }
 serde = { version = "1.0", features = ["derive"] }
 snafu = { version = "0.6.10", features = ["backtraces"] }
 strum_macros = "0.20.1"
