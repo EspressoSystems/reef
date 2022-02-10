@@ -1,5 +1,5 @@
 use crate::traits;
-use jf_aap::structs::{AssetDefinition, AuditData};
+use jf_cap::structs::{AssetDefinition, AuditData};
 
 pub type Validator<L> = <L as traits::Ledger>::Validator;
 pub type StateCommitment<L> = <Validator<L> as traits::Validator>::StateCommitment;

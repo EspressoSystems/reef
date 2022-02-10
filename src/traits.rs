@@ -1,6 +1,6 @@
 use crate::types::{AuditError, AuditMemoOpening};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
-use jf_aap::{
+use jf_cap::{
     keys::{AuditorKeyPair, AuditorPubKey},
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment, RecordOpening},
     TransactionNote,
@@ -46,7 +46,7 @@ pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Syn
         + CanonicalDeserialize;
     type Kind: TransactionKind;
 
-    fn aap(note: TransactionNote, proofs: Vec<<Self::NullifierSet as NullifierSet>::Proof>)
+    fn cap(note: TransactionNote, proofs: Vec<<Self::NullifierSet as NullifierSet>::Proof>)
         -> Self;
 
     // Given a collection of asset types that the caller is able to audit, attempt to open the

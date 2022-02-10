@@ -55,12 +55,12 @@ dependencies = [
 [[package]]
 name = "arbitrary-wrappers"
 version = "0.1.0"
-source = "git+ssh://git@github.com/SpectrumXYZ/arbitrary-wrappers.git#e0bf09f31c057b2788eee30dcb6f7f698095e8ed"
+source = "git+ssh://git@github.com/SpectrumXYZ/arbitrary-wrappers.git#dc51eb147c0baeb87e2dcf6512cc59798f322006"
 dependencies = [
  "arbitrary",
  "ark-std",
  "itertools",
- "jf-aap",
+ "jf-cap",
  "rand_chacha",
  "serde",
  "zerok-macros",
@@ -770,9 +770,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 
 [[package]]
-name = "jf-aap"
+name = "jf-cap"
 version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish-apps.git?rev=c789791d61b46e69367f07bb375c1ae2cf66e0d9#c789791d61b46e69367f07bb375c1ae2cf66e0d9"
+source = "git+ssh://git@github.com/SpectrumXYZ/cap.git?rev=5d9f71ea796a3107700809bd0cd343ad48bb5166#5d9f71ea796a3107700809bd0cd343ad48bb5166"
 dependencies = [
  "anyhow",
  "ark-bn254",
@@ -807,8 +807,8 @@ dependencies = [
 
 [[package]]
 name = "jf-plonk"
-version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#a932c50b6767688437a4b5822f04e7878785b6a1"
+version = "0.1.0"
+source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#567e166786d05038e8731eb3ceabbc5a3fd8c932"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -836,8 +836,8 @@ dependencies = [
 
 [[package]]
 name = "jf-primitives"
-version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#a932c50b6767688437a4b5822f04e7878785b6a1"
+version = "0.1.0"
+source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#567e166786d05038e8731eb3ceabbc5a3fd8c932"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -858,8 +858,8 @@ dependencies = [
 
 [[package]]
 name = "jf-rescue"
-version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#a932c50b6767688437a4b5822f04e7878785b6a1"
+version = "0.1.0"
+source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#567e166786d05038e8731eb3ceabbc5a3fd8c932"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -883,8 +883,8 @@ dependencies = [
 
 [[package]]
 name = "jf-utils"
-version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#a932c50b6767688437a4b5822f04e7878785b6a1"
+version = "0.1.0"
+source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#567e166786d05038e8731eb3ceabbc5a3fd8c932"
 dependencies = [
  "anyhow",
  "ark-ec",
@@ -901,7 +901,7 @@ dependencies = [
 [[package]]
 name = "jf-utils-derive"
 version = "0.1.0"
-source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#a932c50b6767688437a4b5822f04e7878785b6a1"
+source = "git+ssh://git@github.com/SpectrumXYZ/jellyfish.git#567e166786d05038e8731eb3ceabbc5a3fd8c932"
 dependencies = [
  "ark-std",
  "quote",
@@ -1267,7 +1267,7 @@ dependencies = [
  "commit",
  "funty",
  "itertools",
- "jf-aap",
+ "jf-cap",
  "lazy_static",
  "rand_chacha",
  "serde",
@@ -1503,7 +1503,7 @@ dependencies = [
 [[package]]
 name = "tagged-base64"
 version = "0.1.0"
-source = "git+ssh://git@github.com/SpectrumXYZ/tagged-base64.git?branch=main#408f79ee1cdcfcfedfca796ea1f35a35ddc67042"
+source = "git+https://github.com/SpectrumXYZ/tagged-base64?branch=main#0159640927e5e1bfeac431f121362c70f0ca7e94"
 dependencies = [
  "base64",
  "console_error_panic_hook",
