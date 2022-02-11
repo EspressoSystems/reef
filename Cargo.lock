@@ -55,7 +55,7 @@ dependencies = [
 [[package]]
 name = "arbitrary-wrappers"
 version = "0.1.0"
-source = "git+ssh://git@github.com/SpectrumXYZ/arbitrary-wrappers.git#dc51eb147c0baeb87e2dcf6512cc59798f322006"
+source = "git+ssh://git@github.com/SpectrumXYZ/arbitrary-wrappers.git#b24ab56c80575141f75766c24930924e3f9d1a27"
 dependencies = [
  "arbitrary",
  "ark-std",
@@ -772,7 +772,7 @@ checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 [[package]]
 name = "jf-cap"
 version = "0.0.1"
-source = "git+ssh://git@github.com/SpectrumXYZ/cap.git?rev=5d9f71ea796a3107700809bd0cd343ad48bb5166#5d9f71ea796a3107700809bd0cd343ad48bb5166"
+source = "git+ssh://git@github.com/SpectrumXYZ/cap.git?rev=cba0b2fc682606b0a118b320d41f718c525b4192#cba0b2fc682606b0a118b320d41f718c525b4192"
 dependencies = [
  "anyhow",
  "ark-bn254",
