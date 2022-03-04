@@ -64,15 +64,15 @@ dependencies = [
 [[package]]
 name = "arbitrary-wrappers"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/arbitrary-wrappers.git?rev=91a396e46283d6cae2c3d390d5d116087bdcc9eb#91a396e46283d6cae2c3d390d5d116087bdcc9eb"
+source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git?tag=0.1.0#c6363d620aea834f96caa10e21a619e56beee093"
 dependencies = [
  "arbitrary",
  "ark-std",
+ "espresso-macros",
  "itertools",
  "jf-cap",
  "rand_chacha",
  "serde",
- "zerok-macros",
 ]
 
 [[package]]
@@ -464,7 +464,7 @@ dependencies = [
 [[package]]
 name = "commit"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/commit.git?rev=f48cd52c59755eade0605111826eef3df6abdcf8#f48cd52c59755eade0605111826eef3df6abdcf8"
+source = "git+https://github.com/EspressoSystems/commit.git?tag=0.1.0#7685ebd00e5098debe08821b0e068fbc4453b4e0"
 dependencies = [
  "arbitrary",
  "ark-serialize",
@@ -685,6 +685,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
+name = "espresso-macros"
+version = "0.1.0"
+source = "git+https://github.com/EspressoSystems/espresso-macros.git?tag=0.1.0#9e0b0258c99757c567676c4dd92f1501db0cf580"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "funty"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -796,7 +806,7 @@ checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 [[package]]
 name = "jf-cap"
 version = "0.0.1"
-source = "git+ssh://git@github.com/EspressoSystems/cap.git?rev=16ad157f96d2102d59206df0106fb341302180d3#16ad157f96d2102d59206df0106fb341302180d3"
+source = "git+https://github.com/EspressoSystems/cap.git?tag=0.0.1#1f4daf7368bdcbea501a96cdfb1219e5019f12c6"
 dependencies = [
  "anyhow",
  "ark-bn254",
@@ -832,7 +842,7 @@ dependencies = [
 [[package]]
 name = "jf-plonk"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/jellyfish.git#f8782d9837d5f65e91af50e810872a6a5bdd34f4"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -861,7 +871,7 @@ dependencies = [
 [[package]]
 name = "jf-primitives"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/jellyfish.git#f8782d9837d5f65e91af50e810872a6a5bdd34f4"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -883,7 +893,7 @@ dependencies = [
 [[package]]
 name = "jf-rescue"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/jellyfish.git#f8782d9837d5f65e91af50e810872a6a5bdd34f4"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -908,7 +918,7 @@ dependencies = [
 [[package]]
 name = "jf-utils"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/jellyfish.git#f8782d9837d5f65e91af50e810872a6a5bdd34f4"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
 dependencies = [
  "anyhow",
  "ark-ec",
@@ -926,7 +936,7 @@ dependencies = [
 [[package]]
 name = "jf-utils-derive"
 version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/jellyfish.git#f8782d9837d5f65e91af50e810872a6a5bdd34f4"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
 dependencies = [
  "ark-std",
  "quote",
@@ -1811,14 +1821,4 @@ dependencies = [
  "quote",
  "syn",
  "synstructure",
-]
-
-[[package]]
-name = "zerok-macros"
-version = "0.1.0"
-source = "git+ssh://git@github.com/EspressoSystems/zerok-macros.git#0a9e9ca4ef8870bcd9a2373c00c4a697f704453a"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
