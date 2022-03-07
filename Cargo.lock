@@ -63,8 +63,8 @@ dependencies = [
 
 [[package]]
 name = "arbitrary-wrappers"
-version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git?tag=0.1.0#c6363d620aea834f96caa10e21a619e56beee093"
+version = "0.2.0"
+source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git#101280b4ec74636405df383d583c62131bd5217b"
 dependencies = [
  "arbitrary",
  "ark-std",
@@ -806,7 +806,7 @@ checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 [[package]]
 name = "jf-cap"
 version = "0.0.1"
-source = "git+https://github.com/EspressoSystems/cap.git?tag=0.0.1#1f4daf7368bdcbea501a96cdfb1219e5019f12c6"
+source = "git+https://github.com/EspressoSystems/cap.git#a9489cff402408953bae25d4b27b5cdaa481f9dd"
 dependencies = [
  "anyhow",
  "ark-bn254",
@@ -1311,7 +1311,7 @@ dependencies = [
 
 [[package]]
 name = "reef"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "arbitrary",
  "arbitrary-wrappers",
