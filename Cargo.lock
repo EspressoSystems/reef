@@ -806,7 +806,7 @@ checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 [[package]]
 name = "jf-cap"
 version = "0.0.1"
-source = "git+https://github.com/EspressoSystems/cap.git#a9489cff402408953bae25d4b27b5cdaa481f9dd"
+source = "git+https://github.com/EspressoSystems/cap.git#4e1793c3fee197bd20b065226b17ab77217a3380"
 dependencies = [
  "anyhow",
  "ark-bn254",
@@ -842,7 +842,7 @@ dependencies = [
 [[package]]
 name = "jf-plonk"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#a35e021c56c56efd3276e0aa55dd9231f9d70d1f"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -871,7 +871,7 @@ dependencies = [
 [[package]]
 name = "jf-primitives"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#a35e021c56c56efd3276e0aa55dd9231f9d70d1f"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -893,7 +893,7 @@ dependencies = [
 [[package]]
 name = "jf-rescue"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#a35e021c56c56efd3276e0aa55dd9231f9d70d1f"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -918,7 +918,7 @@ dependencies = [
 [[package]]
 name = "jf-utils"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#a35e021c56c56efd3276e0aa55dd9231f9d70d1f"
 dependencies = [
  "anyhow",
  "ark-ec",
@@ -936,7 +936,7 @@ dependencies = [
 [[package]]
 name = "jf-utils-derive"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#6ac3572fa0207beb01134d9010712fa581b74a03"
+source = "git+https://github.com/EspressoSystems/jellyfish.git#a35e021c56c56efd3276e0aa55dd9231f9d70d1f"
 dependencies = [
  "ark-std",
  "quote",
