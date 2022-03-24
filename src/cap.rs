@@ -18,10 +18,13 @@ use commit::{Commitment, Committable};
 use jf_cap::{
     keys::{AuditorKeyPair, AuditorPubKey},
     mint::MintNote,
+    proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment},
     transfer::TransferNote,
     TransactionNote,
 };
+use lazy_static::lazy_static;
+use rand_chacha::{rand_core::SeedableRng, ChaChaRng};
 use serde::{Deserialize, Serialize};
 use snafu::Snafu;
 use std::collections::{HashMap, HashSet};
@@ -240,6 +243,15 @@ impl traits::Validator for Validator {
 #[derive(Clone, Copy, Debug)]
 pub struct Ledger;
 
+lazy_static! {
+    static ref CAP_UNIVERSAL_PARAM: UniversalParam =
+        jf_cap::testing_apis::universal_setup_for_test(
+            2u64.pow(17) as usize,
+            &mut ChaChaRng::from_seed([0u8; 32])
+        )
+        .unwrap();
+}
+
 impl traits::Ledger for Ledger {
     type Validator = Validator;
 
@@ -254,6 +266,10 @@ impl traits::Ledger for Ledger {
     fn record_root_history() -> usize {
         1
     }
+
+    fn crs() -> UniversalParam {
+        CAP_UNIVERSAL_PARAM.clone()
+    }
 }
 
 #[cfg(test)]
@@ -263,50 +279,11 @@ mod tests {
     use jf_cap::{
         freeze::{FreezeNote, FreezeNoteInput},
         keys::{FreezerKeyPair, UserKeyPair},
-        proof::{universal_setup, UniversalParam},
-        structs::{
-            AssetPolicy, FeeInput, FreezeFlag, NoteType, RecordCommitment, RecordOpening,
-            TxnFeeInfo,
-        },
+        structs::{AssetPolicy, FeeInput, FreezeFlag, RecordCommitment, RecordOpening, TxnFeeInfo},
         transfer::TransferNoteInput,
-        utils::compute_universal_param_size,
         AccMemberWitness, MerkleTree,
     };
-    use lazy_static::lazy_static;
     use rand_chacha::{rand_core::SeedableRng, ChaChaRng};
-
-    lazy_static! {
-        static ref UNIVERSAL_PARAM: UniversalParam = universal_setup(
-            *[
-                compute_universal_param_size(NoteType::Transfer, 3, 3, Ledger::merkle_height())
-                    .unwrap_or_else(|err| {
-                        panic!(
-                            "Error while computing the universal parameter size for Transfer: {}",
-                            err
-                        )
-                    },),
-                compute_universal_param_size(NoteType::Mint, 0, 0, Ledger::merkle_height())
-                    .unwrap_or_else(|err| {
-                        panic!(
-                            "Error while computing the universal parameter size for Mint: {}",
-                            err
-                        )
-                    },),
-                compute_universal_param_size(NoteType::Freeze, 2, 2, Ledger::merkle_height())
-                    .unwrap_or_else(|err| {
-                        panic!(
-                            "Error while computing the universal parameter size for Freeze: {}",
-                            err
-                        )
-                    },),
-            ]
-            .iter()
-            .max()
-            .unwrap(),
-            &mut ChaChaRng::from_seed([42u8; 32])
-        )
-        .unwrap();
-    }
 
     #[test]
     fn test_nullifier_set() {
@@ -327,17 +304,17 @@ mod tests {
         let key = UserKeyPair::generate(&mut rng);
         let freezer_key = FreezerKeyPair::generate(&mut rng);
         let auditor_key = AuditorKeyPair::generate(&mut rng);
+        let crs = Ledger::crs();
 
         let xfr_proving_key =
-            jf_cap::proof::transfer::preprocess(&*UNIVERSAL_PARAM, 2, 2, Ledger::merkle_height())
+            jf_cap::proof::transfer::preprocess(&crs, 2, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
-        let mint_proving_key =
-            jf_cap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
-                .unwrap()
-                .0;
+        let mint_proving_key = jf_cap::proof::mint::preprocess(&crs, Ledger::merkle_height())
+            .unwrap()
+            .0;
         let freeze_proving_key =
-            jf_cap::proof::freeze::preprocess(&*UNIVERSAL_PARAM, 2, Ledger::merkle_height())
+            jf_cap::proof::freeze::preprocess(&crs, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
 
@@ -543,10 +520,10 @@ mod tests {
         // mock ledger.
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
-        let mint_proving_key =
-            jf_cap::proof::mint::preprocess(&*UNIVERSAL_PARAM, Ledger::merkle_height())
-                .unwrap()
-                .0;
+        let crs = Ledger::crs();
+        let mint_proving_key = jf_cap::proof::mint::preprocess(&crs, Ledger::merkle_height())
+            .unwrap()
+            .0;
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
