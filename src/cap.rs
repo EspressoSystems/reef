@@ -30,6 +30,7 @@ use snafu::Snafu;
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
+use std::sync::Arc;
 
 pub type NullifierSet = HashSet<ArbitraryNullifier>;
 
@@ -244,12 +245,13 @@ impl traits::Validator for Validator {
 pub struct Ledger;
 
 lazy_static! {
-    static ref CAP_UNIVERSAL_PARAM: UniversalParam =
+    static ref CAP_UNIVERSAL_PARAM: Arc<UniversalParam> = Arc::new(
         jf_cap::testing_apis::universal_setup_for_test(
             2u64.pow(17) as usize,
             &mut ChaChaRng::from_seed([0u8; 32])
         )
-        .unwrap();
+        .unwrap()
+    );
 }
 
 impl traits::Ledger for Ledger {
@@ -267,7 +269,7 @@ impl traits::Ledger for Ledger {
         1
     }
 
-    fn crs() -> UniversalParam {
+    fn crs() -> Arc<UniversalParam> {
         CAP_UNIVERSAL_PARAM.clone()
     }
 }
