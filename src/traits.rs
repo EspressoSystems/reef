@@ -139,5 +139,5 @@ pub trait Ledger: Copy + Debug + Send + Sync {
     fn name() -> String;
     fn record_root_history() -> usize;
     fn merkle_height() -> u8;
-    fn crs() -> &'static UniversalParam;
+    fn srs() -> &'static UniversalParam;
 }

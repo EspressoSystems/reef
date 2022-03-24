@@ -267,7 +267,7 @@ impl traits::Ledger for Ledger {
         1
     }
 
-    fn crs() -> &'static UniversalParam {
+    fn srs() -> &'static UniversalParam {
         &*CAP_UNIVERSAL_PARAM
     }
 }
@@ -304,17 +304,17 @@ mod tests {
         let key = UserKeyPair::generate(&mut rng);
         let freezer_key = FreezerKeyPair::generate(&mut rng);
         let auditor_key = AuditorKeyPair::generate(&mut rng);
-        let crs = Ledger::crs();
+        let srs = Ledger::srs();
 
         let xfr_proving_key =
-            jf_cap::proof::transfer::preprocess(&crs, 2, 2, Ledger::merkle_height())
+            jf_cap::proof::transfer::preprocess(&srs, 2, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
-        let mint_proving_key = jf_cap::proof::mint::preprocess(&crs, Ledger::merkle_height())
+        let mint_proving_key = jf_cap::proof::mint::preprocess(&srs, Ledger::merkle_height())
             .unwrap()
             .0;
         let freeze_proving_key =
-            jf_cap::proof::freeze::preprocess(&crs, 2, Ledger::merkle_height())
+            jf_cap::proof::freeze::preprocess(&srs, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
 
@@ -520,8 +520,8 @@ mod tests {
         // mock ledger.
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
-        let crs = Ledger::crs();
-        let mint_proving_key = jf_cap::proof::mint::preprocess(&crs, Ledger::merkle_height())
+        let srs = Ledger::srs();
+        let mint_proving_key = jf_cap::proof::mint::preprocess(&srs, Ledger::merkle_height())
             .unwrap()
             .0;
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
