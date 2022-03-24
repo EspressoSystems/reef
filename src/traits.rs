@@ -17,7 +17,6 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::collections::HashMap;
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
-use std::sync::Arc;
 
 pub trait NullifierSet:
     Clone + Debug + PartialEq + Serialize + DeserializeOwned + Send + Sync
@@ -140,5 +139,5 @@ pub trait Ledger: Copy + Debug + Send + Sync {
     fn name() -> String;
     fn record_root_history() -> usize;
     fn merkle_height() -> u8;
-    fn crs() -> Arc<UniversalParam>;
+    fn crs() -> &'static UniversalParam;
 }
