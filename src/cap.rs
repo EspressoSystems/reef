@@ -240,9 +240,13 @@ impl traits::Validator for Validator {
     }
 }
 
+// The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test
+// environments or environments where we have a secure construction of the SRS.
+#[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 #[derive(Clone, Copy, Debug)]
 pub struct Ledger;
 
+#[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 lazy_static! {
     static ref CAP_UNIVERSAL_PARAM: UniversalParam = jf_cap::proof::universal_setup_for_staging(
         2u64.pow(17) as usize,
@@ -251,6 +255,7 @@ lazy_static! {
     .unwrap();
 }
 
+#[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 impl traits::Ledger for Ledger {
     type Validator = Validator;
 

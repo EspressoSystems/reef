@@ -19,3 +19,8 @@ rand_chacha = { version = "0.3.1", features = ["serde1"] }
 serde = { version = "1.0", features = ["derive"] }
 snafu = { version = "0.6.10", features = ["backtraces"] }
 strum_macros = "0.20.1"
+
+[features]
+default = ["secure-srs"]
+testing = []
+secure-srs = ["jf-cap/bn254"]
