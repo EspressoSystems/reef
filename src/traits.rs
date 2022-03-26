@@ -9,6 +9,7 @@ use crate::types::{AuditError, AuditMemoOpening};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use jf_cap::{
     keys::{AuditorKeyPair, AuditorPubKey},
+    proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment, RecordOpening},
     TransactionNote,
 };
@@ -138,4 +139,5 @@ pub trait Ledger: Copy + Debug + Send + Sync {
     fn name() -> String;
     fn record_root_history() -> usize;
     fn merkle_height() -> u8;
+    fn srs() -> &'static UniversalParam;
 }
