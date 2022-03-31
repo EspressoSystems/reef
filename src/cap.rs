@@ -5,10 +5,11 @@
 // This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 // You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-//! Minimal implementation of the ledger traits for an CAP-style ledger. This implementation can be
-//! used as an aid in implemeneting the traits for more complex, specific ledger types. It is also
-//! fully functional and can be used as a mock ledger for testing downstream modules that are
-//! parameterized by ledger type.
+//! Minimal implementation of the ledger traits for a CAP-style ledger.
+//!
+//! This implementation can be used as an aid in implemeneting the traits for more complex, specific
+//! ledger types. It is also fully functional and can be used as a mock ledger for testing
+//! downstream modules that are parameterized by ledger type.
 
 use crate::traits;
 use crate::types::{AuditError, AuditMemoOpening};
@@ -31,6 +32,10 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
 
+/// A set of nullifiers.
+///
+/// The simplest implementation of the CAP [NullifierSet](traits::NullifierSet) trait simply stores
+/// all the nullifiers that are inserted in a [HashSet].
 pub type NullifierSet = HashSet<ArbitraryNullifier>;
 
 impl traits::NullifierSet for NullifierSet {
@@ -44,6 +49,7 @@ impl traits::NullifierSet for NullifierSet {
     }
 }
 
+/// All the kinds of transactions in the basic CAP protocol.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, strum_macros::Display)]
 pub enum TransactionKind {
     Mint,
@@ -80,6 +86,7 @@ impl traits::TransactionKind for TransactionKind {
     }
 }
 
+/// A CAP transaction.
 pub type Transaction = TransactionNote;
 
 impl traits::Transaction for TransactionNote {
@@ -131,6 +138,12 @@ impl traits::Transaction for TransactionNote {
     }
 }
 
+/// Attempt to open the viewer memo attached to a CAP transfer transaction.
+///
+/// `assets` should be the set of asset types for which the caller holds the viewing key, indexed by
+/// asset code. This determines which asset types can be viewed by this method. `keys` is the
+/// caller's collection of viewing key pairs, indexed by public key. `keys` must contain every
+/// public key which is listed as a viewer in the policy of one of the `assets`.
 pub fn open_xfr_audit_memo(
     assets: &HashMap<AssetCode, AssetDefinition>,
     keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
@@ -149,6 +162,9 @@ pub fn open_xfr_audit_memo(
     Err(AuditError::UnauditableAsset)
 }
 
+/// Attempt to open the viewer memo attached to a CAP mint transaction.
+///
+/// `keys` should be the caller's collection of viewing key pairs, indexed by public key.
 pub fn open_mint_audit_memo(
     keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
     mint: &MintNote,
@@ -165,6 +181,7 @@ pub fn open_mint_audit_memo(
         })
 }
 
+/// Errors in mock CAP validation.
 #[derive(Clone, Debug, Serialize, Deserialize, Snafu)]
 pub enum ValidationError {
     Failed { msg: String },
@@ -182,6 +199,10 @@ impl traits::ValidationError for ValidationError {
     }
 }
 
+/// A block of CAP transactions.
+///
+/// The simplest implementation of the [Block](traits::Block) trait is simply a list of CAP
+/// transactions.
 pub type Block = Vec<Transaction>;
 
 impl traits::Block for Block {
@@ -202,10 +223,12 @@ impl traits::Block for Block {
     }
 }
 
-// Our minimal validator will not actually validate. It only does the least it can do to implement
-// the Validator interface, namely
-//  * compute a unique commitment after each block (this is just the count of blocks)
-//  * compute the UIDs for the outputs of each block (by counting the number of outputs total)
+/// A mock CAP validator.
+///
+/// The minimal validator will not actually validate. It only does the least it can do to implement
+/// the [Validator](traits::Validator) interface, namely
+///  * compute a unique commitment after each block (this is just the count of blocks)
+///  * compute the UIDs for the outputs of each block (by counting the number of outputs total)
 #[derive(Arbitrary, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct Validator {
     pub now: u64,
@@ -240,6 +263,7 @@ impl traits::Validator for Validator {
     }
 }
 
+/// A minimal CAP ledger.
 // The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test
 // environments or environments where we have a secure construction of the SRS.
 #[cfg(any(test, feature = "testing", feature = "secure-srs"))]
