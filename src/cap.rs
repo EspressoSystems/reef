@@ -164,10 +164,7 @@ pub fn open_xfr_audit_memo(
 
 /// Attempt to open the viewer memo attached to a CAP mint transaction.
 ///
-/// `assets` should be the set of asset types for which the caller holds the viewing key, indexed by
-/// asset code. This determines which asset types can be viewed by this method. `keys` is the
-/// caller's collection of viewing key pairs, indexed by public key. `keys` must contain every
-/// public key which is listed as a viewer in the policy of one of the `assets`.
+/// `keys` should be the caller's collection of viewing key pairs, indexed by public key.
 pub fn open_mint_audit_memo(
     keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
     mint: &MintNote,
