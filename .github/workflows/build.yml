@@ -59,3 +59,11 @@ jobs:
           cargo doc --no-deps --lib --release
           cp -R target/doc public
           echo '<meta http-equiv="refresh" content="0; url=reef">' > public/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: reef.docs.espressosys.com
