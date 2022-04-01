@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["reef"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.59.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"struct\" href=\"reef/cap/struct.Ledger.html\" title=\"struct reef::cap::Ledger\">Ledger</a>","synthetic":false,"types":["reef::cap::Ledger"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
