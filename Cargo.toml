@@ -17,7 +17,7 @@ jf-cap = { git = "https://github.com/EspressoSystems/cap.git" }
 lazy_static = "1.4.0"
 rand_chacha = { version = "0.3.1", features = ["serde1"] }
 serde = { version = "1.0", features = ["derive"] }
-snafu = { version = "0.6.10", features = ["backtraces"] }
+snafu = { version = "0.7.0", features = ["backtraces"] }
 strum_macros = "0.20.1"
 
 [features]
