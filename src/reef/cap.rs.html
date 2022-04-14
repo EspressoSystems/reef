@@ -616,6 +616,15 @@
 <span id="611">611</span>
 <span id="612">612</span>
 <span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
 <span class="comment">// This file is part of the Reef library.</span>
 
@@ -882,11 +891,16 @@
 }
 
 <span class="doccomment">/// A minimal CAP ledger.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The ledger implementation is parameterized on the height of Merkle trees that it will be used</span>
+<span class="doccomment">/// with. Test code can use this to set the height very small (e.g. `LedgerWithHeight&lt;5&gt;`) to speed</span>
+<span class="doccomment">/// up tests, while code that is trying to closely simulate a production environment can set a more</span>
+<span class="doccomment">/// realistic height.</span>
 <span class="comment">// The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test</span>
 <span class="comment">// environments or environments where we have a secure construction of the SRS.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ledger</span>;
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
 <span class="macro">lazy_static!</span> {
@@ -898,7 +912,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
-<span class="kw">impl</span> <span class="ident">traits::Ledger</span> <span class="kw">for</span> <span class="ident">Ledger</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">traits::Ledger</span> <span class="kw">for</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Validator</span> <span class="op">=</span> <span class="ident">Validator</span>;
 
     <span class="kw">fn</span> <span class="ident">name</span>() -&gt; <span class="ident">String</span> {
@@ -906,7 +920,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">merkle_height</span>() -&gt; <span class="ident">u8</span> {
-        <span class="number">5</span>
+        <span class="ident">H</span>
     }
 
     <span class="kw">fn</span> <span class="ident">record_root_history</span>() -&gt; <span class="ident">usize</span> {
@@ -917,6 +931,10 @@
         <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">CAP_UNIVERSAL_PARAM</span>
     }
 }
+
+<span class="doccomment">/// The default ledger height is 5, for testing.</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>))]</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Ledger</span> <span class="op">=</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="number">5</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
