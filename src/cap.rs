@@ -264,11 +264,16 @@ impl traits::Validator for Validator {
 }
 
 /// A minimal CAP ledger.
+///
+/// The ledger implementation is parameterized on the height of Merkle trees that it will be used
+/// with. Test code can use this to set the height very small (e.g. `LedgerWithHeight<5>`) to speed
+/// up tests, while code that is trying to closely simulate a production environment can set a more
+/// realistic height.
 // The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test
 // environments or environments where we have a secure construction of the SRS.
 #[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 #[derive(Clone, Copy, Debug)]
-pub struct Ledger;
+pub struct LedgerWithHeight<const H: u8>;
 
 #[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 lazy_static! {
@@ -280,7 +285,7 @@ lazy_static! {
 }
 
 #[cfg(any(test, feature = "testing", feature = "secure-srs"))]
-impl traits::Ledger for Ledger {
+impl<const H: u8> traits::Ledger for LedgerWithHeight<H> {
     type Validator = Validator;
 
     fn name() -> String {
@@ -288,7 +293,7 @@ impl traits::Ledger for Ledger {
     }
 
     fn merkle_height() -> u8 {
-        5
+        H
     }
 
     fn record_root_history() -> usize {
@@ -299,6 +304,10 @@ impl traits::Ledger for Ledger {
         &*CAP_UNIVERSAL_PARAM
     }
 }
+
+/// The default ledger height is 5, for testing.
+#[cfg(any(test, feature = "testing"))]
+pub type Ledger = LedgerWithHeight<5>;
 
 #[cfg(test)]
 mod tests {
