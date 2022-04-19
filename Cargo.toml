@@ -1,19 +1,19 @@
 [package]
 name = "reef"
 description = "An abstraction of an entire CAP-style network"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Espresso Systems <hello@espressosys.com>"]
 edition = "2018"
 license = "GPL-3.0-or-later"
 
 [dependencies]
 arbitrary = { version="1.0", features=["derive"] }
-arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git" }
+arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git", tag = "0.2.1" }
 ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.1.0" }
 funty = "=1.1.0"
 itertools = "0.10.1"
-jf-cap = { git = "https://github.com/EspressoSystems/cap.git" }
+jf-cap = { git = "https://github.com/EspressoSystems/cap.git", tag = "0.0.2" }
 lazy_static = "1.4.0"
 rand_chacha = { version = "0.3.1", features = ["serde1"] }
 serde = { version = "1.0", features = ["derive"] }
