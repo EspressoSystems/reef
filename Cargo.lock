@@ -63,8 +63,8 @@ dependencies = [
 
 [[package]]
 name = "arbitrary-wrappers"
-version = "0.2.0"
-source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git#a6d0de1d283d1455eff666ca693ddda8e24fa422"
+version = "0.2.1"
+source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git?tag=0.2.1#f5218b1d0dd3caa0b45b0e17788056dd54409d67"
 dependencies = [
  "arbitrary",
  "ark-std",
@@ -806,8 +806,8 @@ checksum = "1aab8fc367588b89dcee83ab0fd66b72b50b72fa1904d7095045ace2b0c81c35"
 
 [[package]]
 name = "jf-cap"
-version = "0.0.1"
-source = "git+https://github.com/EspressoSystems/cap.git#d4d22d8c67178cd17fad3acc9129fbd8a9d5f529"
+version = "0.0.2"
+source = "git+https://github.com/EspressoSystems/cap.git?tag=0.0.2#b64e513ec06714c681a9c5c70d04308b3f212a21"
 dependencies = [
  "anyhow",
  "ark-bn254",
@@ -843,7 +843,7 @@ dependencies = [
 [[package]]
 name = "jf-plonk"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#9590fac7466ce955c31d94dc9996854f58f7fe2f"
+source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.0#1fc9a4861e39175a776dc8da109a0bdc1ebb1c5c"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -872,7 +872,7 @@ dependencies = [
 [[package]]
 name = "jf-primitives"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#9590fac7466ce955c31d94dc9996854f58f7fe2f"
+source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.0#1fc9a4861e39175a776dc8da109a0bdc1ebb1c5c"
 dependencies = [
  "ark-ec",
  "ark-ff",
@@ -894,7 +894,7 @@ dependencies = [
 [[package]]
 name = "jf-rescue"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#9590fac7466ce955c31d94dc9996854f58f7fe2f"
+source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.0#1fc9a4861e39175a776dc8da109a0bdc1ebb1c5c"
 dependencies = [
  "ark-bls12-377",
  "ark-bls12-381",
@@ -919,7 +919,7 @@ dependencies = [
 [[package]]
 name = "jf-utils"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#9590fac7466ce955c31d94dc9996854f58f7fe2f"
+source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.0#1fc9a4861e39175a776dc8da109a0bdc1ebb1c5c"
 dependencies = [
  "anyhow",
  "ark-ec",
@@ -937,7 +937,7 @@ dependencies = [
 [[package]]
 name = "jf-utils-derive"
 version = "0.1.0"
-source = "git+https://github.com/EspressoSystems/jellyfish.git#9590fac7466ce955c31d94dc9996854f58f7fe2f"
+source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.0#1fc9a4861e39175a776dc8da109a0bdc1ebb1c5c"
 dependencies = [
  "ark-std",
  "quote",
