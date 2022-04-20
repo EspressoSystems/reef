@@ -103,14 +103,15 @@ pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Syn
     /// Given a collection of asset types for which the caller holds the viewing key, attempt to
     /// open the viewing memos attached to this transaction.
     ///
-    /// `viewable_assets` should be the set of asset types which the caller can view, indexed by
-    /// asset code. This determines which asset types can be viewed by this method. `viewing_keys`
-    /// is the caller's collection of viewing key pairs, indexed by public key. `viewing_keys` must
-    /// contain every public key which is listed as a viewer in the policy of one of the
+    /// `viewable_assets` should be the set of asset types which the caller
+    /// can view. This determines which asset types can be viewed by this
+    /// method. `viewing_keys` is the caller's collection of viewing key
+    /// pairs, indexed by public key. `viewing_keys` must contain every public
+    /// key which is listed as a viewer in the policy of one of the
     /// `viewable_assets`.
     fn open_audit_memo(
         &self,
-        viewable_assets: &HashMap<AssetCode, AssetDefinition>,
+        viewable_assets: &[AssetDefinition],
         viewing_keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
     ) -> Result<AuditMemoOpening, AuditError>;
 

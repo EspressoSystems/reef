@@ -100,7 +100,7 @@ impl traits::Transaction for TransactionNote {
 
     fn open_audit_memo(
         &self,
-        assets: &HashMap<AssetCode, AssetDefinition>,
+        assets: &[AssetDefinition],
         keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
     ) -> Result<AuditMemoOpening, AuditError> {
         match self {
@@ -145,11 +145,11 @@ impl traits::Transaction for TransactionNote {
 /// caller's collection of viewing key pairs, indexed by public key. `keys` must contain every
 /// public key which is listed as a viewer in the policy of one of the `assets`.
 pub fn open_xfr_audit_memo(
-    assets: &HashMap<AssetCode, AssetDefinition>,
+    assets: &[AssetDefinition],
     keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
     xfr: &TransferNote,
 ) -> Result<AuditMemoOpening, AuditError> {
-    for asset in assets.values() {
+    for asset in assets {
         let audit_key = &keys[asset.policy_ref().auditor_pub_key()];
         if let Ok((inputs, outputs)) = audit_key.open_transfer_audit_memo(asset, xfr) {
             return Ok(AuditMemoOpening {
