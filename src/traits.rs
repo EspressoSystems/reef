@@ -6,10 +6,10 @@
 // You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 //! Traits describing the interface of a CAP ledger.
-use crate::types::{AuditError, AuditMemoOpening};
+use crate::types::{ViewingError, ViewingMemoOpening};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use jf_cap::{
-    keys::{AuditorKeyPair, AuditorPubKey},
+    keys::{ViewerKeyPair, ViewerPubKey},
     proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment, RecordOpening},
     TransactionNote,
@@ -108,11 +108,11 @@ pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Syn
     /// is the caller's collection of viewing key pairs, indexed by public key. `viewing_keys` must
     /// contain every public key which is listed as a viewer in the policy of one of the
     /// `viewable_assets`.
-    fn open_audit_memo(
+    fn open_viewing_memo(
         &self,
         viewable_assets: &HashMap<AssetCode, AssetDefinition>,
-        viewing_keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
-    ) -> Result<AuditMemoOpening, AuditError>;
+        viewing_keys: &HashMap<ViewerPubKey, ViewerKeyPair>,
+    ) -> Result<ViewingMemoOpening, ViewingError>;
 
     /// This transaction's input nullifiers.
     ///

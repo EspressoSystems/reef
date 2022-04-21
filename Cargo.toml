@@ -8,12 +8,12 @@ license = "GPL-3.0-or-later"
 
 [dependencies]
 arbitrary = { version="1.0", features=["derive"] }
-arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git", tag = "0.2.1" }
+arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git", branch = "bfish-update-cap-termonology" }
 ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.1.0" }
 funty = "=1.1.0"
 itertools = "0.10.1"
-jf-cap = { git = "https://github.com/EspressoSystems/cap.git", tag = "0.0.2" }
+jf-cap = { features=["std"], git = "https://github.com/EspressoSystems/cap.git", branch = "testnet-v1" }
 lazy_static = "1.4.0"
 rand_chacha = { version = "0.3.1", features = ["serde1"] }
 serde = { version = "1.0", features = ["derive"] }

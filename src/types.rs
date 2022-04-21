@@ -11,7 +11,7 @@
 //! the [traits] module.
 
 use crate::traits;
-use jf_cap::structs::{AssetDefinition, AuditData};
+use jf_cap::structs::{AssetDefinition, ViewableData};
 
 /// A validator for a ledger `L`.
 pub type Validator<L> = <L as traits::Ledger>::Validator;
@@ -34,15 +34,15 @@ pub type NullifierProof<L> = <NullifierSet<L> as traits::NullifierSet>::Proof;
 
 /// Information contained in a viewing memo.
 #[derive(Clone, Debug, PartialEq)]
-pub struct AuditMemoOpening {
+pub struct ViewingMemoOpening {
     pub asset: AssetDefinition,
-    pub inputs: Vec<AuditData>,
-    pub outputs: Vec<AuditData>,
+    pub inputs: Vec<ViewableData>,
+    pub outputs: Vec<ViewableData>,
 }
 
 /// Errors that can occur when trying to decrypt a viewing memo.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub enum AuditError {
-    UnauditableAsset,
-    NoAuditMemos,
+pub enum ViewingError {
+    UnviewableAsset,
+    NoViewingMemos,
 }
