@@ -1,7 +1,7 @@
 [package]
 name = "reef"
 description = "An abstraction of an entire CAP-style network"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Espresso Systems <hello@espressosys.com>"]
 edition = "2018"
 license = "GPL-3.0-or-later"
