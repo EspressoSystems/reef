@@ -64,7 +64,7 @@ dependencies = [
 [[package]]
 name = "arbitrary-wrappers"
 version = "0.2.1"
-source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git?branch=bfish-update-cap-termonology#d1a7c25ed08c673b19b1c0fe74cb0d8ebdcb6d40"
+source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git#d5595e71885c822e0417cb07d4696e05c64abb58"
 dependencies = [
  "arbitrary",
  "ark-std",
