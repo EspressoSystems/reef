@@ -625,6 +625,8 @@
 <span id="620">620</span>
 <span id="621">621</span>
 <span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
 <span class="comment">// This file is part of the Reef library.</span>
 
@@ -639,12 +641,12 @@
 <span class="doccomment">//! downstream modules that are parameterized by ledger type.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::traits</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">AuditError</span>, <span class="ident">AuditMemoOpening</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">ViewingError</span>, <span class="ident">ViewingMemoOpening</span>};
 <span class="kw">use</span> <span class="ident">arbitrary::Arbitrary</span>;
 <span class="kw">use</span> <span class="ident">arbitrary_wrappers::ArbitraryNullifier</span>;
 <span class="kw">use</span> <span class="ident">commit</span>::{<span class="ident">Commitment</span>, <span class="ident">Committable</span>};
 <span class="kw">use</span> <span class="ident">jf_cap</span>::{
-    <span class="ident">keys</span>::{<span class="ident">AuditorKeyPair</span>, <span class="ident">AuditorPubKey</span>},
+    <span class="ident">keys</span>::{<span class="ident">ViewerKeyPair</span>, <span class="ident">ViewerPubKey</span>},
     <span class="ident">mint::MintNote</span>,
     <span class="ident">proof::UniversalParam</span>,
     <span class="ident">structs</span>::{<span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span>, <span class="ident">Nullifier</span>, <span class="ident">RecordCommitment</span>},
@@ -725,15 +727,15 @@
         <span class="ident">note</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">open_audit_memo</span>(
+    <span class="kw">fn</span> <span class="ident">open_viewing_memo</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span><span class="op">&gt;</span>,
-        <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AuditorPubKey</span>, <span class="ident">AuditorKeyPair</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AuditMemoOpening</span>, <span class="ident">AuditError</span><span class="op">&gt;</span> {
+        <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Transfer</span>(<span class="ident">xfr</span>) =&gt; <span class="ident">open_xfr_audit_memo</span>(<span class="ident">assets</span>, <span class="ident">keys</span>, <span class="ident">xfr</span>),
-            <span class="ident"><span class="self">Self</span>::Mint</span>(<span class="ident">mint</span>) =&gt; <span class="ident">open_mint_audit_memo</span>(<span class="ident">keys</span>, <span class="ident">mint</span>),
-            <span class="ident"><span class="self">Self</span>::Freeze</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">AuditError::NoAuditMemos</span>),
+            <span class="ident"><span class="self">Self</span>::Transfer</span>(<span class="ident">xfr</span>) =&gt; <span class="ident">open_xfr_viewing_memo</span>(<span class="ident">assets</span>, <span class="ident">keys</span>, <span class="ident">xfr</span>),
+            <span class="ident"><span class="self">Self</span>::Mint</span>(<span class="ident">mint</span>) =&gt; <span class="ident">open_mint_viewing_memo</span>(<span class="ident">keys</span>, <span class="ident">mint</span>),
+            <span class="ident"><span class="self">Self</span>::Freeze</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ViewingError::NoViewingMemos</span>),
         }
     }
 
@@ -771,36 +773,36 @@
 <span class="doccomment">/// asset code. This determines which asset types can be viewed by this method. `keys` is the</span>
 <span class="doccomment">/// caller&#39;s collection of viewing key pairs, indexed by public key. `keys` must contain every</span>
 <span class="doccomment">/// public key which is listed as a viewer in the policy of one of the `assets`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_xfr_audit_memo</span>(
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_xfr_viewing_memo</span>(
     <span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span><span class="op">&gt;</span>,
-    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AuditorPubKey</span>, <span class="ident">AuditorKeyPair</span><span class="op">&gt;</span>,
+    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
     <span class="ident">xfr</span>: <span class="kw-2">&amp;</span><span class="ident">TransferNote</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AuditMemoOpening</span>, <span class="ident">AuditError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
     <span class="kw">for</span> <span class="ident">asset</span> <span class="kw">in</span> <span class="ident">assets</span>.<span class="ident">values</span>() {
-        <span class="kw">let</span> <span class="ident">audit_key</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">keys</span>[<span class="ident">asset</span>.<span class="ident">policy_ref</span>().<span class="ident">auditor_pub_key</span>()];
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>((<span class="ident">inputs</span>, <span class="ident">outputs</span>)) <span class="op">=</span> <span class="ident">audit_key</span>.<span class="ident">open_transfer_audit_memo</span>(<span class="ident">asset</span>, <span class="ident">xfr</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">AuditMemoOpening</span> {
+        <span class="kw">let</span> <span class="ident">viewing_key</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">keys</span>[<span class="ident">asset</span>.<span class="ident">policy_ref</span>().<span class="ident">viewer_pub_key</span>()];
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>((<span class="ident">inputs</span>, <span class="ident">outputs</span>)) <span class="op">=</span> <span class="ident">viewing_key</span>.<span class="ident">open_transfer_viewing_memo</span>(<span class="ident">asset</span>, <span class="ident">xfr</span>) {
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ViewingMemoOpening</span> {
                 <span class="ident">asset</span>: <span class="ident">asset</span>.<span class="ident">clone</span>(),
                 <span class="ident">inputs</span>,
                 <span class="ident">outputs</span>,
             });
         }
     }
-    <span class="prelude-val">Err</span>(<span class="ident">AuditError::UnauditableAsset</span>)
+    <span class="prelude-val">Err</span>(<span class="ident">ViewingError::UnviewableAsset</span>)
 }
 
 <span class="doccomment">/// Attempt to open the viewer memo attached to a CAP mint transaction.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `keys` should be the caller&#39;s collection of viewing key pairs, indexed by public key.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_mint_audit_memo</span>(
-    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AuditorPubKey</span>, <span class="ident">AuditorKeyPair</span><span class="op">&gt;</span>,
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_mint_viewing_memo</span>(
+    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
     <span class="ident">mint</span>: <span class="kw-2">&amp;</span><span class="ident">MintNote</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AuditMemoOpening</span>, <span class="ident">AuditError</span><span class="op">&gt;</span> {
-    <span class="ident">keys</span>.<span class="ident">get</span>(<span class="ident">mint</span>.<span class="ident">mint_asset_def</span>.<span class="ident">policy_ref</span>().<span class="ident">auditor_pub_key</span>())
-        .<span class="ident">ok_or</span>(<span class="ident">AuditError::UnauditableAsset</span>)
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">audit_key</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">audit_key</span>.<span class="ident">open_mint_audit_memo</span>(<span class="ident">mint</span>).<span class="ident">unwrap</span>();
-            <span class="ident">AuditMemoOpening</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
+    <span class="ident">keys</span>.<span class="ident">get</span>(<span class="ident">mint</span>.<span class="ident">mint_asset_def</span>.<span class="ident">policy_ref</span>().<span class="ident">viewer_pub_key</span>())
+        .<span class="ident">ok_or</span>(<span class="ident">ViewingError::UnviewableAsset</span>)
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">viewing_key</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">viewing_key</span>.<span class="ident">open_mint_viewing_memo</span>(<span class="ident">mint</span>).<span class="ident">unwrap</span>();
+            <span class="ident">ViewingMemoOpening</span> {
                 <span class="ident">asset</span>: <span class="ident">mint</span>.<span class="ident">mint_asset_def</span>.<span class="ident">clone</span>(),
                 <span class="ident">inputs</span>: <span class="macro">vec!</span>[],
                 <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="ident">output</span>],
@@ -967,7 +969,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">42u8</span>; <span class="number">32</span>]);
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">UserKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
         <span class="kw">let</span> <span class="ident">freezer_key</span> <span class="op">=</span> <span class="ident">FreezerKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">auditor_key</span> <span class="op">=</span> <span class="ident">AuditorKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
+        <span class="kw">let</span> <span class="ident">viewer_key</span> <span class="op">=</span> <span class="ident">ViewerKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
         <span class="kw">let</span> <span class="ident">srs</span> <span class="op">=</span> <span class="ident">Ledger::srs</span>();
 
         <span class="kw">let</span> <span class="ident">xfr_proving_key</span> <span class="op">=</span>
@@ -1000,11 +1002,11 @@
             <span class="kw-2">&amp;</span><span class="ident">fee_comm</span>,
         );
 
-        <span class="comment">// To freeze and audit, we need a record of a non-native asset type.</span>
+        <span class="comment">// To freeze and view, we need a record of a non-native asset type.</span>
         <span class="kw">let</span> (<span class="ident">asset_code</span>, <span class="ident">seed</span>) <span class="op">=</span> <span class="ident">AssetCode::random</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
         <span class="kw">let</span> <span class="ident">policy</span> <span class="op">=</span> <span class="ident">AssetPolicy::default</span>()
             .<span class="ident">set_freezer_pub_key</span>(<span class="ident">freezer_key</span>.<span class="ident">pub_key</span>())
-            .<span class="ident">set_auditor_pub_key</span>(<span class="ident">auditor_key</span>.<span class="ident">pub_key</span>())
+            .<span class="ident">set_viewer_pub_key</span>(<span class="ident">viewer_key</span>.<span class="ident">pub_key</span>())
             .<span class="ident">reveal_user_address</span>()
             .<span class="ident">unwrap</span>()
             .<span class="ident">reveal_amount</span>()
@@ -1141,14 +1143,14 @@
             <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">mint</span>)
         );
 
-        <span class="comment">// Check auditing interface.</span>
-        <span class="kw">let</span> <span class="ident">auditable_assets</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">asset_code</span>, <span class="ident">asset_def</span>.<span class="ident">clone</span>())].<span class="ident">into_iter</span>().<span class="ident">collect</span>();
-        <span class="kw">let</span> <span class="ident">audit_keys</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">auditor_key</span>.<span class="ident">pub_key</span>(), <span class="ident">auditor_key</span>)]
+        <span class="comment">// Check viewing interface.</span>
+        <span class="kw">let</span> <span class="ident">viewable_assets</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">asset_code</span>, <span class="ident">asset_def</span>.<span class="ident">clone</span>())].<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">viewing_keys</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">viewer_key</span>.<span class="ident">pub_key</span>(), <span class="ident">viewer_key</span>)]
             .<span class="ident">into_iter</span>()
             .<span class="ident">collect</span>();
 
         <span class="kw">let</span> <span class="ident">mint_memo</span> <span class="op">=</span> <span class="ident">mint</span>
-            .<span class="ident">open_audit_memo</span>(<span class="kw-2">&amp;</span><span class="ident">auditable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">audit_keys</span>)
+            .<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>)
             .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">asset</span>, <span class="ident">asset_def</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">inputs</span>, <span class="macro">vec!</span>[]);
@@ -1156,7 +1158,9 @@
         <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">asset_code</span>, <span class="ident">asset_code</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">user_address</span>, <span class="prelude-val">Some</span>(<span class="ident">key</span>.<span class="ident">address</span>()));
         <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">amount</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
-        <span class="kw">let</span> <span class="ident">xfr_memo</span> <span class="op">=</span> <span class="ident">xfr</span>.<span class="ident">open_audit_memo</span>(<span class="kw-2">&amp;</span><span class="ident">auditable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">audit_keys</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">xfr_memo</span> <span class="op">=</span> <span class="ident">xfr</span>
+            .<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>)
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">asset</span>, <span class="ident">asset_def</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>[<span class="number">0</span>].<span class="ident">asset_code</span>, <span class="ident">asset_code</span>);
@@ -1168,8 +1172,8 @@
         <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">amount</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>));
 
         <span class="macro">assert_eq!</span>(
-            <span class="ident">freeze</span>.<span class="ident">open_audit_memo</span>(<span class="kw-2">&amp;</span><span class="ident">auditable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">audit_keys</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">AuditError::NoAuditMemos</span>)
+            <span class="ident">freeze</span>.<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">ViewingError::NoViewingMemos</span>)
         );
     }
 

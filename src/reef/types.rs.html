@@ -64,7 +64,7 @@
 <span class="doccomment">//! the [traits] module.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::traits</span>;
-<span class="kw">use</span> <span class="ident">jf_cap::structs</span>::{<span class="ident">AssetDefinition</span>, <span class="ident">AuditData</span>};
+<span class="kw">use</span> <span class="ident">jf_cap::structs</span>::{<span class="ident">AssetDefinition</span>, <span class="ident">ViewableData</span>};
 
 <span class="doccomment">/// A validator for a ledger `L`.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">L</span> <span class="kw">as</span> <span class="ident">traits::Ledger</span><span class="op">&gt;</span><span class="ident">::Validator</span>;
@@ -87,17 +87,17 @@
 
 <span class="doccomment">/// Information contained in a viewing memo.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuditMemoOpening</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ViewingMemoOpening</span> {
     <span class="kw">pub</span> <span class="ident">asset</span>: <span class="ident">AssetDefinition</span>,
-    <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuditData</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span> <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuditData</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ViewableData</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">outputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ViewableData</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Errors that can occur when trying to decrypt a viewing memo.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AuditError</span> {
-    <span class="ident">UnauditableAsset</span>,
-    <span class="ident">NoAuditMemos</span>,
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ViewingError</span> {
+    <span class="ident">UnviewableAsset</span>,
+    <span class="ident">NoViewingMemos</span>,
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="reef" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
