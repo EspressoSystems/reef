@@ -345,7 +345,7 @@ version = "0.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f5011ffc90248764d7005b0e10c7294f5aa1bd87d9dd7248f4ad475b347c294d"
 dependencies = [
- "funty",
+ "funty 1.1.0",
  "radium",
  "tap",
  "wyz",
@@ -469,7 +469,7 @@ dependencies = [
  "arbitrary",
  "ark-serialize",
  "bitvec",
- "funty",
+ "funty 1.1.0",
  "generic-array",
  "hex",
  "serde",
@@ -700,6 +700,12 @@ name = "funty"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fed34cd105917e91daa4da6b3728c47b068749d6a62c59811f06ed2ac71d9da7"
+
+[[package]]
+name = "funty"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6d5a32815ae3f33302d95fdcb2ce17862f8c65363dcfd29360480ba1001fc9c"
 
 [[package]]
 name = "futures-channel"
@@ -1318,7 +1324,7 @@ dependencies = [
  "arbitrary-wrappers",
  "ark-serialize",
  "commit",
- "funty",
+ "funty 2.0.0",
  "itertools",
  "jf-cap",
  "lazy_static",
