@@ -12,12 +12,12 @@
 //! downstream modules that are parameterized by ledger type.
 
 use crate::traits;
-use crate::types::{AuditError, AuditMemoOpening};
+use crate::types::{ViewingError, ViewingMemoOpening};
 use arbitrary::Arbitrary;
 use arbitrary_wrappers::ArbitraryNullifier;
 use commit::{Commitment, Committable};
 use jf_cap::{
-    keys::{AuditorKeyPair, AuditorPubKey},
+    keys::{ViewerKeyPair, ViewerPubKey},
     mint::MintNote,
     proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment},
@@ -98,15 +98,15 @@ impl traits::Transaction for TransactionNote {
         note
     }
 
-    fn open_audit_memo(
+    fn open_viewing_memo(
         &self,
         assets: &HashMap<AssetCode, AssetDefinition>,
-        keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
-    ) -> Result<AuditMemoOpening, AuditError> {
+        keys: &HashMap<ViewerPubKey, ViewerKeyPair>,
+    ) -> Result<ViewingMemoOpening, ViewingError> {
         match self {
-            Self::Transfer(xfr) => open_xfr_audit_memo(assets, keys, xfr),
-            Self::Mint(mint) => open_mint_audit_memo(keys, mint),
-            Self::Freeze(_) => Err(AuditError::NoAuditMemos),
+            Self::Transfer(xfr) => open_xfr_viewing_memo(assets, keys, xfr),
+            Self::Mint(mint) => open_mint_viewing_memo(keys, mint),
+            Self::Freeze(_) => Err(ViewingError::NoViewingMemos),
         }
     }
 
@@ -144,36 +144,36 @@ impl traits::Transaction for TransactionNote {
 /// asset code. This determines which asset types can be viewed by this method. `keys` is the
 /// caller's collection of viewing key pairs, indexed by public key. `keys` must contain every
 /// public key which is listed as a viewer in the policy of one of the `assets`.
-pub fn open_xfr_audit_memo(
+pub fn open_xfr_viewing_memo(
     assets: &HashMap<AssetCode, AssetDefinition>,
-    keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
+    keys: &HashMap<ViewerPubKey, ViewerKeyPair>,
     xfr: &TransferNote,
-) -> Result<AuditMemoOpening, AuditError> {
+) -> Result<ViewingMemoOpening, ViewingError> {
     for asset in assets.values() {
-        let audit_key = &keys[asset.policy_ref().auditor_pub_key()];
-        if let Ok((inputs, outputs)) = audit_key.open_transfer_audit_memo(asset, xfr) {
-            return Ok(AuditMemoOpening {
+        let viewing_key = &keys[asset.policy_ref().viewer_pub_key()];
+        if let Ok((inputs, outputs)) = viewing_key.open_transfer_viewing_memo(asset, xfr) {
+            return Ok(ViewingMemoOpening {
                 asset: asset.clone(),
                 inputs,
                 outputs,
             });
         }
     }
-    Err(AuditError::UnauditableAsset)
+    Err(ViewingError::UnviewableAsset)
 }
 
 /// Attempt to open the viewer memo attached to a CAP mint transaction.
 ///
 /// `keys` should be the caller's collection of viewing key pairs, indexed by public key.
-pub fn open_mint_audit_memo(
-    keys: &HashMap<AuditorPubKey, AuditorKeyPair>,
+pub fn open_mint_viewing_memo(
+    keys: &HashMap<ViewerPubKey, ViewerKeyPair>,
     mint: &MintNote,
-) -> Result<AuditMemoOpening, AuditError> {
-    keys.get(mint.mint_asset_def.policy_ref().auditor_pub_key())
-        .ok_or(AuditError::UnauditableAsset)
-        .map(|audit_key| {
-            let output = audit_key.open_mint_audit_memo(mint).unwrap();
-            AuditMemoOpening {
+) -> Result<ViewingMemoOpening, ViewingError> {
+    keys.get(mint.mint_asset_def.policy_ref().viewer_pub_key())
+        .ok_or(ViewingError::UnviewableAsset)
+        .map(|viewing_key| {
+            let output = viewing_key.open_mint_viewing_memo(mint).unwrap();
+            ViewingMemoOpening {
                 asset: mint.mint_asset_def.clone(),
                 inputs: vec![],
                 outputs: vec![output],
@@ -340,7 +340,7 @@ mod tests {
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
         let freezer_key = FreezerKeyPair::generate(&mut rng);
-        let auditor_key = AuditorKeyPair::generate(&mut rng);
+        let viewer_key = ViewerKeyPair::generate(&mut rng);
         let srs = Ledger::srs();
 
         let xfr_proving_key =
@@ -373,11 +373,11 @@ mod tests {
             &fee_comm,
         );
 
-        // To freeze and audit, we need a record of a non-native asset type.
+        // To freeze and view, we need a record of a non-native asset type.
         let (asset_code, seed) = AssetCode::random(&mut rng);
         let policy = AssetPolicy::default()
             .set_freezer_pub_key(freezer_key.pub_key())
-            .set_auditor_pub_key(auditor_key.pub_key())
+            .set_viewer_pub_key(viewer_key.pub_key())
             .reveal_user_address()
             .unwrap()
             .reveal_amount()
@@ -514,14 +514,14 @@ mod tests {
             traits::Transaction::hash(&mint)
         );
 
-        // Check auditing interface.
-        let auditable_assets = vec![(asset_code, asset_def.clone())].into_iter().collect();
-        let audit_keys = vec![(auditor_key.pub_key(), auditor_key)]
+        // Check viewing interface.
+        let viewable_assets = vec![(asset_code, asset_def.clone())].into_iter().collect();
+        let viewing_keys = vec![(viewer_key.pub_key(), viewer_key)]
             .into_iter()
             .collect();
 
         let mint_memo = mint
-            .open_audit_memo(&auditable_assets, &audit_keys)
+            .open_viewing_memo(&viewable_assets, &viewing_keys)
             .unwrap();
         assert_eq!(mint_memo.asset, asset_def);
         assert_eq!(mint_memo.inputs, vec![]);
@@ -529,7 +529,9 @@ mod tests {
         assert_eq!(mint_memo.outputs[0].asset_code, asset_code);
         assert_eq!(mint_memo.outputs[0].user_address, Some(key.address()));
         assert_eq!(mint_memo.outputs[0].amount, Some(1));
-        let xfr_memo = xfr.open_audit_memo(&auditable_assets, &audit_keys).unwrap();
+        let xfr_memo = xfr
+            .open_viewing_memo(&viewable_assets, &viewing_keys)
+            .unwrap();
         assert_eq!(xfr_memo.asset, asset_def);
         assert_eq!(xfr_memo.inputs.len(), 1);
         assert_eq!(xfr_memo.inputs[0].asset_code, asset_code);
@@ -541,8 +543,8 @@ mod tests {
         assert_eq!(xfr_memo.outputs[0].amount, Some(1));
 
         assert_eq!(
-            freeze.open_audit_memo(&auditable_assets, &audit_keys),
-            Err(AuditError::NoAuditMemos)
+            freeze.open_viewing_memo(&viewable_assets, &viewing_keys),
+            Err(ViewingError::NoViewingMemos)
         );
     }
 
