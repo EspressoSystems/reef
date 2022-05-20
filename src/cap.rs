@@ -360,7 +360,7 @@ mod tests {
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             AssetDefinition::native(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -385,7 +385,7 @@ mod tests {
         let asset_def = AssetDefinition::new(asset_code, policy).unwrap();
         let asset_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -408,13 +408,15 @@ mod tests {
         // Generate one transaction of each type.
         let mint_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
         let mint_comm = RecordCommitment::from(&mint_ro);
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u64.into())
+            .unwrap()
+            .0;
         let mint_note = MintNote::generate(
             &mut rng,
             mint_ro.clone(),
@@ -438,13 +440,15 @@ mod tests {
         }];
         let xfr_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
         let xfr_comm = RecordCommitment::from(&xfr_ro);
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u64.into())
+            .unwrap()
+            .0;
         let xfr_note = TransferNote::generate_non_native(
             &mut rng,
             xfr_inputs,
@@ -467,7 +471,9 @@ mod tests {
                 .1,
             keypair: &freezer_key,
         }];
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u64.into())
+            .unwrap()
+            .0;
         let freeze_note =
             FreezeNote::generate(&mut rng, freeze_inputs, fee_info, &freeze_proving_key)
                 .unwrap()
@@ -528,17 +534,17 @@ mod tests {
         assert_eq!(mint_memo.outputs.len(), 1);
         assert_eq!(mint_memo.outputs[0].asset_code, asset_code);
         assert_eq!(mint_memo.outputs[0].user_address, Some(key.address()));
-        assert_eq!(mint_memo.outputs[0].amount, Some(1));
+        assert_eq!(mint_memo.outputs[0].amount, Some(1u64.into()));
         let xfr_memo = xfr.open_audit_memo(&auditable_assets, &audit_keys).unwrap();
         assert_eq!(xfr_memo.asset, asset_def);
         assert_eq!(xfr_memo.inputs.len(), 1);
         assert_eq!(xfr_memo.inputs[0].asset_code, asset_code);
         assert_eq!(xfr_memo.inputs[0].user_address, Some(key.address()));
-        assert_eq!(xfr_memo.inputs[0].amount, Some(1));
+        assert_eq!(xfr_memo.inputs[0].amount, Some(1u64.into()));
         assert_eq!(xfr_memo.outputs.len(), 1);
         assert_eq!(xfr_memo.outputs[0].asset_code, asset_code);
         assert_eq!(xfr_memo.outputs[0].user_address, Some(key.address()));
-        assert_eq!(xfr_memo.outputs[0].amount, Some(1));
+        assert_eq!(xfr_memo.outputs[0].amount, Some(1u64.into()));
 
         assert_eq!(
             freeze.open_audit_memo(&auditable_assets, &audit_keys),
@@ -564,7 +570,7 @@ mod tests {
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             AssetDefinition::native(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -585,12 +591,14 @@ mod tests {
         let asset_def = AssetDefinition::new(asset_code, AssetPolicy::default()).unwrap();
         let mint_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u64.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u64.into())
+            .unwrap()
+            .0;
         let mint_note = MintNote::generate(
             &mut rng,
             mint_ro.clone(),
