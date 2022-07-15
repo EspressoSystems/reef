@@ -11,7 +11,7 @@
 //! ledger types. It is also fully functional and can be used as a mock ledger for testing
 //! downstream modules that are parameterized by ledger type.
 
-use crate::traits;
+use crate::traits::{self, Transaction as _};
 use crate::types::{ViewingError, ViewingMemoOpening};
 use arbitrary::Arbitrary;
 use arbitrary_wrappers::ArbitraryNullifier;
@@ -247,10 +247,15 @@ impl traits::Validator for Validator {
         self.now
     }
 
-    fn validate_and_apply(&mut self, block: Self::Block) -> Result<Vec<u64>, ValidationError> {
+    fn validate_and_apply(
+        &mut self,
+        block: Self::Block,
+    ) -> Result<(Vec<u64>, Vec<(Nullifier, ())>), ValidationError> {
         let mut uids = vec![];
+        let mut nullifiers = vec![];
         let mut uid = self.num_records;
         for txn in block {
+            nullifiers.extend(txn.proven_nullifiers());
             for _ in 0..txn.output_len() {
                 uids.push(uid);
                 uid += 1;
@@ -259,7 +264,7 @@ impl traits::Validator for Validator {
         self.num_records = uid;
         self.now += 1;
 
-        Ok(uids)
+        Ok((uids, nullifiers))
     }
 }
 
@@ -312,7 +317,7 @@ pub type Ledger = LedgerWithHeight<5>;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::traits::{Ledger as _, NullifierSet as _, Transaction as _, Validator as _};
+    use crate::traits::{Ledger as _, NullifierSet as _, Validator as _};
     use jf_cap::{
         freeze::{FreezeNote, FreezeNoteInput},
         keys::{FreezerKeyPair, UserKeyPair},
@@ -607,7 +612,7 @@ mod tests {
 
         // Apply a block and check that the correct UIDs are computed.
         assert_eq!(
-            validator.validate_and_apply(vec![mint.clone()]).unwrap(),
+            validator.validate_and_apply(vec![mint.clone()]).unwrap().0,
             vec![0, 1]
         );
         // Make sure we have a new timestamp and commit.
@@ -617,7 +622,7 @@ mod tests {
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
         assert_eq!(
-            validator.validate_and_apply(vec![mint]).unwrap(),
+            validator.validate_and_apply(vec![mint]).unwrap().0,
             vec![2, 3]
         );
     }

@@ -221,15 +221,27 @@ pub trait Validator:
     /// The commitment to the current state of the validator.
     fn commit(&self) -> Self::StateCommitment;
 
-    /// Apply a new block, updating the state and returning UIDs for each transaction outputs.
+    /// Apply a new block, updating the state.
     ///
-    /// For each output, the returned UID is the index of that output; that is, the total number of
-    /// outputs which had been generated before that one.
+    /// If successful, returns
+    ///
+    /// * UIDs for each transaction output
+    ///
+    ///   For each output, the returned UID is the index of that output; that is, the total number
+    ///   of outputs which had been generated before that one.
+    ///
+    /// * Nullifier non-membership proofs for each nullifier in `block`.
+    ///
+    ///   Note that the validation algorithm may fill in or update the proofs, so they may be
+    ///   different than the proofs originally included in `block.txns()`.
     fn validate_and_apply(
         &mut self,
         block: Self::Block,
-    ) -> Result<Vec<u64>, <Self::Block as Block>::Error>;
+    ) -> Result<ValidationOutputs<Self>, <Self::Block as Block>::Error>;
 }
+
+pub type ValidationOutputs<V> = (Vec<u64>, NullifierProofs<V>);
+pub type NullifierProofs<V> = Vec<(Nullifier, <<<<V as Validator>::Block as Block>::Transaction as Transaction>::NullifierSet as NullifierSet>::Proof)>;
 
 /// A CAP ledger.
 ///
