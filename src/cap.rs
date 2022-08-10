@@ -57,6 +57,7 @@ pub enum TransactionKind {
     Unfreeze,
     Send,
     Receive,
+    Reward,
     Unknown,
 }
 
@@ -79,6 +80,10 @@ impl traits::TransactionKind for TransactionKind {
 
     fn unfreeze() -> Self {
         Self::Unfreeze
+    }
+
+    fn reward() -> Self {
+        Self::Reward
     }
 
     fn unknown() -> Self {

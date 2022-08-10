@@ -63,6 +63,7 @@ pub trait TransactionKind:
     fn receive() -> Self;
     fn mint() -> Self;
     fn freeze() -> Self;
+    fn reward() -> Self;
     fn unfreeze() -> Self;
     fn unknown() -> Self;
 }
