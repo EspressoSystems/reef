@@ -69,10 +69,19 @@ pub trait TransactionKind:
 
 /// A CAP transaction.
 ///
-/// A CAP transaction contains a list of input nullifiers and output record commitments, as well as
-/// viewing information encrypted under the viewing key of the transaction's asset type. It may
-/// contain additional information, such as a proof that the transaction is valid and optional
-/// plaintext record openings for the transaction outputs.
+/// A CAP transaction is an operation on the CAP ledger -- it consumes a set of records, adding
+/// their nullifiers to the nullifier set, and produces a list of new records, adding their
+/// commitments to the record set. It may also contain viewing information encrypted under the
+/// viewing key of the transaction's asset type.
+///
+/// The transaction may also contain information specific to a particular instantiation of CAP, such
+/// as a proof that the transaction is valid, bookkeeping related to fees and rewards, or optional
+/// plaintext record openings for the transaction outputs, in the case of a non-private type of
+/// transaction.
+///
+/// Regardless of the exact structure of the transaction, this interface captures the transaction's
+/// effects on the ledger when it is executed -- the exact nullifiers and record commitments which
+/// will be added to the ledger, regardless of how they are encoded in the transaction.
 pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Sync {
     /// Nullifier set to be updated when a transaction is added to the ledger.
     type NullifierSet: NullifierSet;
@@ -114,16 +123,20 @@ pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Syn
         viewing_keys: &HashMap<ViewerPubKey, ViewerKeyPair>,
     ) -> Result<ViewingMemoOpening, ViewingError>;
 
-    /// This transaction's input nullifiers.
+    /// Nullifiers for the records that this transaction will consume when executed.
     ///
     /// The results should contain authentication that the nullifiers were unspent at the time the
     /// transaction was constructed.
     fn proven_nullifiers(&self) -> Vec<(Nullifier, <Self::NullifierSet as NullifierSet>::Proof)>;
 
-    /// Commitments to the records created by this transaction.
+    /// Commitments to the records that this transaction will create when executed.
     fn output_commitments(&self) -> Vec<RecordCommitment>;
 
     /// If this is not a private transaction, get the openings of its output records.
+    ///
+    /// The implementation must ensure that if `self.output_openings().is_some()`, then
+    /// `self.output_commitments()` is a list of the commitments of each [RecordOpening] in
+    /// `self.output_openings().unwrap()`.
     fn output_openings(&self) -> Option<Vec<RecordOpening>> {
         // Most transactions do not have attached record openings. Override this default if the
         // implementing transaction type does.
@@ -140,6 +153,9 @@ pub trait Transaction: Clone + Debug + Serialize + DeserializeOwned + Send + Syn
     fn set_proofs(&mut self, proofs: Vec<<Self::NullifierSet as NullifierSet>::Proof>);
 
     /// The number of outputs.
+    ///
+    /// This is equivalent to `self.output_commitments().len()`, but may be more efficient in some
+    /// implementations.
     fn output_len(&self) -> usize {
         // Override with a more efficient implementation if the output length can be calculated
         // without building the vector of outputs.

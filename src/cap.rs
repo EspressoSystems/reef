@@ -229,7 +229,7 @@ impl traits::Block for Block {
 /// the [Validator](traits::Validator) interface, namely
 ///  * compute a unique commitment after each block (this is just the count of blocks)
 ///  * compute the UIDs for the outputs of each block (by counting the number of outputs total)
-#[derive(Arbitrary, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Arbitrary, Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Validator {
     pub now: u64,
     pub num_records: u64,
