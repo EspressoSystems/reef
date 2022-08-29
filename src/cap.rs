@@ -13,8 +13,8 @@
 
 use crate::traits;
 use crate::types::{ViewingError, ViewingMemoOpening};
-use arbitrary::Arbitrary;
-use arbitrary_wrappers::ArbitraryNullifier;
+use arbitrary::{Arbitrary, Unstructured};
+use arbitrary_wrappers::{ArbitraryMerkleTree, ArbitraryNullifier};
 use commit::{Commitment, Committable};
 use jf_cap::{
     keys::{ViewerKeyPair, ViewerPubKey},
@@ -22,8 +22,9 @@ use jf_cap::{
     proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment},
     transfer::TransferNote,
-    TransactionNote,
+    MerkleCommitment, MerkleFrontier, MerkleTree, TransactionNote,
 };
+use jf_primitives::merkle_tree::FilledMTBuilder;
 use lazy_static::lazy_static;
 use rand_chacha::{rand_core::SeedableRng, ChaChaRng};
 use serde::{Deserialize, Serialize};
@@ -228,14 +229,37 @@ impl traits::Block for Block {
 /// The minimal validator will not actually validate. It only does the least it can do to implement
 /// the [Validator](traits::Validator) interface, namely
 ///  * compute a unique commitment after each block (this is just the count of blocks)
-///  * compute the UIDs for the outputs of each block (by counting the number of outputs total)
-#[derive(Arbitrary, Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Validator {
+///  * compute the UIDs and Merkle paths for the outputs of each block
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Validator<const H: u8> {
     pub now: u64,
-    pub num_records: u64,
+    pub records_commitment: MerkleCommitment,
+    pub records_frontier: MerkleFrontier,
 }
 
-impl traits::Validator for Validator {
+impl<const H: u8> Default for Validator<H> {
+    fn default() -> Self {
+        let records = MerkleTree::new(H).unwrap();
+        Self {
+            now: 0,
+            records_commitment: records.commitment(),
+            records_frontier: records.frontier(),
+        }
+    }
+}
+
+impl<'a, const H: u8> Arbitrary<'a> for Validator<H> {
+    fn arbitrary(u: &mut Unstructured<'a>) -> arbitrary::Result<Self> {
+        let records = ArbitraryMerkleTree::arbitrary(u)?.0;
+        Ok(Self {
+            now: u.arbitrary()?,
+            records_commitment: records.commitment(),
+            records_frontier: records.frontier(),
+        })
+    }
+}
+
+impl<const H: u8> traits::Validator for Validator<H> {
     type StateCommitment = u64;
     type Block = Block;
 
@@ -247,19 +271,31 @@ impl traits::Validator for Validator {
         self.now
     }
 
-    fn validate_and_apply(&mut self, block: Self::Block) -> Result<Vec<u64>, ValidationError> {
+    fn validate_and_apply(
+        &mut self,
+        block: Self::Block,
+    ) -> Result<(Vec<u64>, MerkleTree), ValidationError> {
         let mut uids = vec![];
-        let mut uid = self.num_records;
+        let mut uid = self.records_commitment.num_leaves;
+        let mut builder =
+            FilledMTBuilder::from_frontier(&self.records_commitment, &self.records_frontier)
+                .ok_or_else(|| ValidationError::Failed {
+                    msg: "failed to restore Merkle tree from frontier".to_string(),
+                })?;
         for txn in block {
-            for _ in 0..txn.output_len() {
+            for comm in txn.output_commitments() {
+                builder.push(comm.to_field_element());
                 uids.push(uid);
                 uid += 1;
             }
         }
-        self.num_records = uid;
-        self.now += 1;
+        let records = builder.build();
 
-        Ok(uids)
+        self.now += 1;
+        self.records_commitment = records.commitment();
+        self.records_frontier = records.frontier();
+
+        Ok((uids, records))
     }
 }
 
@@ -286,7 +322,7 @@ lazy_static! {
 
 #[cfg(any(test, feature = "testing", feature = "secure-srs"))]
 impl<const H: u8> traits::Ledger for LedgerWithHeight<H> {
-    type Validator = Validator;
+    type Validator = Validator<H>;
 
     fn name() -> String {
         String::from("Minimal CAP Ledger")
@@ -307,7 +343,10 @@ impl<const H: u8> traits::Ledger for LedgerWithHeight<H> {
 
 /// The default ledger height is 5, for testing.
 #[cfg(any(test, feature = "testing"))]
-pub type Ledger = LedgerWithHeight<5>;
+pub const DEFAULT_MERKLE_HEIGHT: u8 = 5;
+
+#[cfg(any(test, feature = "testing"))]
+pub type Ledger = LedgerWithHeight<DEFAULT_MERKLE_HEIGHT>;
 
 #[cfg(test)]
 mod tests {
@@ -360,7 +399,7 @@ mod tests {
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             AssetDefinition::native(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -385,7 +424,7 @@ mod tests {
         let asset_def = AssetDefinition::new(asset_code, policy).unwrap();
         let asset_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -408,13 +447,15 @@ mod tests {
         // Generate one transaction of each type.
         let mint_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
         let mint_comm = RecordCommitment::from(&mint_ro);
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
+            .unwrap()
+            .0;
         let mint_note = MintNote::generate(
             &mut rng,
             mint_ro.clone(),
@@ -438,13 +479,15 @@ mod tests {
         }];
         let xfr_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
         let xfr_comm = RecordCommitment::from(&xfr_ro);
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
+            .unwrap()
+            .0;
         let xfr_note = TransferNote::generate_non_native(
             &mut rng,
             xfr_inputs,
@@ -467,7 +510,9 @@ mod tests {
                 .1,
             keypair: &freezer_key,
         }];
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
+            .unwrap()
+            .0;
         let freeze_note =
             FreezeNote::generate(&mut rng, freeze_inputs, fee_info, &freeze_proving_key)
                 .unwrap()
@@ -528,7 +573,7 @@ mod tests {
         assert_eq!(mint_memo.outputs.len(), 1);
         assert_eq!(mint_memo.outputs[0].asset_code, asset_code);
         assert_eq!(mint_memo.outputs[0].user_address, Some(key.address()));
-        assert_eq!(mint_memo.outputs[0].amount, Some(1));
+        assert_eq!(mint_memo.outputs[0].amount, Some(1u8.into()));
         let xfr_memo = xfr
             .open_viewing_memo(&viewable_assets, &viewing_keys)
             .unwrap();
@@ -536,11 +581,11 @@ mod tests {
         assert_eq!(xfr_memo.inputs.len(), 1);
         assert_eq!(xfr_memo.inputs[0].asset_code, asset_code);
         assert_eq!(xfr_memo.inputs[0].user_address, Some(key.address()));
-        assert_eq!(xfr_memo.inputs[0].amount, Some(1));
+        assert_eq!(xfr_memo.inputs[0].amount, Some(1u8.into()));
         assert_eq!(xfr_memo.outputs.len(), 1);
         assert_eq!(xfr_memo.outputs[0].asset_code, asset_code);
         assert_eq!(xfr_memo.outputs[0].user_address, Some(key.address()));
-        assert_eq!(xfr_memo.outputs[0].amount, Some(1));
+        assert_eq!(xfr_memo.outputs[0].amount, Some(1u8.into()));
 
         assert_eq!(
             freeze.open_viewing_memo(&viewable_assets, &viewing_keys),
@@ -550,7 +595,7 @@ mod tests {
 
     #[test]
     fn test_validator() {
-        let mut validator = Validator::default();
+        let mut validator = Validator::<DEFAULT_MERKLE_HEIGHT>::default();
         assert_eq!(validator.now(), 0);
         let initial_commit = validator.commit();
 
@@ -566,7 +611,7 @@ mod tests {
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
         let fee_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             AssetDefinition::native(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
@@ -587,12 +632,14 @@ mod tests {
         let asset_def = AssetDefinition::new(asset_code, AssetPolicy::default()).unwrap();
         let mint_ro = RecordOpening::new(
             &mut rng,
-            1,
+            1u8.into(),
             asset_def.clone(),
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
-        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1).unwrap().0;
+        let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
+            .unwrap()
+            .0;
         let mint_note = MintNote::generate(
             &mut rng,
             mint_ro.clone(),
@@ -605,20 +652,35 @@ mod tests {
         .0;
         let mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
-        // Apply a block and check that the correct UIDs are computed.
+        // Apply a block and check that the correct UIDs and Merkle paths are computed.
+        let (uids, records) = validator.validate_and_apply(vec![mint.clone()]).unwrap();
+        assert_eq!(uids, vec![0, 1]);
+        assert_eq!(records.num_leaves(), 2);
         assert_eq!(
-            validator.validate_and_apply(vec![mint.clone()]).unwrap(),
-            vec![0, 1]
+            records.get_leaf(0).expect_ok().unwrap().1.leaf.0,
+            mint_note.chg_comm.to_field_element()
         );
+        assert_eq!(
+            records.get_leaf(1).expect_ok().unwrap().1.leaf.0,
+            mint_note.mint_comm.to_field_element()
+        );
+
         // Make sure we have a new timestamp and commit.
         assert_eq!(validator.now(), 1);
         assert_ne!(validator.commit(), initial_commit);
 
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
+        let (uids, records) = validator.validate_and_apply(vec![mint]).unwrap();
+        assert_eq!(uids, vec![2, 3]);
+        assert_eq!(records.num_leaves(), 4);
         assert_eq!(
-            validator.validate_and_apply(vec![mint]).unwrap(),
-            vec![2, 3]
+            records.get_leaf(2).expect_ok().unwrap().1.leaf.0,
+            mint_note.chg_comm.to_field_element()
+        );
+        assert_eq!(
+            records.get_leaf(3).expect_ok().unwrap().1.leaf.0,
+            mint_note.mint_comm.to_field_element()
         );
     }
 }
