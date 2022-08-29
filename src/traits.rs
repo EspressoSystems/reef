@@ -12,7 +12,7 @@ use jf_cap::{
     keys::{ViewerKeyPair, ViewerPubKey},
     proof::UniversalParam,
     structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment, RecordOpening},
-    TransactionNote,
+    MerkleTree, TransactionNote,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use std::collections::HashMap;
@@ -237,14 +237,16 @@ pub trait Validator:
     /// The commitment to the current state of the validator.
     fn commit(&self) -> Self::StateCommitment;
 
-    /// Apply a new block, updating the state and returning UIDs for each transaction outputs.
+    /// Apply a new block, updating the state and returning UIDs and Merkle paths for each output.
     ///
     /// For each output, the returned UID is the index of that output; that is, the total number of
-    /// outputs which had been generated before that one.
+    /// outputs which had been generated before that one. The returned [MerkleTree] should be a
+    /// sparse [MerkleTree] with the same commitment as the updated [Validator], containing paths
+    /// to each leaf whose index is listed in the UIDs.
     fn validate_and_apply(
         &mut self,
         block: Self::Block,
-    ) -> Result<Vec<u64>, <Self::Block as Block>::Error>;
+    ) -> Result<(Vec<u64>, MerkleTree), <Self::Block as Block>::Error>;
 }
 
 /// A CAP ledger.
