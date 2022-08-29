@@ -281,6 +281,8 @@
 <span id="275">275</span>
 <span id="276">276</span>
 <span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
 <span class="comment">// This file is part of the Reef library.</span>
 
@@ -295,7 +297,7 @@
     <span class="ident">keys</span>::{<span class="ident">ViewerKeyPair</span>, <span class="ident">ViewerPubKey</span>},
     <span class="ident">proof::UniversalParam</span>,
     <span class="ident">structs</span>::{<span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span>, <span class="ident">Nullifier</span>, <span class="ident">RecordCommitment</span>, <span class="ident">RecordOpening</span>},
-    <span class="ident">TransactionNote</span>,
+    <span class="ident">MerkleTree</span>, <span class="ident">TransactionNote</span>,
 };
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de::DeserializeOwned</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
@@ -520,14 +522,16 @@
     <span class="doccomment">/// The commitment to the current state of the validator.</span>
     <span class="kw">fn</span> <span class="ident">commit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::StateCommitment</span>;
 
-    <span class="doccomment">/// Apply a new block, updating the state and returning UIDs for each transaction outputs.</span>
+    <span class="doccomment">/// Apply a new block, updating the state and returning UIDs and Merkle paths for each output.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For each output, the returned UID is the index of that output; that is, the total number of</span>
-    <span class="doccomment">/// outputs which had been generated before that one.</span>
+    <span class="doccomment">/// outputs which had been generated before that one. The returned [MerkleTree] should be a</span>
+    <span class="doccomment">/// sparse [MerkleTree] with the same commitment as the updated [Validator], containing paths</span>
+    <span class="doccomment">/// to each leaf whose index is listed in the UIDs.</span>
     <span class="kw">fn</span> <span class="ident">validate_and_apply</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">block</span>: <span class="ident"><span class="self">Self</span>::Block</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Block</span> <span class="kw">as</span> <span class="ident">Block</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">MerkleTree</span>), <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Block</span> <span class="kw">as</span> <span class="ident">Block</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// A CAP ledger.</span>
