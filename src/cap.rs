@@ -32,6 +32,7 @@ use snafu::Snafu;
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Debug, Display};
 use std::hash::Hash;
+use std::ops::Index;
 
 /// A set of nullifiers.
 ///
@@ -202,25 +203,69 @@ impl traits::ValidationError for ValidationError {
 
 /// A block of CAP transactions.
 ///
-/// The simplest implementation of the [Block](traits::Block) trait is simply a list of CAP
-/// transactions.
-pub type Block = Vec<Transaction>;
+/// A [Block] is a list of CAP transactions, plus the intended index of the block. The index ensures
+/// that all committed blocks are unique.
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct Block {
+    transactions: Vec<Transaction>,
+    index: u64,
+}
 
 impl traits::Block for Block {
     type Transaction = Transaction;
     type Error = ValidationError;
 
-    fn new(txns: Vec<Transaction>) -> Self {
-        txns
-    }
-
     fn add_transaction(&mut self, txn: Transaction) -> Result<(), Self::Error> {
-        self.push(txn);
+        self.transactions.push(txn);
         Ok(())
     }
 
     fn txns(&self) -> Vec<Transaction> {
-        self.clone()
+        self.transactions.clone()
+    }
+}
+
+impl Block {
+    pub fn index(&self) -> u64 {
+        self.index
+    }
+
+    pub fn len(&self) -> usize {
+        self.transactions.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.transactions.is_empty()
+    }
+
+    pub fn iter(&self) -> impl '_ + Iterator<Item = &Transaction> {
+        self.transactions.iter()
+    }
+}
+
+impl Index<usize> for Block {
+    type Output = Transaction;
+
+    fn index(&self, index: usize) -> &Transaction {
+        &self.transactions[index]
+    }
+}
+
+impl<'a> IntoIterator for &'a Block {
+    type Item = &'a Transaction;
+    type IntoIter = std::slice::Iter<'a, Transaction>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.transactions.iter()
+    }
+}
+
+impl IntoIterator for Block {
+    type Item = Transaction;
+    type IntoIter = std::vec::IntoIter<Transaction>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.transactions.into_iter()
     }
 }
 
@@ -271,10 +316,26 @@ impl<const H: u8> traits::Validator for Validator<H> {
         self.now
     }
 
+    fn next_block(&self) -> Self::Block {
+        Block {
+            transactions: vec![],
+            index: self.now,
+        }
+    }
+
     fn validate_and_apply(
         &mut self,
         block: Self::Block,
     ) -> Result<(Vec<u64>, MerkleTree), ValidationError> {
+        if block.index != self.now {
+            return Err(ValidationError::Failed {
+                msg: format!(
+                    "incorrect block index (expected {}, got {})",
+                    self.now, block.index
+                ),
+            });
+        }
+
         let mut uids = vec![];
         let mut uid = self.records_commitment.num_leaves;
         let mut builder =
@@ -282,7 +343,7 @@ impl<const H: u8> traits::Validator for Validator<H> {
                 .ok_or_else(|| ValidationError::Failed {
                     msg: "failed to restore Merkle tree from frontier".to_string(),
                 })?;
-        for txn in block {
+        for txn in block.transactions {
             for comm in txn.output_commitments() {
                 builder.push(comm.to_field_element());
                 uids.push(uid);
@@ -351,7 +412,9 @@ pub type Ledger = LedgerWithHeight<DEFAULT_MERKLE_HEIGHT>;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::traits::{Ledger as _, NullifierSet as _, Transaction as _, Validator as _};
+    use crate::traits::{
+        Block as _, Ledger as _, NullifierSet as _, Transaction as _, Validator as _,
+    };
     use jf_cap::{
         freeze::{FreezeNote, FreezeNoteInput},
         keys::{FreezerKeyPair, UserKeyPair},
@@ -653,7 +716,9 @@ mod tests {
         let mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
         // Apply a block and check that the correct UIDs and Merkle paths are computed.
-        let (uids, records) = validator.validate_and_apply(vec![mint.clone()]).unwrap();
+        let mut block = validator.next_block();
+        block.add_transaction(mint.clone()).unwrap();
+        let (uids, records) = validator.validate_and_apply(block).unwrap();
         assert_eq!(uids, vec![0, 1]);
         assert_eq!(records.num_leaves(), 2);
         assert_eq!(
@@ -671,7 +736,9 @@ mod tests {
 
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
-        let (uids, records) = validator.validate_and_apply(vec![mint]).unwrap();
+        let mut block = validator.next_block();
+        block.add_transaction(mint.clone()).unwrap();
+        let (uids, records) = validator.validate_and_apply(block).unwrap();
         assert_eq!(uids, vec![2, 3]);
         assert_eq!(records.num_leaves(), 4);
         assert_eq!(
