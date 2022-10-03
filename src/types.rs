@@ -19,6 +19,8 @@ pub type Validator<L> = <L as traits::Ledger>::Validator;
 pub type StateCommitment<L> = <Validator<L> as traits::Validator>::StateCommitment;
 /// A block of transactions that can be applied to a ledger `L`.
 pub type Block<L> = <Validator<L> as traits::Validator>::Block;
+/// A proof used to authenticate a committed block in a ledger `L`.
+pub type BlockProof<L> = <Validator<L> as traits::Validator>::Proof;
 /// An error that can occur while validating transitions of a ledger `L`.
 pub type ValidationError<L> = <Block<L> as traits::Block>::Error;
 /// A transaction that can be applied to a ledger `L`.
