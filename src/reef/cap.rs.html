@@ -751,6 +751,8 @@
 <span id="751">751</span>
 <span id="752">752</span>
 <span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
 <span class="comment">// This file is part of the Reef library.</span>
 
@@ -1030,7 +1032,7 @@
 <span class="doccomment">///  * compute the UIDs and Merkle paths for the outputs of each block</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">now</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">block_height</span>: <span class="ident">u64</span>,
     <span class="kw">pub</span> <span class="ident">records_commitment</span>: <span class="ident">MerkleCommitment</span>,
     <span class="kw">pub</span> <span class="ident">records_frontier</span>: <span class="ident">MerkleFrontier</span>,
 }
@@ -1039,7 +1041,7 @@
     <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">MerkleTree::new</span>(<span class="ident">H</span>).<span class="ident">unwrap</span>();
         <span class="self">Self</span> {
-            <span class="ident">now</span>: <span class="number">0</span>,
+            <span class="ident">block_height</span>: <span class="number">0</span>,
             <span class="ident">records_commitment</span>: <span class="ident">records</span>.<span class="ident">commitment</span>(),
             <span class="ident">records_frontier</span>: <span class="ident">records</span>.<span class="ident">frontier</span>(),
         }
@@ -1050,7 +1052,7 @@
     <span class="kw">fn</span> <span class="ident">arbitrary</span>(<span class="ident">u</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Unstructured</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">arbitrary::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">ArbitraryMerkleTree::arbitrary</span>(<span class="ident">u</span>)<span class="question-mark">?</span>.<span class="number">0</span>;
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">now</span>: <span class="ident">u</span>.<span class="ident">arbitrary</span>()<span class="question-mark">?</span>,
+            <span class="ident">block_height</span>: <span class="ident">u</span>.<span class="ident">arbitrary</span>()<span class="question-mark">?</span>,
             <span class="ident">records_commitment</span>: <span class="ident">records</span>.<span class="ident">commitment</span>(),
             <span class="ident">records_frontier</span>: <span class="ident">records</span>.<span class="ident">frontier</span>(),
         })
@@ -1060,31 +1062,33 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">traits::Validator</span> <span class="kw">for</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">StateCommitment</span> <span class="op">=</span> <span class="ident">u64</span>;
     <span class="kw">type</span> <span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>;
+    <span class="kw">type</span> <span class="ident">Proof</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">now</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">now</span>
+    <span class="kw">fn</span> <span class="ident">block_height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
+        <span class="self">self</span>.<span class="ident">block_height</span>
     }
 
     <span class="kw">fn</span> <span class="ident">commit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::StateCommitment</span> {
-        <span class="self">self</span>.<span class="ident">now</span>
+        <span class="self">self</span>.<span class="ident">block_height</span>
     }
 
     <span class="kw">fn</span> <span class="ident">next_block</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Block</span> {
         <span class="ident">Block</span> {
             <span class="ident">transactions</span>: <span class="macro">vec!</span>[],
-            <span class="ident">index</span>: <span class="self">self</span>.<span class="ident">now</span>,
+            <span class="ident">index</span>: <span class="self">self</span>.<span class="ident">block_height</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">validate_and_apply</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">block</span>: <span class="ident"><span class="self">Self</span>::Block</span>,
+        <span class="ident">_proof</span>: <span class="ident"><span class="self">Self</span>::Proof</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">MerkleTree</span>), <span class="ident">ValidationError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">block</span>.<span class="ident">index</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">now</span> {
+        <span class="kw">if</span> <span class="ident">block</span>.<span class="ident">index</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">block_height</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ValidationError::Failed</span> {
                 <span class="ident">msg</span>: <span class="macro">format!</span>(
                     <span class="string">&quot;incorrect block index (expected {}, got {})&quot;</span>,
-                    <span class="self">self</span>.<span class="ident">now</span>, <span class="ident">block</span>.<span class="ident">index</span>
+                    <span class="self">self</span>.<span class="ident">block_height</span>, <span class="ident">block</span>.<span class="ident">index</span>
                 ),
             });
         }
@@ -1105,7 +1109,7 @@
         }
         <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">build</span>();
 
-        <span class="self">self</span>.<span class="ident">now</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">block_height</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="self">self</span>.<span class="ident">records_commitment</span> <span class="op">=</span> <span class="ident">records</span>.<span class="ident">commitment</span>();
         <span class="self">self</span>.<span class="ident">records_frontier</span> <span class="op">=</span> <span class="ident">records</span>.<span class="ident">frontier</span>();
 
@@ -1412,7 +1416,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_validator</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">Validator</span>::<span class="op">&lt;</span><span class="ident">DEFAULT_MERKLE_HEIGHT</span><span class="op">&gt;</span><span class="ident">::default</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">now</span>(), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">block_height</span>(), <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">initial_commit</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">commit</span>();
 
         <span class="comment">// Build a block to apply. For this we need a transaction note. It doesn&#39;t have to be valid, but</span>
@@ -1471,7 +1475,7 @@
         <span class="comment">// Apply a block and check that the correct UIDs and Merkle paths are computed.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">next_block</span>();
         <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>, ()).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">uids</span>, <span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">records</span>.<span class="ident">num_leaves</span>(), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(
@@ -1484,14 +1488,14 @@
         );
 
         <span class="comment">// Make sure we have a new timestamp and commit.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">now</span>(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">block_height</span>(), <span class="number">1</span>);
         <span class="macro">assert_ne!</span>(<span class="ident">validator</span>.<span class="ident">commit</span>(), <span class="ident">initial_commit</span>);
 
         <span class="comment">// Apply another block and check that we get different UIDs. Technically it&#39;s not allowed to</span>
         <span class="comment">// apply the same block twice, but our minimal validator doesn&#39;t care.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">next_block</span>();
         <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>, ()).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">uids</span>, <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">records</span>.<span class="ident">num_leaves</span>(), <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(
