@@ -448,16 +448,15 @@ mod tests {
         let srs = Ledger::srs();
 
         let xfr_proving_key =
-            jf_cap::proof::transfer::preprocess(&srs, 2, 2, Ledger::merkle_height())
+            jf_cap::proof::transfer::preprocess(srs, 2, 2, Ledger::merkle_height())
                 .unwrap()
                 .0;
-        let mint_proving_key = jf_cap::proof::mint::preprocess(&srs, Ledger::merkle_height())
+        let mint_proving_key = jf_cap::proof::mint::preprocess(srs, Ledger::merkle_height())
             .unwrap()
             .0;
-        let freeze_proving_key =
-            jf_cap::proof::freeze::preprocess(&srs, 2, Ledger::merkle_height())
-                .unwrap()
-                .0;
+        let freeze_proving_key = jf_cap::proof::freeze::preprocess(srs, 2, Ledger::merkle_height())
+            .unwrap()
+            .0;
 
         // Set up a ledger. For simplicity we will use the same ledger state and fee input for each
         // transaction (mint, transfer, and freeze);
@@ -501,7 +500,7 @@ mod tests {
         // Now `records` is in the state we are going to use for the tests. We can look up Merkle
         // proofs as needed.
         let fee_input = FeeInput {
-            ro: fee_ro.clone(),
+            ro: fee_ro,
             acc_member_witness: AccMemberWitness::lookup_from_tree(&records, 0)
                 .expect_ok()
                 .unwrap()
@@ -521,16 +520,10 @@ mod tests {
         let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
             .unwrap()
             .0;
-        let mint_note = MintNote::generate(
-            &mut rng,
-            mint_ro.clone(),
-            seed,
-            &[],
-            fee_info,
-            &mint_proving_key,
-        )
-        .unwrap()
-        .0;
+        let mint_note =
+            MintNote::generate(&mut rng, mint_ro, seed, &[], fee_info, &mint_proving_key)
+                .unwrap()
+                .0;
         let mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
         let xfr_inputs = vec![TransferNoteInput {
@@ -568,7 +561,7 @@ mod tests {
 
         // To freeze, we need a record of a non-native asset type.
         let freeze_inputs = vec![FreezeNoteInput {
-            ro: asset_ro.clone(),
+            ro: asset_ro,
             acc_member_witness: AccMemberWitness::lookup_from_tree(&records, 1)
                 .expect_ok()
                 .unwrap()
@@ -670,7 +663,7 @@ mod tests {
         let mut rng = ChaChaRng::from_seed([42u8; 32]);
         let key = UserKeyPair::generate(&mut rng);
         let srs = Ledger::srs();
-        let mint_proving_key = jf_cap::proof::mint::preprocess(&srs, Ledger::merkle_height())
+        let mint_proving_key = jf_cap::proof::mint::preprocess(srs, Ledger::merkle_height())
             .unwrap()
             .0;
         let mut records = MerkleTree::new(Ledger::merkle_height()).unwrap();
@@ -684,7 +677,7 @@ mod tests {
         let fee_comm = RecordCommitment::from(&fee_ro);
         records.push(fee_comm.to_field_element());
         let fee_input = FeeInput {
-            ro: fee_ro.clone(),
+            ro: fee_ro,
             acc_member_witness: AccMemberWitness::lookup_from_tree(&records, 0)
                 .expect_ok()
                 .unwrap()
@@ -698,23 +691,17 @@ mod tests {
         let mint_ro = RecordOpening::new(
             &mut rng,
             1u8.into(),
-            asset_def.clone(),
+            asset_def,
             key.pub_key(),
             FreezeFlag::Unfrozen,
         );
         let fee_info = TxnFeeInfo::new(&mut rng, fee_input.clone(), 1u8.into())
             .unwrap()
             .0;
-        let mint_note = MintNote::generate(
-            &mut rng,
-            mint_ro.clone(),
-            seed,
-            &[],
-            fee_info,
-            &mint_proving_key,
-        )
-        .unwrap()
-        .0;
+        let mint_note =
+            MintNote::generate(&mut rng, mint_ro, seed, &[], fee_info, &mint_proving_key)
+                .unwrap()
+                .0;
         let mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
         // Apply a block and check that the correct UIDs and Merkle paths are computed.
@@ -739,7 +726,7 @@ mod tests {
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
         let mut block = validator.next_block();
-        block.add_transaction(mint.clone()).unwrap();
+        block.add_transaction(mint).unwrap();
         let (uids, records) = validator.validate_and_apply(block, ()).unwrap();
         assert_eq!(uids, vec![2, 3]);
         assert_eq!(records.num_leaves(), 4);
