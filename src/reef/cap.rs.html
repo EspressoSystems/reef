@@ -740,19 +740,6 @@
 <span id="740">740</span>
 <span id="741">741</span>
 <span id="742">742</span>
-<span id="743">743</span>
-<span id="744">744</span>
-<span id="745">745</span>
-<span id="746">746</span>
-<span id="747">747</span>
-<span id="748">748</span>
-<span id="749">749</span>
-<span id="750">750</span>
-<span id="751">751</span>
-<span id="752">752</span>
-<span id="753">753</span>
-<span id="754">754</span>
-<span id="755">755</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
 <span class="comment">// This file is part of the Reef library.</span>
 
@@ -1203,16 +1190,15 @@
         <span class="kw">let</span> <span class="ident">srs</span> <span class="op">=</span> <span class="ident">Ledger::srs</span>();
 
         <span class="kw">let</span> <span class="ident">xfr_proving_key</span> <span class="op">=</span>
-            <span class="ident">jf_cap::proof::transfer::preprocess</span>(<span class="kw-2">&amp;</span><span class="ident">srs</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
+            <span class="ident">jf_cap::proof::transfer::preprocess</span>(<span class="ident">srs</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
                 .<span class="ident">unwrap</span>()
                 .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="kw-2">&amp;</span><span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
+        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
             .<span class="ident">unwrap</span>()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">freeze_proving_key</span> <span class="op">=</span>
-            <span class="ident">jf_cap::proof::freeze::preprocess</span>(<span class="kw-2">&amp;</span><span class="ident">srs</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
-                .<span class="ident">unwrap</span>()
-                .<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">freeze_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::freeze::preprocess</span>(<span class="ident">srs</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
+            .<span class="ident">unwrap</span>()
+            .<span class="number">0</span>;
 
         <span class="comment">// Set up a ledger. For simplicity we will use the same ledger state and fee input for each</span>
         <span class="comment">// transaction (mint, transfer, and freeze);</span>
@@ -1256,7 +1242,7 @@
         <span class="comment">// Now `records` is in the state we are going to use for the tests. We can look up Merkle</span>
         <span class="comment">// proofs as needed.</span>
         <span class="kw">let</span> <span class="ident">fee_input</span> <span class="op">=</span> <span class="ident">FeeInput</span> {
-            <span class="ident">ro</span>: <span class="ident">fee_ro</span>.<span class="ident">clone</span>(),
+            <span class="ident">ro</span>: <span class="ident">fee_ro</span>,
             <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">0</span>)
                 .<span class="ident">expect_ok</span>()
                 .<span class="ident">unwrap</span>()
@@ -1276,16 +1262,10 @@
         <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
             .<span class="ident">unwrap</span>()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span> <span class="ident">MintNote::generate</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="ident">mint_ro</span>.<span class="ident">clone</span>(),
-            <span class="ident">seed</span>,
-            <span class="kw-2">&amp;</span>[],
-            <span class="ident">fee_info</span>,
-            <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>,
-        )
-        .<span class="ident">unwrap</span>()
-        .<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span>
+            <span class="ident">MintNote::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">mint_ro</span>, <span class="ident">seed</span>, <span class="kw-2">&amp;</span>[], <span class="ident">fee_info</span>, <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>)
+                .<span class="ident">unwrap</span>()
+                .<span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">mint</span> <span class="op">=</span> <span class="ident">TransactionNote::Mint</span>(<span class="ident">Box::new</span>(<span class="ident">mint_note</span>.<span class="ident">clone</span>()));
 
         <span class="kw">let</span> <span class="ident">xfr_inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">TransferNoteInput</span> {
@@ -1323,7 +1303,7 @@
 
         <span class="comment">// To freeze, we need a record of a non-native asset type.</span>
         <span class="kw">let</span> <span class="ident">freeze_inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">FreezeNoteInput</span> {
-            <span class="ident">ro</span>: <span class="ident">asset_ro</span>.<span class="ident">clone</span>(),
+            <span class="ident">ro</span>: <span class="ident">asset_ro</span>,
             <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">1</span>)
                 .<span class="ident">expect_ok</span>()
                 .<span class="ident">unwrap</span>()
@@ -1425,7 +1405,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">42u8</span>; <span class="number">32</span>]);
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">UserKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
         <span class="kw">let</span> <span class="ident">srs</span> <span class="op">=</span> <span class="ident">Ledger::srs</span>();
-        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="kw-2">&amp;</span><span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
+        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
             .<span class="ident">unwrap</span>()
             .<span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">MerkleTree::new</span>(<span class="ident">Ledger::merkle_height</span>()).<span class="ident">unwrap</span>();
@@ -1439,7 +1419,7 @@
         <span class="kw">let</span> <span class="ident">fee_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">fee_ro</span>);
         <span class="ident">records</span>.<span class="ident">push</span>(<span class="ident">fee_comm</span>.<span class="ident">to_field_element</span>());
         <span class="kw">let</span> <span class="ident">fee_input</span> <span class="op">=</span> <span class="ident">FeeInput</span> {
-            <span class="ident">ro</span>: <span class="ident">fee_ro</span>.<span class="ident">clone</span>(),
+            <span class="ident">ro</span>: <span class="ident">fee_ro</span>,
             <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">0</span>)
                 .<span class="ident">expect_ok</span>()
                 .<span class="ident">unwrap</span>()
@@ -1453,23 +1433,17 @@
         <span class="kw">let</span> <span class="ident">mint_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
             <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
             <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">asset_def</span>.<span class="ident">clone</span>(),
+            <span class="ident">asset_def</span>,
             <span class="ident">key</span>.<span class="ident">pub_key</span>(),
             <span class="ident">FreezeFlag::Unfrozen</span>,
         );
         <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
             .<span class="ident">unwrap</span>()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span> <span class="ident">MintNote::generate</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="ident">mint_ro</span>.<span class="ident">clone</span>(),
-            <span class="ident">seed</span>,
-            <span class="kw-2">&amp;</span>[],
-            <span class="ident">fee_info</span>,
-            <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>,
-        )
-        .<span class="ident">unwrap</span>()
-        .<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span>
+            <span class="ident">MintNote::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">mint_ro</span>, <span class="ident">seed</span>, <span class="kw-2">&amp;</span>[], <span class="ident">fee_info</span>, <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>)
+                .<span class="ident">unwrap</span>()
+                .<span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">mint</span> <span class="op">=</span> <span class="ident">TransactionNote::Mint</span>(<span class="ident">Box::new</span>(<span class="ident">mint_note</span>.<span class="ident">clone</span>()));
 
         <span class="comment">// Apply a block and check that the correct UIDs and Merkle paths are computed.</span>
@@ -1494,7 +1468,7 @@
         <span class="comment">// Apply another block and check that we get different UIDs. Technically it&#39;s not allowed to</span>
         <span class="comment">// apply the same block twice, but our minimal validator doesn&#39;t care.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">next_block</span>();
-        <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
+        <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>, ()).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">uids</span>, <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">records</span>.<span class="ident">num_leaves</span>(), <span class="number">4</span>);
