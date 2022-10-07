@@ -193,9 +193,6 @@ pub trait Block: Clone + Debug + Serialize + DeserializeOwned + Send + Sync {
     /// Errors that can occur when validation this block.
     type Error: ValidationError;
 
-    /// Create a block from a list of transactions.
-    fn new(txns: Vec<Self::Transaction>) -> Self;
-
     /// Add a new [Transaction] to this block.
     ///
     /// Fails if the transaction would make the block inconsistent, for example if the new
@@ -231,11 +228,21 @@ pub trait Validator:
     /// Blocks applied by this validator.
     type Block: Block;
 
+    /// Additional data required to authenticate a committed block, not contained in the block
+    /// itself.
+    type Proof: Clone + Debug + Serialize + DeserializeOwned + Send + Sync;
+
     /// The number of blocks this validator has applied.
-    fn now(&self) -> u64;
+    fn block_height(&self) -> u64;
 
     /// The commitment to the current state of the validator.
     fn commit(&self) -> Self::StateCommitment;
+
+    /// Build a block on top of the current state of this validator.
+    ///
+    /// The block is initially empty. Transactions can be appended using
+    /// [add_transaction](Block::add_transaction).
+    fn next_block(&self) -> Self::Block;
 
     /// Apply a new block, updating the state and returning UIDs and Merkle paths for each output.
     ///
@@ -246,6 +253,7 @@ pub trait Validator:
     fn validate_and_apply(
         &mut self,
         block: Self::Block,
+        proof: Self::Proof,
     ) -> Result<(Vec<u64>, MerkleTree), <Self::Block as Block>::Error>;
 }
 
