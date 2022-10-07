@@ -35,7 +35,7 @@ pub type NullifierSet<L> = <Transaction<L> as traits::Transaction>::NullifierSet
 pub type NullifierProof<L> = <NullifierSet<L> as traits::NullifierSet>::Proof;
 
 /// Information contained in a viewing memo.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ViewingMemoOpening {
     pub asset: AssetDefinition,
     pub inputs: Vec<ViewableData>,
