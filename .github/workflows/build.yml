@@ -46,7 +46,7 @@ jobs:
           args: --workspace --examples --bins --tests -- -D warnings -A clippy::format_push_string
 
       - name: Audit
-        run: cargo audit --ignore RUSTSEC-2020-0159 --ignore RUSTSEC-2020-0071
+        run: cargo audit
 
       - name: Test
         run: |
