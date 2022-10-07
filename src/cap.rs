@@ -277,7 +277,7 @@ impl IntoIterator for Block {
 ///  * compute the UIDs and Merkle paths for the outputs of each block
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Validator<const H: u8> {
-    pub now: u64,
+    pub block_height: u64,
     pub records_commitment: MerkleCommitment,
     pub records_frontier: MerkleFrontier,
 }
@@ -286,7 +286,7 @@ impl<const H: u8> Default for Validator<H> {
     fn default() -> Self {
         let records = MerkleTree::new(H).unwrap();
         Self {
-            now: 0,
+            block_height: 0,
             records_commitment: records.commitment(),
             records_frontier: records.frontier(),
         }
@@ -297,7 +297,7 @@ impl<'a, const H: u8> Arbitrary<'a> for Validator<H> {
     fn arbitrary(u: &mut Unstructured<'a>) -> arbitrary::Result<Self> {
         let records = ArbitraryMerkleTree::arbitrary(u)?.0;
         Ok(Self {
-            now: u.arbitrary()?,
+            block_height: u.arbitrary()?,
             records_commitment: records.commitment(),
             records_frontier: records.frontier(),
         })
@@ -307,31 +307,33 @@ impl<'a, const H: u8> Arbitrary<'a> for Validator<H> {
 impl<const H: u8> traits::Validator for Validator<H> {
     type StateCommitment = u64;
     type Block = Block;
+    type Proof = ();
 
-    fn now(&self) -> u64 {
-        self.now
+    fn block_height(&self) -> u64 {
+        self.block_height
     }
 
     fn commit(&self) -> Self::StateCommitment {
-        self.now
+        self.block_height
     }
 
     fn next_block(&self) -> Self::Block {
         Block {
             transactions: vec![],
-            index: self.now,
+            index: self.block_height,
         }
     }
 
     fn validate_and_apply(
         &mut self,
         block: Self::Block,
+        _proof: Self::Proof,
     ) -> Result<(Vec<u64>, MerkleTree), ValidationError> {
-        if block.index != self.now {
+        if block.index != self.block_height {
             return Err(ValidationError::Failed {
                 msg: format!(
                     "incorrect block index (expected {}, got {})",
-                    self.now, block.index
+                    self.block_height, block.index
                 ),
             });
         }
@@ -352,7 +354,7 @@ impl<const H: u8> traits::Validator for Validator<H> {
         }
         let records = builder.build();
 
-        self.now += 1;
+        self.block_height += 1;
         self.records_commitment = records.commitment();
         self.records_frontier = records.frontier();
 
@@ -659,7 +661,7 @@ mod tests {
     #[test]
     fn test_validator() {
         let mut validator = Validator::<DEFAULT_MERKLE_HEIGHT>::default();
-        assert_eq!(validator.now(), 0);
+        assert_eq!(validator.block_height(), 0);
         let initial_commit = validator.commit();
 
         // Build a block to apply. For this we need a transaction note. It doesn't have to be valid, but
@@ -718,7 +720,7 @@ mod tests {
         // Apply a block and check that the correct UIDs and Merkle paths are computed.
         let mut block = validator.next_block();
         block.add_transaction(mint.clone()).unwrap();
-        let (uids, records) = validator.validate_and_apply(block).unwrap();
+        let (uids, records) = validator.validate_and_apply(block, ()).unwrap();
         assert_eq!(uids, vec![0, 1]);
         assert_eq!(records.num_leaves(), 2);
         assert_eq!(
@@ -731,14 +733,14 @@ mod tests {
         );
 
         // Make sure we have a new timestamp and commit.
-        assert_eq!(validator.now(), 1);
+        assert_eq!(validator.block_height(), 1);
         assert_ne!(validator.commit(), initial_commit);
 
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
         let mut block = validator.next_block();
         block.add_transaction(mint.clone()).unwrap();
-        let (uids, records) = validator.validate_and_apply(block).unwrap();
+        let (uids, records) = validator.validate_and_apply(block, ()).unwrap();
         assert_eq!(uids, vec![2, 3]);
         assert_eq!(records.num_leaves(), 4);
         assert_eq!(
