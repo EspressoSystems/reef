@@ -85,7 +85,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">NullifierProof</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">NullifierSet</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">traits::NullifierSet</span><span class="op">&gt;</span><span class="ident">::Proof</span>;
 
 <span class="doccomment">/// Information contained in a viewing memo.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ViewingMemoOpening</span> {
     <span class="kw">pub</span> <span class="ident">asset</span>: <span class="ident">AssetDefinition</span>,
     <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ViewableData</span><span class="op">&gt;</span>,
