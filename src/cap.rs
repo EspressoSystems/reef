@@ -726,7 +726,7 @@ mod tests {
         // Apply another block and check that we get different UIDs. Technically it's not allowed to
         // apply the same block twice, but our minimal validator doesn't care.
         let mut block = validator.next_block();
-        block.add_transaction(mint.clone()).unwrap();
+        block.add_transaction(mint).unwrap();
         let (uids, records) = validator.validate_and_apply(block, ()).unwrap();
         assert_eq!(uids, vec![2, 3]);
         assert_eq!(records.num_leaves(), 4);
