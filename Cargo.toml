@@ -12,7 +12,7 @@ arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrapp
 ark-serialize = { version = "0.3.0", features = ["derive"] }
 commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.2.0" }
 funty = "2.0"
-itertools = "0.10.1"
+itertools = "0.10.5"
 jf-cap = { features=["std"], git = "https://github.com/EspressoSystems/cap.git", branch = "testnet-v1" }
 jf-primitives = { features = ["std"], git = "https://github.com/EspressoSystems/jellyfish.git", tag = "0.1.2" }
 lazy_static = "1.4.0"
