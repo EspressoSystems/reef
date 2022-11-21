@@ -400,7 +400,7 @@ impl<const H: u8> traits::Ledger for LedgerWithHeight<H> {
     }
 
     fn srs() -> &'static UniversalParam {
-        &*CAP_UNIVERSAL_PARAM
+        &CAP_UNIVERSAL_PARAM
     }
 }
 
