@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../reef/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../reef/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../reef/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cap.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cap.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../reef/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../reef/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../reef/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -740,747 +740,747 @@
 <span id="740">740</span>
 <span id="741">741</span>
 <span id="742">742</span>
-</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)</span>
-<span class="comment">// This file is part of the Reef library.</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright (c) 2022 Espresso Systems (espressosys.com)
+// This file is part of the Reef library.
 
-<span class="comment">// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</span>
-<span class="comment">// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</span>
-<span class="comment">// You should have received a copy of the GNU General Public License along with this program. If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License along with this program. If not, see &lt;https://www.gnu.org/licenses/&gt;.
 
-<span class="doccomment">//! Minimal implementation of the ledger traits for a CAP-style ledger.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! This implementation can be used as an aid in implemeneting the traits for more complex, specific</span>
-<span class="doccomment">//! ledger types. It is also fully functional and can be used as a mock ledger for testing</span>
-<span class="doccomment">//! downstream modules that are parameterized by ledger type.</span>
+</span><span class="doccomment">//! Minimal implementation of the ledger traits for a CAP-style ledger.
+//!
+//! This implementation can be used as an aid in implemeneting the traits for more complex, specific
+//! ledger types. It is also fully functional and can be used as a mock ledger for testing
+//! downstream modules that are parameterized by ledger type.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::traits</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">ViewingError</span>, <span class="ident">ViewingMemoOpening</span>};
-<span class="kw">use</span> <span class="ident">arbitrary</span>::{<span class="ident">Arbitrary</span>, <span class="ident">Unstructured</span>};
-<span class="kw">use</span> <span class="ident">arbitrary_wrappers</span>::{<span class="ident">ArbitraryMerkleTree</span>, <span class="ident">ArbitraryNullifier</span>};
-<span class="kw">use</span> <span class="ident">commit</span>::{<span class="ident">Commitment</span>, <span class="ident">Committable</span>};
-<span class="kw">use</span> <span class="ident">jf_cap</span>::{
-    <span class="ident">keys</span>::{<span class="ident">ViewerKeyPair</span>, <span class="ident">ViewerPubKey</span>},
-    <span class="ident">mint::MintNote</span>,
-    <span class="ident">proof::UniversalParam</span>,
-    <span class="ident">structs</span>::{<span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span>, <span class="ident">Nullifier</span>, <span class="ident">RecordCommitment</span>},
-    <span class="ident">transfer::TransferNote</span>,
-    <span class="ident">MerkleCommitment</span>, <span class="ident">MerkleFrontier</span>, <span class="ident">MerkleTree</span>, <span class="ident">TransactionNote</span>,
+</span><span class="kw">use </span><span class="kw">crate</span>::traits;
+<span class="kw">use </span><span class="kw">crate</span>::types::{ViewingError, ViewingMemoOpening};
+<span class="kw">use </span>arbitrary::{Arbitrary, Unstructured};
+<span class="kw">use </span>arbitrary_wrappers::{ArbitraryMerkleTree, ArbitraryNullifier};
+<span class="kw">use </span>commit::{Commitment, Committable};
+<span class="kw">use </span>jf_cap::{
+    keys::{ViewerKeyPair, ViewerPubKey},
+    mint::MintNote,
+    proof::UniversalParam,
+    structs::{AssetCode, AssetDefinition, Nullifier, RecordCommitment},
+    transfer::TransferNote,
+    MerkleCommitment, MerkleFrontier, MerkleTree, TransactionNote,
 };
-<span class="kw">use</span> <span class="ident">jf_primitives::merkle_tree::FilledMTBuilder</span>;
-<span class="kw">use</span> <span class="ident">lazy_static::lazy_static</span>;
-<span class="kw">use</span> <span class="ident">rand_chacha</span>::{<span class="ident">rand_core::SeedableRng</span>, <span class="ident">ChaChaRng</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">snafu::Snafu</span>;
-<span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="ident">Debug</span>, <span class="ident">Display</span>};
-<span class="kw">use</span> <span class="ident">std::hash::Hash</span>;
-<span class="kw">use</span> <span class="ident">std::ops::Index</span>;
+<span class="kw">use </span>jf_primitives::merkle_tree::FilledMTBuilder;
+<span class="kw">use </span>lazy_static::lazy_static;
+<span class="kw">use </span>rand_chacha::{rand_core::SeedableRng, ChaChaRng};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>snafu::Snafu;
+<span class="kw">use </span>std::collections::{HashMap, HashSet};
+<span class="kw">use </span>std::fmt::{Debug, Display};
+<span class="kw">use </span>std::hash::Hash;
+<span class="kw">use </span>std::ops::Index;
 
-<span class="doccomment">/// A set of nullifiers.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The simplest implementation of the CAP [NullifierSet](traits::NullifierSet) trait simply stores</span>
-<span class="doccomment">/// all the nullifiers that are inserted in a [HashSet].</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">NullifierSet</span> <span class="op">=</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">ArbitraryNullifier</span><span class="op">&gt;</span>;
+<span class="doccomment">/// A set of nullifiers.
+///
+/// The simplest implementation of the CAP [NullifierSet](traits::NullifierSet) trait simply stores
+/// all the nullifiers that are inserted in a [HashSet].
+</span><span class="kw">pub type </span>NullifierSet = HashSet&lt;ArbitraryNullifier&gt;;
 
-<span class="kw">impl</span> <span class="ident">traits::NullifierSet</span> <span class="kw">for</span> <span class="ident">NullifierSet</span> {
-    <span class="kw">type</span> <span class="ident">Proof</span> <span class="op">=</span> ();
+<span class="kw">impl </span>traits::NullifierSet <span class="kw">for </span>NullifierSet {
+    <span class="kw">type </span>Proof = ();
 
-    <span class="kw">fn</span> <span class="ident">multi_insert</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">nullifiers</span>: <span class="kw-2">&amp;</span>[(<span class="ident">Nullifier</span>, <span class="ident"><span class="self">Self</span>::Proof</span>)]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Proof</span><span class="op">&gt;</span> {
-        <span class="kw">for</span> (<span class="ident">n</span>, <span class="kw">_</span>) <span class="kw">in</span> <span class="ident">nullifiers</span> {
-            <span class="self">self</span>.<span class="ident">insert</span>((<span class="kw-2">*</span><span class="ident">n</span>).<span class="ident">into</span>());
+    <span class="kw">fn </span>multi_insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, nullifiers: <span class="kw-2">&amp;</span>[(Nullifier, <span class="self">Self</span>::Proof)]) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Proof&gt; {
+        <span class="kw">for </span>(n, <span class="kw">_</span>) <span class="kw">in </span>nullifiers {
+            <span class="self">self</span>.insert((<span class="kw-2">*</span>n).into());
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="doccomment">/// All the kinds of transactions in the basic CAP protocol.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">strum_macros::Display</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TransactionKind</span> {
-    <span class="ident">Mint</span>,
-    <span class="ident">Freeze</span>,
-    <span class="ident">Unfreeze</span>,
-    <span class="ident">Send</span>,
-    <span class="ident">Receive</span>,
-    <span class="ident">Unknown</span>,
+<span class="doccomment">/// All the kinds of transactions in the basic CAP protocol.
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, strum_macros::Display)]
+</span><span class="kw">pub enum </span>TransactionKind {
+    Mint,
+    Freeze,
+    Unfreeze,
+    Send,
+    Receive,
+    Unknown,
 }
 
-<span class="kw">impl</span> <span class="ident">traits::TransactionKind</span> <span class="kw">for</span> <span class="ident">TransactionKind</span> {
-    <span class="kw">fn</span> <span class="ident">send</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Send</span>
+<span class="kw">impl </span>traits::TransactionKind <span class="kw">for </span>TransactionKind {
+    <span class="kw">fn </span>send() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Send
     }
 
-    <span class="kw">fn</span> <span class="ident">receive</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Receive</span>
+    <span class="kw">fn </span>receive() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Receive
     }
 
-    <span class="kw">fn</span> <span class="ident">mint</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Mint</span>
+    <span class="kw">fn </span>mint() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Mint
     }
 
-    <span class="kw">fn</span> <span class="ident">freeze</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Freeze</span>
+    <span class="kw">fn </span>freeze() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Freeze
     }
 
-    <span class="kw">fn</span> <span class="ident">unfreeze</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Unfreeze</span>
+    <span class="kw">fn </span>unfreeze() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Unfreeze
     }
 
-    <span class="kw">fn</span> <span class="ident">unknown</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Unknown</span>
+    <span class="kw">fn </span>unknown() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Unknown
     }
 }
 
-<span class="doccomment">/// A CAP transaction.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Transaction</span> <span class="op">=</span> <span class="ident">TransactionNote</span>;
+<span class="doccomment">/// A CAP transaction.
+</span><span class="kw">pub type </span>Transaction = TransactionNote;
 
-<span class="kw">impl</span> <span class="ident">traits::Transaction</span> <span class="kw">for</span> <span class="ident">TransactionNote</span> {
-    <span class="kw">type</span> <span class="ident">NullifierSet</span> <span class="op">=</span> <span class="ident">NullifierSet</span>;
-    <span class="kw">type</span> <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">Commitment</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Kind</span> <span class="op">=</span> <span class="ident">TransactionKind</span>;
+<span class="kw">impl </span>traits::Transaction <span class="kw">for </span>TransactionNote {
+    <span class="kw">type </span>NullifierSet = NullifierSet;
+    <span class="kw">type </span>Hash = Commitment&lt;<span class="self">Self</span>&gt;;
+    <span class="kw">type </span>Kind = TransactionKind;
 
-    <span class="kw">fn</span> <span class="ident">cap</span>(<span class="ident">note</span>: <span class="ident">TransactionNote</span>, <span class="ident">_proofs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">note</span>
+    <span class="kw">fn </span>cap(note: TransactionNote, _proofs: Vec&lt;()&gt;) -&gt; <span class="self">Self </span>{
+        note
     }
 
-    <span class="kw">fn</span> <span class="ident">open_viewing_memo</span>(
+    <span class="kw">fn </span>open_viewing_memo(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span><span class="op">&gt;</span>,
-        <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Transfer</span>(<span class="ident">xfr</span>) =&gt; <span class="ident">open_xfr_viewing_memo</span>(<span class="ident">assets</span>, <span class="ident">keys</span>, <span class="ident">xfr</span>),
-            <span class="ident"><span class="self">Self</span>::Mint</span>(<span class="ident">mint</span>) =&gt; <span class="ident">open_mint_viewing_memo</span>(<span class="ident">keys</span>, <span class="ident">mint</span>),
-            <span class="ident"><span class="self">Self</span>::Freeze</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">ViewingError::NoViewingMemos</span>),
+        assets: <span class="kw-2">&amp;</span>HashMap&lt;AssetCode, AssetDefinition&gt;,
+        keys: <span class="kw-2">&amp;</span>HashMap&lt;ViewerPubKey, ViewerKeyPair&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ViewingMemoOpening, ViewingError&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Transfer(xfr) =&gt; open_xfr_viewing_memo(assets, keys, xfr),
+            <span class="self">Self</span>::Mint(mint) =&gt; open_mint_viewing_memo(keys, mint),
+            <span class="self">Self</span>::Freeze(<span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(ViewingError::NoViewingMemos),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">proven_nullifiers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Nullifier</span>, ())<span class="op">&gt;</span> {
-        <span class="ident">TransactionNote::nullifiers</span>(<span class="self">self</span>)
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> (<span class="ident">n</span>, ()))
-            .<span class="ident">collect</span>()
+    <span class="kw">fn </span>proven_nullifiers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;(Nullifier, ())&gt; {
+        TransactionNote::nullifiers(<span class="self">self</span>)
+            .into_iter()
+            .map(|n| (n, ()))
+            .collect()
     }
 
-    <span class="kw">fn</span> <span class="ident">output_commitments</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RecordCommitment</span><span class="op">&gt;</span> {
-        <span class="ident">TransactionNote::output_commitments</span>(<span class="self">self</span>)
+    <span class="kw">fn </span>output_commitments(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RecordCommitment&gt; {
+        TransactionNote::output_commitments(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Hash</span> {
-        <span class="self">self</span>.<span class="ident">commit</span>()
+    <span class="kw">fn </span>hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Hash {
+        <span class="self">self</span>.commit()
     }
 
-    <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Kind</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Transfer</span>(..) =&gt; <span class="ident">TransactionKind::Send</span>,
-            <span class="ident"><span class="self">Self</span>::Mint</span>(..) =&gt; <span class="ident">TransactionKind::Mint</span>,
-            <span class="ident"><span class="self">Self</span>::Freeze</span>(..) =&gt; <span class="ident">TransactionKind::Freeze</span>,
+    <span class="kw">fn </span>kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Kind {
+        <span class="kw">match </span><span class="self">self </span>{
+            <span class="self">Self</span>::Transfer(..) =&gt; TransactionKind::Send,
+            <span class="self">Self</span>::Mint(..) =&gt; TransactionKind::Mint,
+            <span class="self">Self</span>::Freeze(..) =&gt; TransactionKind::Freeze,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">set_proofs</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">_proofs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) {
-        <span class="comment">// Our nullifier proofs are trivial, so there&#39;s nothing to do.</span>
-    }
+    <span class="kw">fn </span>set_proofs(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _proofs: Vec&lt;()&gt;) {
+        <span class="comment">// Our nullifier proofs are trivial, so there&#39;s nothing to do.
+    </span>}
 }
 
-<span class="doccomment">/// Attempt to open the viewer memo attached to a CAP transfer transaction.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `assets` should be the set of asset types for which the caller holds the viewing key, indexed by</span>
-<span class="doccomment">/// asset code. This determines which asset types can be viewed by this method. `keys` is the</span>
-<span class="doccomment">/// caller&#39;s collection of viewing key pairs, indexed by public key. `keys` must contain every</span>
-<span class="doccomment">/// public key which is listed as a viewer in the policy of one of the `assets`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_xfr_viewing_memo</span>(
-    <span class="ident">assets</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">AssetCode</span>, <span class="ident">AssetDefinition</span><span class="op">&gt;</span>,
-    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
-    <span class="ident">xfr</span>: <span class="kw-2">&amp;</span><span class="ident">TransferNote</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
-    <span class="kw">for</span> <span class="ident">asset</span> <span class="kw">in</span> <span class="ident">assets</span>.<span class="ident">values</span>() {
-        <span class="kw">let</span> <span class="ident">viewing_key</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">keys</span>[<span class="ident">asset</span>.<span class="ident">policy_ref</span>().<span class="ident">viewer_pub_key</span>()];
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>((<span class="ident">inputs</span>, <span class="ident">outputs</span>)) <span class="op">=</span> <span class="ident">viewing_key</span>.<span class="ident">open_transfer_viewing_memo</span>(<span class="ident">asset</span>, <span class="ident">xfr</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ViewingMemoOpening</span> {
-                <span class="ident">asset</span>: <span class="ident">asset</span>.<span class="ident">clone</span>(),
-                <span class="ident">inputs</span>,
-                <span class="ident">outputs</span>,
+<span class="doccomment">/// Attempt to open the viewer memo attached to a CAP transfer transaction.
+///
+/// `assets` should be the set of asset types for which the caller holds the viewing key, indexed by
+/// asset code. This determines which asset types can be viewed by this method. `keys` is the
+/// caller&#39;s collection of viewing key pairs, indexed by public key. `keys` must contain every
+/// public key which is listed as a viewer in the policy of one of the `assets`.
+</span><span class="kw">pub fn </span>open_xfr_viewing_memo(
+    assets: <span class="kw-2">&amp;</span>HashMap&lt;AssetCode, AssetDefinition&gt;,
+    keys: <span class="kw-2">&amp;</span>HashMap&lt;ViewerPubKey, ViewerKeyPair&gt;,
+    xfr: <span class="kw-2">&amp;</span>TransferNote,
+) -&gt; <span class="prelude-ty">Result</span>&lt;ViewingMemoOpening, ViewingError&gt; {
+    <span class="kw">for </span>asset <span class="kw">in </span>assets.values() {
+        <span class="kw">let </span>viewing_key = <span class="kw-2">&amp;</span>keys[asset.policy_ref().viewer_pub_key()];
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>((inputs, outputs)) = viewing_key.open_transfer_viewing_memo(asset, xfr) {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(ViewingMemoOpening {
+                asset: asset.clone(),
+                inputs,
+                outputs,
             });
         }
     }
-    <span class="prelude-val">Err</span>(<span class="ident">ViewingError::UnviewableAsset</span>)
+    <span class="prelude-val">Err</span>(ViewingError::UnviewableAsset)
 }
 
-<span class="doccomment">/// Attempt to open the viewer memo attached to a CAP mint transaction.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `keys` should be the caller&#39;s collection of viewing key pairs, indexed by public key.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open_mint_viewing_memo</span>(
-    <span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ViewerPubKey</span>, <span class="ident">ViewerKeyPair</span><span class="op">&gt;</span>,
-    <span class="ident">mint</span>: <span class="kw-2">&amp;</span><span class="ident">MintNote</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ViewingMemoOpening</span>, <span class="ident">ViewingError</span><span class="op">&gt;</span> {
-    <span class="ident">keys</span>.<span class="ident">get</span>(<span class="ident">mint</span>.<span class="ident">mint_asset_def</span>.<span class="ident">policy_ref</span>().<span class="ident">viewer_pub_key</span>())
-        .<span class="ident">ok_or</span>(<span class="ident">ViewingError::UnviewableAsset</span>)
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">viewing_key</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">viewing_key</span>.<span class="ident">open_mint_viewing_memo</span>(<span class="ident">mint</span>).<span class="ident">unwrap</span>();
-            <span class="ident">ViewingMemoOpening</span> {
-                <span class="ident">asset</span>: <span class="ident">mint</span>.<span class="ident">mint_asset_def</span>.<span class="ident">clone</span>(),
-                <span class="ident">inputs</span>: <span class="macro">vec!</span>[],
-                <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="ident">output</span>],
+<span class="doccomment">/// Attempt to open the viewer memo attached to a CAP mint transaction.
+///
+/// `keys` should be the caller&#39;s collection of viewing key pairs, indexed by public key.
+</span><span class="kw">pub fn </span>open_mint_viewing_memo(
+    keys: <span class="kw-2">&amp;</span>HashMap&lt;ViewerPubKey, ViewerKeyPair&gt;,
+    mint: <span class="kw-2">&amp;</span>MintNote,
+) -&gt; <span class="prelude-ty">Result</span>&lt;ViewingMemoOpening, ViewingError&gt; {
+    keys.get(mint.mint_asset_def.policy_ref().viewer_pub_key())
+        .ok_or(ViewingError::UnviewableAsset)
+        .map(|viewing_key| {
+            <span class="kw">let </span>output = viewing_key.open_mint_viewing_memo(mint).unwrap();
+            ViewingMemoOpening {
+                asset: mint.mint_asset_def.clone(),
+                inputs: <span class="macro">vec!</span>[],
+                outputs: <span class="macro">vec!</span>[output],
             }
         })
 }
 
-<span class="doccomment">/// Errors in mock CAP validation.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Snafu</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ValidationError</span> {
-    <span class="ident">Failed</span> { <span class="ident">msg</span>: <span class="ident">String</span> },
+<span class="doccomment">/// Errors in mock CAP validation.
+</span><span class="attribute">#[derive(Clone, Debug, Serialize, Deserialize, Snafu)]
+</span><span class="kw">pub enum </span>ValidationError {
+    Failed { msg: String },
 }
 
-<span class="kw">impl</span> <span class="ident">traits::ValidationError</span> <span class="kw">for</span> <span class="ident">ValidationError</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">msg</span>: <span class="kw">impl</span> <span class="ident">Display</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Failed</span> {
-            <span class="ident">msg</span>: <span class="ident">msg</span>.<span class="ident">to_string</span>(),
+<span class="kw">impl </span>traits::ValidationError <span class="kw">for </span>ValidationError {
+    <span class="kw">fn </span>new(msg: <span class="kw">impl </span>Display) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Failed {
+            msg: msg.to_string(),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_bad_nullifier_proof</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="bool-val">false</span>
-    }
+    <span class="kw">fn </span>is_bad_nullifier_proof(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="bool-val">false
+    </span>}
 }
 
-<span class="doccomment">/// A block of CAP transactions.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A [Block] is a list of CAP transactions, plus the intended index of the block. The index ensures</span>
-<span class="doccomment">/// that all committed blocks are unique.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Block</span> {
-    <span class="ident">transactions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>,
-    <span class="ident">index</span>: <span class="ident">u64</span>,
+<span class="doccomment">/// A block of CAP transactions.
+///
+/// A [Block] is a list of CAP transactions, plus the intended index of the block. The index ensures
+/// that all committed blocks are unique.
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+</span><span class="kw">pub struct </span>Block {
+    transactions: Vec&lt;Transaction&gt;,
+    index: u64,
 }
 
-<span class="kw">impl</span> <span class="ident">traits::Block</span> <span class="kw">for</span> <span class="ident">Block</span> {
-    <span class="kw">type</span> <span class="ident">Transaction</span> <span class="op">=</span> <span class="ident">Transaction</span>;
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ValidationError</span>;
+<span class="kw">impl </span>traits::Block <span class="kw">for </span>Block {
+    <span class="kw">type </span>Transaction = Transaction;
+    <span class="kw">type </span>Error = ValidationError;
 
-    <span class="kw">fn</span> <span class="ident">add_transaction</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">txn</span>: <span class="ident">Transaction</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">push</span>(<span class="ident">txn</span>);
+    <span class="kw">fn </span>add_transaction(<span class="kw-2">&amp;mut </span><span class="self">self</span>, txn: Transaction) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.transactions.push(txn);
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">txns</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">clone</span>()
+    <span class="kw">fn </span>txns(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Transaction&gt; {
+        <span class="self">self</span>.transactions.clone()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Block</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">index</span>
+<span class="kw">impl </span>Block {
+    <span class="kw">pub fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
+        <span class="self">self</span>.index
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">len</span>()
+    <span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.transactions.len()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">is_empty</span>()
+    <span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.transactions.is_empty()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="lifetime">&#39;_</span> <span class="op">+</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">Transaction</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">iter</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Block</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Transaction</span>;
-
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Transaction</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">transactions</span>[<span class="ident">index</span>]
+    <span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span><span class="lifetime">&#39;_ </span>+ Iterator&lt;Item = <span class="kw-2">&amp;</span>Transaction&gt; {
+        <span class="self">self</span>.transactions.iter()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Block</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Transaction</span>;
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">std::slice::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Transaction</span><span class="op">&gt;</span>;
+<span class="kw">impl </span>Index&lt;usize&gt; <span class="kw">for </span>Block {
+    <span class="kw">type </span>Output = Transaction;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">iter</span>()
+    <span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="kw-2">&amp;</span>Transaction {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.transactions[index]
     }
 }
 
-<span class="kw">impl</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="ident">Block</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Transaction</span>;
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">std::vec::IntoIter</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Block {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Transaction;
+    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">&#39;a</span>, Transaction&gt;;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
-        <span class="self">self</span>.<span class="ident">transactions</span>.<span class="ident">into_iter</span>()
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
+        <span class="self">self</span>.transactions.iter()
     }
 }
 
-<span class="doccomment">/// A mock CAP validator.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The minimal validator will not actually validate. It only does the least it can do to implement</span>
-<span class="doccomment">/// the [Validator](traits::Validator) interface, namely</span>
-<span class="doccomment">///  * compute a unique commitment after each block (this is just the count of blocks)</span>
-<span class="doccomment">///  * compute the UIDs and Merkle paths for the outputs of each block</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">block_height</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span> <span class="ident">records_commitment</span>: <span class="ident">MerkleCommitment</span>,
-    <span class="kw">pub</span> <span class="ident">records_frontier</span>: <span class="ident">MerkleFrontier</span>,
+<span class="kw">impl </span>IntoIterator <span class="kw">for </span>Block {
+    <span class="kw">type </span>Item = Transaction;
+    <span class="kw">type </span>IntoIter = std::vec::IntoIter&lt;Transaction&gt;;
+
+    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
+        <span class="self">self</span>.transactions.into_iter()
+    }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">MerkleTree::new</span>(<span class="ident">H</span>).<span class="ident">unwrap</span>();
-        <span class="self">Self</span> {
-            <span class="ident">block_height</span>: <span class="number">0</span>,
-            <span class="ident">records_commitment</span>: <span class="ident">records</span>.<span class="ident">commitment</span>(),
-            <span class="ident">records_frontier</span>: <span class="ident">records</span>.<span class="ident">frontier</span>(),
+<span class="doccomment">/// A mock CAP validator.
+///
+/// The minimal validator will not actually validate. It only does the least it can do to implement
+/// the [Validator](traits::Validator) interface, namely
+///  * compute a unique commitment after each block (this is just the count of blocks)
+///  * compute the UIDs and Merkle paths for the outputs of each block
+</span><span class="attribute">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+</span><span class="kw">pub struct </span>Validator&lt;<span class="kw">const </span>H: u8&gt; {
+    <span class="kw">pub </span>block_height: u64,
+    <span class="kw">pub </span>records_commitment: MerkleCommitment,
+    <span class="kw">pub </span>records_frontier: MerkleFrontier,
+}
+
+<span class="kw">impl</span>&lt;<span class="kw">const </span>H: u8&gt; Default <span class="kw">for </span>Validator&lt;H&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>records = MerkleTree::new(H).unwrap();
+        <span class="self">Self </span>{
+            block_height: <span class="number">0</span>,
+            records_commitment: records.commitment(),
+            records_frontier: records.frontier(),
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">Arbitrary</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">arbitrary</span>(<span class="ident">u</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Unstructured</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">arbitrary::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">ArbitraryMerkleTree::arbitrary</span>(<span class="ident">u</span>)<span class="question-mark">?</span>.<span class="number">0</span>;
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">block_height</span>: <span class="ident">u</span>.<span class="ident">arbitrary</span>()<span class="question-mark">?</span>,
-            <span class="ident">records_commitment</span>: <span class="ident">records</span>.<span class="ident">commitment</span>(),
-            <span class="ident">records_frontier</span>: <span class="ident">records</span>.<span class="ident">frontier</span>(),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="kw">const </span>H: u8&gt; Arbitrary&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Validator&lt;H&gt; {
+    <span class="kw">fn </span>arbitrary(u: <span class="kw-2">&amp;mut </span>Unstructured&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; arbitrary::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>records = ArbitraryMerkleTree::arbitrary(u)<span class="question-mark">?</span>.<span class="number">0</span>;
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            block_height: u.arbitrary()<span class="question-mark">?</span>,
+            records_commitment: records.commitment(),
+            records_frontier: records.frontier(),
         })
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">traits::Validator</span> <span class="kw">for</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">StateCommitment</span> <span class="op">=</span> <span class="ident">u64</span>;
-    <span class="kw">type</span> <span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>;
-    <span class="kw">type</span> <span class="ident">Proof</span> <span class="op">=</span> ();
+<span class="kw">impl</span>&lt;<span class="kw">const </span>H: u8&gt; traits::Validator <span class="kw">for </span>Validator&lt;H&gt; {
+    <span class="kw">type </span>StateCommitment = u64;
+    <span class="kw">type </span>Block = Block;
+    <span class="kw">type </span>Proof = ();
 
-    <span class="kw">fn</span> <span class="ident">block_height</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
-        <span class="self">self</span>.<span class="ident">block_height</span>
+    <span class="kw">fn </span>block_height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
+        <span class="self">self</span>.block_height
     }
 
-    <span class="kw">fn</span> <span class="ident">commit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::StateCommitment</span> {
-        <span class="self">self</span>.<span class="ident">block_height</span>
+    <span class="kw">fn </span>commit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::StateCommitment {
+        <span class="self">self</span>.block_height
     }
 
-    <span class="kw">fn</span> <span class="ident">next_block</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Block</span> {
-        <span class="ident">Block</span> {
-            <span class="ident">transactions</span>: <span class="macro">vec!</span>[],
-            <span class="ident">index</span>: <span class="self">self</span>.<span class="ident">block_height</span>,
+    <span class="kw">fn </span>next_block(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Block {
+        Block {
+            transactions: <span class="macro">vec!</span>[],
+            index: <span class="self">self</span>.block_height,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">validate_and_apply</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">block</span>: <span class="ident"><span class="self">Self</span>::Block</span>,
-        <span class="ident">_proof</span>: <span class="ident"><span class="self">Self</span>::Proof</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">MerkleTree</span>), <span class="ident">ValidationError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">block</span>.<span class="ident">index</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">block_height</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ValidationError::Failed</span> {
-                <span class="ident">msg</span>: <span class="macro">format!</span>(
+    <span class="kw">fn </span>validate_and_apply(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        block: <span class="self">Self</span>::Block,
+        _proof: <span class="self">Self</span>::Proof,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;u64&gt;, MerkleTree), ValidationError&gt; {
+        <span class="kw">if </span>block.index != <span class="self">self</span>.block_height {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(ValidationError::Failed {
+                msg: <span class="macro">format!</span>(
                     <span class="string">&quot;incorrect block index (expected {}, got {})&quot;</span>,
-                    <span class="self">self</span>.<span class="ident">block_height</span>, <span class="ident">block</span>.<span class="ident">index</span>
+                    <span class="self">self</span>.block_height, block.index
                 ),
             });
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">uids</span> <span class="op">=</span> <span class="macro">vec!</span>[];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">uid</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">records_commitment</span>.<span class="ident">num_leaves</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span>
-            <span class="ident">FilledMTBuilder::from_frontier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">records_commitment</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">records_frontier</span>)
-                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ValidationError::Failed</span> {
-                    <span class="ident">msg</span>: <span class="string">&quot;failed to restore Merkle tree from frontier&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="kw">let </span><span class="kw-2">mut </span>uids = <span class="macro">vec!</span>[];
+        <span class="kw">let </span><span class="kw-2">mut </span>uid = <span class="self">self</span>.records_commitment.num_leaves;
+        <span class="kw">let </span><span class="kw-2">mut </span>builder =
+            FilledMTBuilder::from_frontier(<span class="kw-2">&amp;</span><span class="self">self</span>.records_commitment, <span class="kw-2">&amp;</span><span class="self">self</span>.records_frontier)
+                .ok_or_else(|| ValidationError::Failed {
+                    msg: <span class="string">&quot;failed to restore Merkle tree from frontier&quot;</span>.to_string(),
                 })<span class="question-mark">?</span>;
-        <span class="kw">for</span> <span class="ident">txn</span> <span class="kw">in</span> <span class="ident">block</span>.<span class="ident">transactions</span> {
-            <span class="kw">for</span> <span class="ident">comm</span> <span class="kw">in</span> <span class="ident">txn</span>.<span class="ident">output_commitments</span>() {
-                <span class="ident">builder</span>.<span class="ident">push</span>(<span class="ident">comm</span>.<span class="ident">to_field_element</span>());
-                <span class="ident">uids</span>.<span class="ident">push</span>(<span class="ident">uid</span>);
-                <span class="ident">uid</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="kw">for </span>txn <span class="kw">in </span>block.transactions {
+            <span class="kw">for </span>comm <span class="kw">in </span>txn.output_commitments() {
+                builder.push(comm.to_field_element());
+                uids.push(uid);
+                uid += <span class="number">1</span>;
             }
         }
-        <span class="kw">let</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">build</span>();
+        <span class="kw">let </span>records = builder.build();
 
-        <span class="self">self</span>.<span class="ident">block_height</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="self">self</span>.<span class="ident">records_commitment</span> <span class="op">=</span> <span class="ident">records</span>.<span class="ident">commitment</span>();
-        <span class="self">self</span>.<span class="ident">records_frontier</span> <span class="op">=</span> <span class="ident">records</span>.<span class="ident">frontier</span>();
+        <span class="self">self</span>.block_height += <span class="number">1</span>;
+        <span class="self">self</span>.records_commitment = records.commitment();
+        <span class="self">self</span>.records_frontier = records.frontier();
 
-        <span class="prelude-val">Ok</span>((<span class="ident">uids</span>, <span class="ident">records</span>))
+        <span class="prelude-val">Ok</span>((uids, records))
     }
 }
 
-<span class="doccomment">/// A minimal CAP ledger.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The ledger implementation is parameterized on the height of Merkle trees that it will be used</span>
-<span class="doccomment">/// with. Test code can use this to set the height very small (e.g. `LedgerWithHeight&lt;5&gt;`) to speed</span>
-<span class="doccomment">/// up tests, while code that is trying to closely simulate a production environment can set a more</span>
-<span class="doccomment">/// realistic height.</span>
-<span class="comment">// The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test</span>
-<span class="comment">// environments or environments where we have a secure construction of the SRS.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span>;
+<span class="doccomment">/// A minimal CAP ledger.
+///
+/// The ledger implementation is parameterized on the height of Merkle trees that it will be used
+/// with. Test code can use this to set the height very small (e.g. `LedgerWithHeight&lt;5&gt;`) to speed
+/// up tests, while code that is trying to closely simulate a production environment can set a more
+/// realistic height.
+</span><span class="comment">// The `Ledger` implementation includes a constructor for a CAP SRS, so we only enable it in test
+// environments or environments where we have a secure construction of the SRS.
+</span><span class="attribute">#[cfg(any(test, feature = <span class="string">&quot;testing&quot;</span>, feature = <span class="string">&quot;secure-srs&quot;</span>))]
+#[derive(Clone, Copy, Debug)]
+</span><span class="kw">pub struct </span>LedgerWithHeight&lt;<span class="kw">const </span>H: u8&gt;;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
-<span class="macro">lazy_static!</span> {
-    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">CAP_UNIVERSAL_PARAM</span>: <span class="ident">UniversalParam</span> <span class="op">=</span> <span class="ident">jf_cap::proof::universal_setup_for_staging</span>(
-        <span class="number">2u64</span>.<span class="ident">pow</span>(<span class="number">17</span>) <span class="kw">as</span> <span class="ident">usize</span>,
-        <span class="kw-2">&amp;mut</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">0u8</span>; <span class="number">32</span>])
+<span class="attribute">#[cfg(any(test, feature = <span class="string">&quot;testing&quot;</span>, feature = <span class="string">&quot;secure-srs&quot;</span>))]
+</span><span class="macro">lazy_static! </span>{
+    <span class="kw">static </span><span class="kw-2">ref </span>CAP_UNIVERSAL_PARAM: UniversalParam = jf_cap::proof::universal_setup_for_staging(
+        <span class="number">2u64</span>.pow(<span class="number">17</span>) <span class="kw">as </span>usize,
+        <span class="kw-2">&amp;mut </span>ChaChaRng::from_seed([<span class="number">0u8</span>; <span class="number">32</span>])
     )
-    .<span class="ident">unwrap</span>();
+    .unwrap();
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure-srs&quot;</span>))]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">H</span>: <span class="ident">u8</span><span class="op">&gt;</span> <span class="ident">traits::Ledger</span> <span class="kw">for</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Validator</span> <span class="op">=</span> <span class="ident">Validator</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>;
+<span class="attribute">#[cfg(any(test, feature = <span class="string">&quot;testing&quot;</span>, feature = <span class="string">&quot;secure-srs&quot;</span>))]
+</span><span class="kw">impl</span>&lt;<span class="kw">const </span>H: u8&gt; traits::Ledger <span class="kw">for </span>LedgerWithHeight&lt;H&gt; {
+    <span class="kw">type </span>Validator = Validator&lt;H&gt;;
 
-    <span class="kw">fn</span> <span class="ident">name</span>() -&gt; <span class="ident">String</span> {
-        <span class="ident">String::from</span>(<span class="string">&quot;Minimal CAP Ledger&quot;</span>)
+    <span class="kw">fn </span>name() -&gt; String {
+        String::from(<span class="string">&quot;Minimal CAP Ledger&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">merkle_height</span>() -&gt; <span class="ident">u8</span> {
-        <span class="ident">H</span>
+    <span class="kw">fn </span>merkle_height() -&gt; u8 {
+        H
     }
 
-    <span class="kw">fn</span> <span class="ident">record_root_history</span>() -&gt; <span class="ident">usize</span> {
-        <span class="number">1</span>
-    }
+    <span class="kw">fn </span>record_root_history() -&gt; usize {
+        <span class="number">1
+    </span>}
 
-    <span class="kw">fn</span> <span class="ident">srs</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">UniversalParam</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">CAP_UNIVERSAL_PARAM</span>
+    <span class="kw">fn </span>srs() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>UniversalParam {
+        <span class="kw-2">&amp;</span>CAP_UNIVERSAL_PARAM
     }
 }
 
-<span class="doccomment">/// The default ledger height is 5, for testing.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DEFAULT_MERKLE_HEIGHT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">5</span>;
+<span class="doccomment">/// The default ledger height is 5, for testing.
+</span><span class="attribute">#[cfg(any(test, feature = <span class="string">&quot;testing&quot;</span>))]
+</span><span class="kw">pub const </span>DEFAULT_MERKLE_HEIGHT: u8 = <span class="number">5</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;testing&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Ledger</span> <span class="op">=</span> <span class="ident">LedgerWithHeight</span><span class="op">&lt;</span><span class="ident">DEFAULT_MERKLE_HEIGHT</span><span class="op">&gt;</span>;
+<span class="attribute">#[cfg(any(test, feature = <span class="string">&quot;testing&quot;</span>))]
+</span><span class="kw">pub type </span>Ledger = LedgerWithHeight&lt;DEFAULT_MERKLE_HEIGHT&gt;;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::traits</span>::{
-        <span class="ident">Block</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Ledger</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">NullifierSet</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Transaction</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Validator</span> <span class="kw">as</span> <span class="kw">_</span>,
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::traits::{
+        Block <span class="kw">as _</span>, Ledger <span class="kw">as _</span>, NullifierSet <span class="kw">as _</span>, Transaction <span class="kw">as _</span>, Validator <span class="kw">as _</span>,
     };
-    <span class="kw">use</span> <span class="ident">jf_cap</span>::{
-        <span class="ident">freeze</span>::{<span class="ident">FreezeNote</span>, <span class="ident">FreezeNoteInput</span>},
-        <span class="ident">keys</span>::{<span class="ident">FreezerKeyPair</span>, <span class="ident">UserKeyPair</span>},
-        <span class="ident">structs</span>::{<span class="ident">AssetPolicy</span>, <span class="ident">FeeInput</span>, <span class="ident">FreezeFlag</span>, <span class="ident">RecordCommitment</span>, <span class="ident">RecordOpening</span>, <span class="ident">TxnFeeInfo</span>},
-        <span class="ident">transfer::TransferNoteInput</span>,
-        <span class="ident">AccMemberWitness</span>, <span class="ident">MerkleTree</span>,
+    <span class="kw">use </span>jf_cap::{
+        freeze::{FreezeNote, FreezeNoteInput},
+        keys::{FreezerKeyPair, UserKeyPair},
+        structs::{AssetPolicy, FeeInput, FreezeFlag, RecordCommitment, RecordOpening, TxnFeeInfo},
+        transfer::TransferNoteInput,
+        AccMemberWitness, MerkleTree,
     };
-    <span class="kw">use</span> <span class="ident">rand_chacha</span>::{<span class="ident">rand_core::SeedableRng</span>, <span class="ident">ChaChaRng</span>};
+    <span class="kw">use </span>rand_chacha::{rand_core::SeedableRng, ChaChaRng};
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_nullifier_set</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">42u8</span>; <span class="number">32</span>]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_nullifier_set() {
+        <span class="kw">let </span><span class="kw-2">mut </span>rng = ChaChaRng::from_seed([<span class="number">42u8</span>; <span class="number">32</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">NullifierSet::default</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">len</span>(), <span class="number">0</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>s = NullifierSet::default();
+        <span class="macro">assert_eq!</span>(s.len(), <span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">Nullifier::random_for_test</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="ident">s</span>.<span class="ident">multi_insert</span>(<span class="kw-2">&amp;</span>[(<span class="ident">n</span>, ())]).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-        <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>.<span class="ident">into</span>()));
+        <span class="kw">let </span>n = Nullifier::random_for_test(<span class="kw-2">&amp;mut </span>rng);
+        s.multi_insert(<span class="kw-2">&amp;</span>[(n, ())]).unwrap();
+        <span class="macro">assert_eq!</span>(s.len(), <span class="number">1</span>);
+        <span class="macro">assert!</span>(s.contains(<span class="kw-2">&amp;</span>n.into()));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_transaction</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">42u8</span>; <span class="number">32</span>]);
-        <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">UserKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">freezer_key</span> <span class="op">=</span> <span class="ident">FreezerKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">viewer_key</span> <span class="op">=</span> <span class="ident">ViewerKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">srs</span> <span class="op">=</span> <span class="ident">Ledger::srs</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_transaction() {
+        <span class="kw">let </span><span class="kw-2">mut </span>rng = ChaChaRng::from_seed([<span class="number">42u8</span>; <span class="number">32</span>]);
+        <span class="kw">let </span>key = UserKeyPair::generate(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>freezer_key = FreezerKeyPair::generate(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>viewer_key = ViewerKeyPair::generate(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>srs = Ledger::srs();
 
-        <span class="kw">let</span> <span class="ident">xfr_proving_key</span> <span class="op">=</span>
-            <span class="ident">jf_cap::proof::transfer::preprocess</span>(<span class="ident">srs</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>xfr_proving_key =
+            jf_cap::proof::transfer::preprocess(srs, <span class="number">2</span>, <span class="number">2</span>, Ledger::merkle_height())
+                .unwrap()
                 .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>mint_proving_key = jf_cap::proof::mint::preprocess(srs, Ledger::merkle_height())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">freeze_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::freeze::preprocess</span>(<span class="ident">srs</span>, <span class="number">2</span>, <span class="ident">Ledger::merkle_height</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>freeze_proving_key = jf_cap::proof::freeze::preprocess(srs, <span class="number">2</span>, Ledger::merkle_height())
+            .unwrap()
             .<span class="number">0</span>;
 
-        <span class="comment">// Set up a ledger. For simplicity we will use the same ledger state and fee input for each</span>
-        <span class="comment">// transaction (mint, transfer, and freeze);</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">MerkleTree::new</span>(<span class="ident">Ledger::merkle_height</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">fee_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">AssetDefinition::native</span>(),
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="comment">// Set up a ledger. For simplicity we will use the same ledger state and fee input for each
+        // transaction (mint, transfer, and freeze);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>records = MerkleTree::new(Ledger::merkle_height()).unwrap();
+        <span class="kw">let </span>fee_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            AssetDefinition::native(),
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">fee_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">fee_ro</span>);
-        <span class="ident">records</span>.<span class="ident">push</span>(<span class="ident">fee_comm</span>.<span class="ident">to_field_element</span>());
-        <span class="kw">let</span> <span class="ident">fee_nullifier</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">nullify</span>(
-            <span class="ident">AssetDefinition::native</span>().<span class="ident">policy_ref</span>().<span class="ident">freezer_pub_key</span>(),
+        <span class="kw">let </span>fee_comm = RecordCommitment::from(<span class="kw-2">&amp;</span>fee_ro);
+        records.push(fee_comm.to_field_element());
+        <span class="kw">let </span>fee_nullifier = key.nullify(
+            AssetDefinition::native().policy_ref().freezer_pub_key(),
             <span class="number">0</span>,
-            <span class="kw-2">&amp;</span><span class="ident">fee_comm</span>,
+            <span class="kw-2">&amp;</span>fee_comm,
         );
 
-        <span class="comment">// To freeze and view, we need a record of a non-native asset type.</span>
-        <span class="kw">let</span> (<span class="ident">asset_code</span>, <span class="ident">seed</span>) <span class="op">=</span> <span class="ident">AssetCode::random</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">policy</span> <span class="op">=</span> <span class="ident">AssetPolicy::default</span>()
-            .<span class="ident">set_freezer_pub_key</span>(<span class="ident">freezer_key</span>.<span class="ident">pub_key</span>())
-            .<span class="ident">set_viewer_pub_key</span>(<span class="ident">viewer_key</span>.<span class="ident">pub_key</span>())
-            .<span class="ident">reveal_user_address</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">reveal_amount</span>()
-            .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">asset_def</span> <span class="op">=</span> <span class="ident">AssetDefinition::new</span>(<span class="ident">asset_code</span>, <span class="ident">policy</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">asset_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">asset_def</span>.<span class="ident">clone</span>(),
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="comment">// To freeze and view, we need a record of a non-native asset type.
+        </span><span class="kw">let </span>(asset_code, seed) = AssetCode::random(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>policy = AssetPolicy::default()
+            .set_freezer_pub_key(freezer_key.pub_key())
+            .set_viewer_pub_key(viewer_key.pub_key())
+            .reveal_user_address()
+            .unwrap()
+            .reveal_amount()
+            .unwrap();
+        <span class="kw">let </span>asset_def = AssetDefinition::new(asset_code, policy).unwrap();
+        <span class="kw">let </span>asset_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            asset_def.clone(),
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">asset_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">asset_ro</span>);
-        <span class="ident">records</span>.<span class="ident">push</span>(<span class="ident">asset_comm</span>.<span class="ident">to_field_element</span>());
-        <span class="kw">let</span> <span class="ident">asset_nullifier</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">nullify</span>(<span class="kw-2">&amp;</span><span class="ident">freezer_key</span>.<span class="ident">pub_key</span>(), <span class="number">1</span>, <span class="kw-2">&amp;</span><span class="ident">asset_comm</span>);
+        <span class="kw">let </span>asset_comm = RecordCommitment::from(<span class="kw-2">&amp;</span>asset_ro);
+        records.push(asset_comm.to_field_element());
+        <span class="kw">let </span>asset_nullifier = key.nullify(<span class="kw-2">&amp;</span>freezer_key.pub_key(), <span class="number">1</span>, <span class="kw-2">&amp;</span>asset_comm);
 
-        <span class="comment">// Now `records` is in the state we are going to use for the tests. We can look up Merkle</span>
-        <span class="comment">// proofs as needed.</span>
-        <span class="kw">let</span> <span class="ident">fee_input</span> <span class="op">=</span> <span class="ident">FeeInput</span> {
-            <span class="ident">ro</span>: <span class="ident">fee_ro</span>,
-            <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">0</span>)
-                .<span class="ident">expect_ok</span>()
-                .<span class="ident">unwrap</span>()
+        <span class="comment">// Now `records` is in the state we are going to use for the tests. We can look up Merkle
+        // proofs as needed.
+        </span><span class="kw">let </span>fee_input = FeeInput {
+            ro: fee_ro,
+            acc_member_witness: AccMemberWitness::lookup_from_tree(<span class="kw-2">&amp;</span>records, <span class="number">0</span>)
+                .expect_ok()
+                .unwrap()
                 .<span class="number">1</span>,
-            <span class="ident">owner_keypair</span>: <span class="kw-2">&amp;</span><span class="ident">key</span>,
+            owner_keypair: <span class="kw-2">&amp;</span>key,
         };
 
-        <span class="comment">// Generate one transaction of each type.</span>
-        <span class="kw">let</span> <span class="ident">mint_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">asset_def</span>.<span class="ident">clone</span>(),
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="comment">// Generate one transaction of each type.
+        </span><span class="kw">let </span>mint_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            asset_def.clone(),
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">mint_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">mint_ro</span>);
-        <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>mint_comm = RecordCommitment::from(<span class="kw-2">&amp;</span>mint_ro);
+        <span class="kw">let </span>fee_info = TxnFeeInfo::new(<span class="kw-2">&amp;mut </span>rng, fee_input.clone(), <span class="number">1u8</span>.into())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span>
-            <span class="ident">MintNote::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">mint_ro</span>, <span class="ident">seed</span>, <span class="kw-2">&amp;</span>[], <span class="ident">fee_info</span>, <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>)
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>mint_note =
+            MintNote::generate(<span class="kw-2">&amp;mut </span>rng, mint_ro, seed, <span class="kw-2">&amp;</span>[], fee_info, <span class="kw-2">&amp;</span>mint_proving_key)
+                .unwrap()
                 .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint</span> <span class="op">=</span> <span class="ident">TransactionNote::Mint</span>(<span class="ident">Box::new</span>(<span class="ident">mint_note</span>.<span class="ident">clone</span>()));
+        <span class="kw">let </span>mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
-        <span class="kw">let</span> <span class="ident">xfr_inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">TransferNoteInput</span> {
-            <span class="ident">ro</span>: <span class="ident">asset_ro</span>.<span class="ident">clone</span>(),
-            <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">1</span>)
-                .<span class="ident">expect_ok</span>()
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>xfr_inputs = <span class="macro">vec!</span>[TransferNoteInput {
+            ro: asset_ro.clone(),
+            acc_member_witness: AccMemberWitness::lookup_from_tree(<span class="kw-2">&amp;</span>records, <span class="number">1</span>)
+                .expect_ok()
+                .unwrap()
                 .<span class="number">1</span>,
-            <span class="ident">owner_keypair</span>: <span class="kw-2">&amp;</span><span class="ident">key</span>,
-            <span class="ident">cred</span>: <span class="prelude-val">None</span>,
+            owner_keypair: <span class="kw-2">&amp;</span>key,
+            cred: <span class="prelude-val">None</span>,
         }];
-        <span class="kw">let</span> <span class="ident">xfr_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">asset_def</span>.<span class="ident">clone</span>(),
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="kw">let </span>xfr_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            asset_def.clone(),
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">xfr_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">xfr_ro</span>);
-        <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>xfr_comm = RecordCommitment::from(<span class="kw-2">&amp;</span>xfr_ro);
+        <span class="kw">let </span>fee_info = TxnFeeInfo::new(<span class="kw-2">&amp;mut </span>rng, fee_input.clone(), <span class="number">1u8</span>.into())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">xfr_note</span> <span class="op">=</span> <span class="ident">TransferNote::generate_non_native</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="ident">xfr_inputs</span>,
-            <span class="kw-2">&amp;</span>[<span class="ident">xfr_ro</span>],
-            <span class="ident">fee_info</span>,
-            <span class="number">2u64</span>.<span class="ident">pow</span>(<span class="ident">jf_cap::constants::MAX_TIMESTAMP_LEN</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">-</span> <span class="number">1</span>,
-            <span class="kw-2">&amp;</span><span class="ident">xfr_proving_key</span>,
+        <span class="kw">let </span>xfr_note = TransferNote::generate_non_native(
+            <span class="kw-2">&amp;mut </span>rng,
+            xfr_inputs,
+            <span class="kw-2">&amp;</span>[xfr_ro],
+            fee_info,
+            <span class="number">2u64</span>.pow(jf_cap::constants::MAX_TIMESTAMP_LEN <span class="kw">as </span>u32) - <span class="number">1</span>,
+            <span class="kw-2">&amp;</span>xfr_proving_key,
             <span class="macro">vec!</span>[],
         )
-        .<span class="ident">unwrap</span>()
+        .unwrap()
         .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">xfr</span> <span class="op">=</span> <span class="ident">TransactionNote::Transfer</span>(<span class="ident">Box::new</span>(<span class="ident">xfr_note</span>.<span class="ident">clone</span>()));
+        <span class="kw">let </span>xfr = TransactionNote::Transfer(Box::new(xfr_note.clone()));
 
-        <span class="comment">// To freeze, we need a record of a non-native asset type.</span>
-        <span class="kw">let</span> <span class="ident">freeze_inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">FreezeNoteInput</span> {
-            <span class="ident">ro</span>: <span class="ident">asset_ro</span>,
-            <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">1</span>)
-                .<span class="ident">expect_ok</span>()
-                .<span class="ident">unwrap</span>()
+        <span class="comment">// To freeze, we need a record of a non-native asset type.
+        </span><span class="kw">let </span>freeze_inputs = <span class="macro">vec!</span>[FreezeNoteInput {
+            ro: asset_ro,
+            acc_member_witness: AccMemberWitness::lookup_from_tree(<span class="kw-2">&amp;</span>records, <span class="number">1</span>)
+                .expect_ok()
+                .unwrap()
                 .<span class="number">1</span>,
-            <span class="ident">keypair</span>: <span class="kw-2">&amp;</span><span class="ident">freezer_key</span>,
+            keypair: <span class="kw-2">&amp;</span>freezer_key,
         }];
-        <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>fee_info = TxnFeeInfo::new(<span class="kw-2">&amp;mut </span>rng, fee_input.clone(), <span class="number">1u8</span>.into())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">freeze_note</span> <span class="op">=</span>
-            <span class="ident">FreezeNote::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">freeze_inputs</span>, <span class="ident">fee_info</span>, <span class="kw-2">&amp;</span><span class="ident">freeze_proving_key</span>)
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>freeze_note =
+            FreezeNote::generate(<span class="kw-2">&amp;mut </span>rng, freeze_inputs, fee_info, <span class="kw-2">&amp;</span>freeze_proving_key)
+                .unwrap()
                 .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">freeze</span> <span class="op">=</span> <span class="ident">TransactionNote::Freeze</span>(<span class="ident">Box::new</span>(<span class="ident">freeze_note</span>.<span class="ident">clone</span>()));
+        <span class="kw">let </span>freeze = TransactionNote::Freeze(Box::new(freeze_note.clone()));
 
-        <span class="comment">// Test Transaction interface.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">mint</span>.<span class="ident">kind</span>(), <span class="ident">TransactionKind::Mint</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">mint</span>.<span class="ident">output_len</span>(), <span class="number">2</span>);
+        <span class="comment">// Test Transaction interface.
+        </span><span class="macro">assert_eq!</span>(mint.kind(), TransactionKind::Mint);
+        <span class="macro">assert_eq!</span>(mint.output_len(), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">mint</span>.<span class="ident">output_commitments</span>(),
-            <span class="macro">vec!</span>[<span class="ident">mint_note</span>.<span class="ident">chg_comm</span>, <span class="ident">mint_comm</span>]
+            mint.output_commitments(),
+            <span class="macro">vec!</span>[mint_note.chg_comm, mint_comm]
         );
-        <span class="macro">assert_eq!</span>(<span class="ident">mint</span>.<span class="ident">input_nullifiers</span>(), <span class="macro">vec!</span>[<span class="ident">fee_nullifier</span>]);
+        <span class="macro">assert_eq!</span>(mint.input_nullifiers(), <span class="macro">vec!</span>[fee_nullifier]);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr</span>.<span class="ident">kind</span>(), <span class="ident">TransactionKind::Send</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr</span>.<span class="ident">output_len</span>(), <span class="number">2</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr</span>.<span class="ident">output_commitments</span>(), <span class="ident">xfr_note</span>.<span class="ident">output_commitments</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr</span>.<span class="ident">output_commitments</span>()[<span class="number">1</span>], <span class="ident">xfr_comm</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr</span>.<span class="ident">input_nullifiers</span>(), <span class="macro">vec!</span>[<span class="ident">fee_nullifier</span>, <span class="ident">asset_nullifier</span>]);
+        <span class="macro">assert_eq!</span>(xfr.kind(), TransactionKind::Send);
+        <span class="macro">assert_eq!</span>(xfr.output_len(), <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(xfr.output_commitments(), xfr_note.output_commitments);
+        <span class="macro">assert_eq!</span>(xfr.output_commitments()[<span class="number">1</span>], xfr_comm);
+        <span class="macro">assert_eq!</span>(xfr.input_nullifiers(), <span class="macro">vec!</span>[fee_nullifier, asset_nullifier]);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">freeze</span>.<span class="ident">kind</span>(), <span class="ident">TransactionKind::Freeze</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">freeze</span>.<span class="ident">output_len</span>(), <span class="number">2</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">freeze</span>.<span class="ident">output_commitments</span>(), <span class="ident">freeze_note</span>.<span class="ident">output_commitments</span>);
+        <span class="macro">assert_eq!</span>(freeze.kind(), TransactionKind::Freeze);
+        <span class="macro">assert_eq!</span>(freeze.output_len(), <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(freeze.output_commitments(), freeze_note.output_commitments);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">freeze</span>.<span class="ident">input_nullifiers</span>(),
+            freeze.input_nullifiers(),
             <span class="macro">vec!</span>[
-                <span class="ident">fee_nullifier</span>,
-                <span class="ident">key</span>.<span class="ident">nullify</span>(<span class="kw-2">&amp;</span><span class="ident">freezer_key</span>.<span class="ident">pub_key</span>(), <span class="number">1</span>, <span class="kw-2">&amp;</span><span class="ident">asset_comm</span>)
+                fee_nullifier,
+                key.nullify(<span class="kw-2">&amp;</span>freezer_key.pub_key(), <span class="number">1</span>, <span class="kw-2">&amp;</span>asset_comm)
             ]
         );
 
-        <span class="comment">// Check that each transaction has a different hash.</span>
-        <span class="macro">assert_ne!</span>(
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">mint</span>),
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">xfr</span>)
+        <span class="comment">// Check that each transaction has a different hash.
+        </span><span class="macro">assert_ne!</span>(
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>mint),
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>xfr)
         );
         <span class="macro">assert_ne!</span>(
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">xfr</span>),
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">freeze</span>)
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>xfr),
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>freeze)
         );
         <span class="macro">assert_ne!</span>(
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">freeze</span>),
-            <span class="ident">traits::Transaction::hash</span>(<span class="kw-2">&amp;</span><span class="ident">mint</span>)
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>freeze),
+            traits::Transaction::hash(<span class="kw-2">&amp;</span>mint)
         );
 
-        <span class="comment">// Check viewing interface.</span>
-        <span class="kw">let</span> <span class="ident">viewable_assets</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">asset_code</span>, <span class="ident">asset_def</span>.<span class="ident">clone</span>())].<span class="ident">into_iter</span>().<span class="ident">collect</span>();
-        <span class="kw">let</span> <span class="ident">viewing_keys</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="ident">viewer_key</span>.<span class="ident">pub_key</span>(), <span class="ident">viewer_key</span>)]
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">collect</span>();
+        <span class="comment">// Check viewing interface.
+        </span><span class="kw">let </span>viewable_assets = <span class="macro">vec!</span>[(asset_code, asset_def.clone())].into_iter().collect();
+        <span class="kw">let </span>viewing_keys = <span class="macro">vec!</span>[(viewer_key.pub_key(), viewer_key)]
+            .into_iter()
+            .collect();
 
-        <span class="kw">let</span> <span class="ident">mint_memo</span> <span class="op">=</span> <span class="ident">mint</span>
-            .<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>)
-            .<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">asset</span>, <span class="ident">asset_def</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">inputs</span>, <span class="macro">vec!</span>[]);
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">asset_code</span>, <span class="ident">asset_code</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">user_address</span>, <span class="prelude-val">Some</span>(<span class="ident">key</span>.<span class="ident">address</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">mint_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">amount</span>, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.<span class="ident">into</span>()));
-        <span class="kw">let</span> <span class="ident">xfr_memo</span> <span class="op">=</span> <span class="ident">xfr</span>
-            .<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>)
-            .<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">asset</span>, <span class="ident">asset_def</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>[<span class="number">0</span>].<span class="ident">asset_code</span>, <span class="ident">asset_code</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>[<span class="number">0</span>].<span class="ident">user_address</span>, <span class="prelude-val">Some</span>(<span class="ident">key</span>.<span class="ident">address</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">inputs</span>[<span class="number">0</span>].<span class="ident">amount</span>, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.<span class="ident">into</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">outputs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">asset_code</span>, <span class="ident">asset_code</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">user_address</span>, <span class="prelude-val">Some</span>(<span class="ident">key</span>.<span class="ident">address</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">xfr_memo</span>.<span class="ident">outputs</span>[<span class="number">0</span>].<span class="ident">amount</span>, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.<span class="ident">into</span>()));
+        <span class="kw">let </span>mint_memo = mint
+            .open_viewing_memo(<span class="kw-2">&amp;</span>viewable_assets, <span class="kw-2">&amp;</span>viewing_keys)
+            .unwrap();
+        <span class="macro">assert_eq!</span>(mint_memo.asset, asset_def);
+        <span class="macro">assert_eq!</span>(mint_memo.inputs, <span class="macro">vec!</span>[]);
+        <span class="macro">assert_eq!</span>(mint_memo.outputs.len(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(mint_memo.outputs[<span class="number">0</span>].asset_code, asset_code);
+        <span class="macro">assert_eq!</span>(mint_memo.outputs[<span class="number">0</span>].user_address, <span class="prelude-val">Some</span>(key.address()));
+        <span class="macro">assert_eq!</span>(mint_memo.outputs[<span class="number">0</span>].amount, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.into()));
+        <span class="kw">let </span>xfr_memo = xfr
+            .open_viewing_memo(<span class="kw-2">&amp;</span>viewable_assets, <span class="kw-2">&amp;</span>viewing_keys)
+            .unwrap();
+        <span class="macro">assert_eq!</span>(xfr_memo.asset, asset_def);
+        <span class="macro">assert_eq!</span>(xfr_memo.inputs.len(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(xfr_memo.inputs[<span class="number">0</span>].asset_code, asset_code);
+        <span class="macro">assert_eq!</span>(xfr_memo.inputs[<span class="number">0</span>].user_address, <span class="prelude-val">Some</span>(key.address()));
+        <span class="macro">assert_eq!</span>(xfr_memo.inputs[<span class="number">0</span>].amount, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.into()));
+        <span class="macro">assert_eq!</span>(xfr_memo.outputs.len(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(xfr_memo.outputs[<span class="number">0</span>].asset_code, asset_code);
+        <span class="macro">assert_eq!</span>(xfr_memo.outputs[<span class="number">0</span>].user_address, <span class="prelude-val">Some</span>(key.address()));
+        <span class="macro">assert_eq!</span>(xfr_memo.outputs[<span class="number">0</span>].amount, <span class="prelude-val">Some</span>(<span class="number">1u8</span>.into()));
 
         <span class="macro">assert_eq!</span>(
-            <span class="ident">freeze</span>.<span class="ident">open_viewing_memo</span>(<span class="kw-2">&amp;</span><span class="ident">viewable_assets</span>, <span class="kw-2">&amp;</span><span class="ident">viewing_keys</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">ViewingError::NoViewingMemos</span>)
+            freeze.open_viewing_memo(<span class="kw-2">&amp;</span>viewable_assets, <span class="kw-2">&amp;</span>viewing_keys),
+            <span class="prelude-val">Err</span>(ViewingError::NoViewingMemos)
         );
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_validator</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">Validator</span>::<span class="op">&lt;</span><span class="ident">DEFAULT_MERKLE_HEIGHT</span><span class="op">&gt;</span><span class="ident">::default</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">block_height</span>(), <span class="number">0</span>);
-        <span class="kw">let</span> <span class="ident">initial_commit</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">commit</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_validator() {
+        <span class="kw">let </span><span class="kw-2">mut </span>validator = Validator::&lt;DEFAULT_MERKLE_HEIGHT&gt;::default();
+        <span class="macro">assert_eq!</span>(validator.block_height(), <span class="number">0</span>);
+        <span class="kw">let </span>initial_commit = validator.commit();
 
-        <span class="comment">// Build a block to apply. For this we need a transaction note. It doesn&#39;t have to be valid, but</span>
-        <span class="comment">// the easiest way to build a transaction note requires it to be valid, so we&#39;ll set up a whole</span>
-        <span class="comment">// mock ledger.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">ChaChaRng::from_seed</span>([<span class="number">42u8</span>; <span class="number">32</span>]);
-        <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">UserKeyPair::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">srs</span> <span class="op">=</span> <span class="ident">Ledger::srs</span>();
-        <span class="kw">let</span> <span class="ident">mint_proving_key</span> <span class="op">=</span> <span class="ident">jf_cap::proof::mint::preprocess</span>(<span class="ident">srs</span>, <span class="ident">Ledger::merkle_height</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="comment">// Build a block to apply. For this we need a transaction note. It doesn&#39;t have to be valid, but
+        // the easiest way to build a transaction note requires it to be valid, so we&#39;ll set up a whole
+        // mock ledger.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>rng = ChaChaRng::from_seed([<span class="number">42u8</span>; <span class="number">32</span>]);
+        <span class="kw">let </span>key = UserKeyPair::generate(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>srs = Ledger::srs();
+        <span class="kw">let </span>mint_proving_key = jf_cap::proof::mint::preprocess(srs, Ledger::merkle_height())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">records</span> <span class="op">=</span> <span class="ident">MerkleTree::new</span>(<span class="ident">Ledger::merkle_height</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">fee_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">AssetDefinition::native</span>(),
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>records = MerkleTree::new(Ledger::merkle_height()).unwrap();
+        <span class="kw">let </span>fee_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            AssetDefinition::native(),
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">fee_comm</span> <span class="op">=</span> <span class="ident">RecordCommitment::from</span>(<span class="kw-2">&amp;</span><span class="ident">fee_ro</span>);
-        <span class="ident">records</span>.<span class="ident">push</span>(<span class="ident">fee_comm</span>.<span class="ident">to_field_element</span>());
-        <span class="kw">let</span> <span class="ident">fee_input</span> <span class="op">=</span> <span class="ident">FeeInput</span> {
-            <span class="ident">ro</span>: <span class="ident">fee_ro</span>,
-            <span class="ident">acc_member_witness</span>: <span class="ident">AccMemberWitness::lookup_from_tree</span>(<span class="kw-2">&amp;</span><span class="ident">records</span>, <span class="number">0</span>)
-                .<span class="ident">expect_ok</span>()
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>fee_comm = RecordCommitment::from(<span class="kw-2">&amp;</span>fee_ro);
+        records.push(fee_comm.to_field_element());
+        <span class="kw">let </span>fee_input = FeeInput {
+            ro: fee_ro,
+            acc_member_witness: AccMemberWitness::lookup_from_tree(<span class="kw-2">&amp;</span>records, <span class="number">0</span>)
+                .expect_ok()
+                .unwrap()
                 .<span class="number">1</span>,
-            <span class="ident">owner_keypair</span>: <span class="kw-2">&amp;</span><span class="ident">key</span>,
+            owner_keypair: <span class="kw-2">&amp;</span>key,
         };
 
-        <span class="comment">// Generate a mint transaction.</span>
-        <span class="kw">let</span> (<span class="ident">asset_code</span>, <span class="ident">seed</span>) <span class="op">=</span> <span class="ident">AssetCode::random</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>);
-        <span class="kw">let</span> <span class="ident">asset_def</span> <span class="op">=</span> <span class="ident">AssetDefinition::new</span>(<span class="ident">asset_code</span>, <span class="ident">AssetPolicy::default</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">mint_ro</span> <span class="op">=</span> <span class="ident">RecordOpening::new</span>(
-            <span class="kw-2">&amp;mut</span> <span class="ident">rng</span>,
-            <span class="number">1u8</span>.<span class="ident">into</span>(),
-            <span class="ident">asset_def</span>,
-            <span class="ident">key</span>.<span class="ident">pub_key</span>(),
-            <span class="ident">FreezeFlag::Unfrozen</span>,
+        <span class="comment">// Generate a mint transaction.
+        </span><span class="kw">let </span>(asset_code, seed) = AssetCode::random(<span class="kw-2">&amp;mut </span>rng);
+        <span class="kw">let </span>asset_def = AssetDefinition::new(asset_code, AssetPolicy::default()).unwrap();
+        <span class="kw">let </span>mint_ro = RecordOpening::new(
+            <span class="kw-2">&amp;mut </span>rng,
+            <span class="number">1u8</span>.into(),
+            asset_def,
+            key.pub_key(),
+            FreezeFlag::Unfrozen,
         );
-        <span class="kw">let</span> <span class="ident">fee_info</span> <span class="op">=</span> <span class="ident">TxnFeeInfo::new</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">fee_input</span>.<span class="ident">clone</span>(), <span class="number">1u8</span>.<span class="ident">into</span>())
-            .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>fee_info = TxnFeeInfo::new(<span class="kw-2">&amp;mut </span>rng, fee_input.clone(), <span class="number">1u8</span>.into())
+            .unwrap()
             .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint_note</span> <span class="op">=</span>
-            <span class="ident">MintNote::generate</span>(<span class="kw-2">&amp;mut</span> <span class="ident">rng</span>, <span class="ident">mint_ro</span>, <span class="ident">seed</span>, <span class="kw-2">&amp;</span>[], <span class="ident">fee_info</span>, <span class="kw-2">&amp;</span><span class="ident">mint_proving_key</span>)
-                .<span class="ident">unwrap</span>()
+        <span class="kw">let </span>mint_note =
+            MintNote::generate(<span class="kw-2">&amp;mut </span>rng, mint_ro, seed, <span class="kw-2">&amp;</span>[], fee_info, <span class="kw-2">&amp;</span>mint_proving_key)
+                .unwrap()
                 .<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">mint</span> <span class="op">=</span> <span class="ident">TransactionNote::Mint</span>(<span class="ident">Box::new</span>(<span class="ident">mint_note</span>.<span class="ident">clone</span>()));
+        <span class="kw">let </span>mint = TransactionNote::Mint(Box::new(mint_note.clone()));
 
-        <span class="comment">// Apply a block and check that the correct UIDs and Merkle paths are computed.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">next_block</span>();
-        <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>, ()).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">uids</span>, <span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>]);
-        <span class="macro">assert_eq!</span>(<span class="ident">records</span>.<span class="ident">num_leaves</span>(), <span class="number">2</span>);
+        <span class="comment">// Apply a block and check that the correct UIDs and Merkle paths are computed.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>block = validator.next_block();
+        block.add_transaction(mint.clone()).unwrap();
+        <span class="kw">let </span>(uids, records) = validator.validate_and_apply(block, ()).unwrap();
+        <span class="macro">assert_eq!</span>(uids, <span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>]);
+        <span class="macro">assert_eq!</span>(records.num_leaves(), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">records</span>.<span class="ident">get_leaf</span>(<span class="number">0</span>).<span class="ident">expect_ok</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">leaf</span>.<span class="number">0</span>,
-            <span class="ident">mint_note</span>.<span class="ident">chg_comm</span>.<span class="ident">to_field_element</span>()
+            records.get_leaf(<span class="number">0</span>).expect_ok().unwrap().<span class="number">1</span>.leaf.<span class="number">0</span>,
+            mint_note.chg_comm.to_field_element()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">records</span>.<span class="ident">get_leaf</span>(<span class="number">1</span>).<span class="ident">expect_ok</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">leaf</span>.<span class="number">0</span>,
-            <span class="ident">mint_note</span>.<span class="ident">mint_comm</span>.<span class="ident">to_field_element</span>()
+            records.get_leaf(<span class="number">1</span>).expect_ok().unwrap().<span class="number">1</span>.leaf.<span class="number">0</span>,
+            mint_note.mint_comm.to_field_element()
         );
 
-        <span class="comment">// Make sure we have a new timestamp and commit.</span>
-        <span class="macro">assert_eq!</span>(<span class="ident">validator</span>.<span class="ident">block_height</span>(), <span class="number">1</span>);
-        <span class="macro">assert_ne!</span>(<span class="ident">validator</span>.<span class="ident">commit</span>(), <span class="ident">initial_commit</span>);
+        <span class="comment">// Make sure we have a new timestamp and commit.
+        </span><span class="macro">assert_eq!</span>(validator.block_height(), <span class="number">1</span>);
+        <span class="macro">assert_ne!</span>(validator.commit(), initial_commit);
 
-        <span class="comment">// Apply another block and check that we get different UIDs. Technically it&#39;s not allowed to</span>
-        <span class="comment">// apply the same block twice, but our minimal validator doesn&#39;t care.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">next_block</span>();
-        <span class="ident">block</span>.<span class="ident">add_transaction</span>(<span class="ident">mint</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> (<span class="ident">uids</span>, <span class="ident">records</span>) <span class="op">=</span> <span class="ident">validator</span>.<span class="ident">validate_and_apply</span>(<span class="ident">block</span>, ()).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">uids</span>, <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>]);
-        <span class="macro">assert_eq!</span>(<span class="ident">records</span>.<span class="ident">num_leaves</span>(), <span class="number">4</span>);
+        <span class="comment">// Apply another block and check that we get different UIDs. Technically it&#39;s not allowed to
+        // apply the same block twice, but our minimal validator doesn&#39;t care.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>block = validator.next_block();
+        block.add_transaction(mint).unwrap();
+        <span class="kw">let </span>(uids, records) = validator.validate_and_apply(block, ()).unwrap();
+        <span class="macro">assert_eq!</span>(uids, <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>]);
+        <span class="macro">assert_eq!</span>(records.num_leaves(), <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">records</span>.<span class="ident">get_leaf</span>(<span class="number">2</span>).<span class="ident">expect_ok</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">leaf</span>.<span class="number">0</span>,
-            <span class="ident">mint_note</span>.<span class="ident">chg_comm</span>.<span class="ident">to_field_element</span>()
+            records.get_leaf(<span class="number">2</span>).expect_ok().unwrap().<span class="number">1</span>.leaf.<span class="number">0</span>,
+            mint_note.chg_comm.to_field_element()
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">records</span>.<span class="ident">get_leaf</span>(<span class="number">3</span>).<span class="ident">expect_ok</span>().<span class="ident">unwrap</span>().<span class="number">1</span>.<span class="ident">leaf</span>.<span class="number">0</span>,
-            <span class="ident">mint_note</span>.<span class="ident">mint_comm</span>.<span class="ident">to_field_element</span>()
+            records.get_leaf(<span class="number">3</span>).expect_ok().unwrap().<span class="number">1</span>.leaf.<span class="number">0</span>,
+            mint_note.mint_comm.to_field_element()
         );
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="reef" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="reef" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
