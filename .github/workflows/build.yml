@@ -5,10 +5,8 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 0 1 * *'
   workflow_dispatch:
 
 jobs:
@@ -24,26 +22,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: default
-          toolchain: stable
-          override: true
-          default: true
-          components: rustfmt, clippy
-
       - name: Enable Rust Caching
         uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
 
       - name: Format Check
         run: cargo fmt -- --check
 
-      - uses: actions-rs/clippy-check@v1
-        name: Clippy
-        with:
-          token: ${{ github.token }}
-          args: --workspace --examples --bins --tests -- -D warnings -A clippy::format_push_string
+      - name: Lint
+        run: |
+          cargo clippy --workspace --examples --bins --tests -- -D warnings -A clippy::format_push_string
 
       - name: Audit
         run: cargo audit
