@@ -9,7 +9,7 @@ license = "GPL-3.0-or-later"
 [dependencies]
 arbitrary = { version="1.2", features=["derive"] }
 arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git", tag = "0.3.0" }
-ark-serialize = { version = "0.3.0", features = ["derive"] }
+ark-serialize = { version = "0.4.0", features = ["derive"] }
 commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.2.0" }
 funty = "2.0"
 itertools = "0.10.5"

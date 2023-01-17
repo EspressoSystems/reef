@@ -76,7 +76,7 @@ version = "0.3.0"
 source = "git+https://github.com/EspressoSystems/arbitrary-wrappers.git?tag=0.3.0#df1ed9ac9dca13fe3960df7f543840dd67868de8"
 dependencies = [
  "arbitrary",
- "ark-std",
+ "ark-std 0.3.0",
  "espresso-macros",
  "itertools",
  "jf-cap",
@@ -91,7 +91,7 @@ source = "git+https://github.com/arkworks-rs/curves?rev=677b4ae751a274037880ede8
 dependencies = [
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -102,7 +102,7 @@ checksum = "65be532f9dd1e98ad0150b037276cde464c6f371059e6dd02c0222395761f6aa"
 dependencies = [
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -113,7 +113,7 @@ checksum = "ea691771ebbb28aea556c044e2e5c5227398d840cee0c34d4d20fa8eb2689e8c"
 dependencies = [
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -124,7 +124,7 @@ dependencies = [
  "ark-bls12-377",
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -134,8 +134,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dea978406c4b1ca13c2db2373b05cc55429c3575b8b21f1b9ee859aa5b03dd42"
 dependencies = [
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "num-traits",
  "rayon",
@@ -150,7 +150,7 @@ dependencies = [
  "ark-bls12-377",
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -162,7 +162,7 @@ dependencies = [
  "ark-bls12-381",
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -174,7 +174,7 @@ dependencies = [
  "ark-bn254",
  "ark-ec",
  "ark-ff",
- "ark-std",
+ "ark-std 0.3.0",
 ]
 
 [[package]]
@@ -185,8 +185,8 @@ checksum = "6b3235cc41ee7a12aaaf2c575a2ad7b46713a8a50bda2fc3b003a04845c05dd6"
 dependencies = [
  "ark-ff-asm",
  "ark-ff-macros",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "num-bigint 0.4.3",
  "num-traits",
@@ -225,8 +225,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7b0f78f47537c2f15706db7e98fe64cc1711dbf9def81218194e17239e53e5aa"
 dependencies = [
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "hashbrown",
  "rayon",
@@ -240,9 +240,9 @@ dependencies = [
  "ark-ec",
  "ark-ff",
  "ark-poly",
- "ark-serialize",
+ "ark-serialize 0.3.0",
  "ark-sponge",
- "ark-std",
+ "ark-std 0.3.0",
  "derivative",
  "digest 0.9.0",
 ]
@@ -253,9 +253,21 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d6c2b318ee6e10f8c2853e73a83adc0ccb88995aa978d8a3408d492ab2ee671"
 dependencies = [
- "ark-serialize-derive",
- "ark-std",
+ "ark-serialize-derive 0.3.0",
+ "ark-std 0.3.0",
  "digest 0.9.0",
+]
+
+[[package]]
+name = "ark-serialize"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58ea39d00a8a4c832e6f6520e58ccec7bf909c4845863512e9b8656fd47df355"
+dependencies = [
+ "ark-serialize-derive 0.4.0",
+ "ark-std 0.4.0",
+ "digest 0.10.3",
+ "num-bigint 0.4.3",
 ]
 
 [[package]]
@@ -270,6 +282,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-serialize-derive"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "101333772a4020c883890811500d5ecc704c545a90140629af5c3b9f00d78953"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "ark-sponge"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -277,8 +300,8 @@ checksum = "d0c7a8ce8c0b0dad619872efd707395884fc05f46e9b0e7ac3903b51fa0e59ac"
 dependencies = [
  "ark-ec",
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "digest 0.9.0",
  "rand_chacha",
@@ -293,6 +316,16 @@ dependencies = [
  "num-traits",
  "rand",
  "rayon",
+]
+
+[[package]]
+name = "ark-std"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94893f1e0c6eeab764ade8dc4c0db24caf4fe7cbbaafc0eba0a9030f447b5185"
+dependencies = [
+ "num-traits",
+ "rand",
 ]
 
 [[package]]
@@ -487,7 +520,7 @@ version = "0.1.0"
 source = "git+https://github.com/EspressoSystems/commit.git?tag=0.2.0#1744c3d7ebf08d0c9725cb12e073b0153488c263"
 dependencies = [
  "arbitrary",
- "ark-serialize",
+ "ark-serialize 0.3.0",
  "bitvec",
  "funty",
  "generic-array",
@@ -964,8 +997,8 @@ dependencies = [
  "ark-ec",
  "ark-ed-on-bn254",
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "bincode",
  "commit",
  "csv",
@@ -1005,8 +1038,8 @@ dependencies = [
  "ark-ff",
  "ark-poly",
  "ark-poly-commit",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "displaydoc",
  "downcast-rs",
@@ -1033,8 +1066,8 @@ dependencies = [
  "ark-ed-on-bls12-377",
  "ark-ed-on-bls12-381",
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "crypto_box",
  "derivative",
  "digest 0.10.3",
@@ -1066,8 +1099,8 @@ dependencies = [
  "ark-ed-on-bls12-381",
  "ark-ed-on-bn254",
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "derivative",
  "displaydoc",
  "generic-array",
@@ -1085,8 +1118,8 @@ dependencies = [
  "anyhow",
  "ark-ec",
  "ark-ff",
- "ark-serialize",
- "ark-std",
+ "ark-serialize 0.3.0",
+ "ark-std 0.3.0",
  "digest 0.10.3",
  "jf-utils-derive",
  "serde",
@@ -1100,7 +1133,7 @@ name = "jf-utils-derive"
 version = "0.1.2"
 source = "git+https://github.com/EspressoSystems/jellyfish.git?tag=0.1.2#190213ac89c92118f1ed01421f427b83eed6d3d0"
 dependencies = [
- "ark-std",
+ "ark-std 0.3.0",
  "quote",
  "syn",
 ]
@@ -1531,7 +1564,7 @@ version = "0.3.1"
 dependencies = [
  "arbitrary",
  "arbitrary-wrappers",
- "ark-serialize",
+ "ark-serialize 0.4.0",
  "commit",
  "funty",
  "itertools",
