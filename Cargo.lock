@@ -78,7 +78,7 @@ dependencies = [
  "arbitrary",
  "ark-std",
  "espresso-macros",
- "itertools",
+ "itertools 0.10.5",
  "jf-cap",
  "rand_chacha",
  "serde",
@@ -943,6 +943,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -974,7 +983,7 @@ dependencies = [
  "displaydoc",
  "ethabi",
  "hex-literal",
- "itertools",
+ "itertools 0.10.5",
  "jf-plonk",
  "jf-primitives",
  "jf-rescue",
@@ -1011,7 +1020,7 @@ dependencies = [
  "displaydoc",
  "downcast-rs",
  "espresso-systems-common",
- "itertools",
+ "itertools 0.10.5",
  "jf-rescue",
  "jf-utils",
  "merlin",
@@ -1041,7 +1050,7 @@ dependencies = [
  "displaydoc",
  "espresso-systems-common",
  "generic-array",
- "itertools",
+ "itertools 0.10.5",
  "jf-plonk",
  "jf-rescue",
  "jf-utils",
@@ -1534,7 +1543,7 @@ dependencies = [
  "ark-serialize",
  "commit",
  "funty",
- "itertools",
+ "itertools 0.11.0",
  "jf-cap",
  "jf-primitives",
  "lazy_static",
