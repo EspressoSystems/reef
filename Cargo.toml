@@ -10,7 +10,7 @@ license = "GPL-3.0-or-later"
 arbitrary = { version="1.3", features=["derive"] }
 arbitrary-wrappers = { git = "https://github.com/EspressoSystems/arbitrary-wrappers.git", tag = "0.3.0" }
 ark-serialize = { version = "0.3.0", features = ["derive"] }
-commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.2.0" }
+commit = { git = "https://github.com/EspressoSystems/commit.git", tag = "0.2.2" }
 funty = "2.0"
 itertools = "0.11.0"
 jf-cap = { features=["std"], git = "https://github.com/EspressoSystems/cap.git", branch = "testnet-v1" }

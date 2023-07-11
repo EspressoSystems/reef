@@ -497,6 +497,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "commit"
+version = "0.2.2"
+source = "git+https://github.com/EspressoSystems/commit.git?tag=0.2.2#7e938186607f87da5fd642ce36313aaeab0cfaca"
+dependencies = [
+ "arbitrary",
+ "ark-serialize",
+ "bitvec",
+ "derivative",
+ "derive_more",
+ "funty",
+ "generic-array",
+ "hex",
+ "serde",
+ "sha3",
+ "tagged-base64 0.2.4",
+]
+
+[[package]]
 name = "console_error_panic_hook"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -976,7 +994,7 @@ dependencies = [
  "ark-serialize",
  "ark-std",
  "bincode",
- "commit",
+ "commit 0.1.0",
  "csv",
  "derivative",
  "derive_more",
@@ -1101,7 +1119,7 @@ dependencies = [
  "serde",
  "sha2 0.10.2",
  "snafu",
- "tagged-base64",
+ "tagged-base64 0.2.0",
 ]
 
 [[package]]
@@ -1541,7 +1559,7 @@ dependencies = [
  "arbitrary",
  "arbitrary-wrappers",
  "ark-serialize",
- "commit",
+ "commit 0.2.2",
  "funty",
  "itertools 0.11.0",
  "jf-cap",
@@ -1860,6 +1878,30 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "tagged-base64"
+version = "0.2.4"
+source = "git+https://github.com/EspressoSystems/tagged-base64.git?tag=0.2.4#9b9a5fae1e2fd41db8573657cfe169e8284eb6c9"
+dependencies = [
+ "ark-serialize",
+ "base64",
+ "crc-any",
+ "serde",
+ "snafu",
+ "tagged-base64-macros",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "tagged-base64-macros"
+version = "0.2.0"
+source = "git+https://github.com/EspressoSystems/tagged-base64.git?tag=0.2.4#9b9a5fae1e2fd41db8573657cfe169e8284eb6c9"
+dependencies = [
+ "ark-std",
+ "quote",
+ "syn 1.0.102",
 ]
 
 [[package]]
