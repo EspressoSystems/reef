@@ -1,4 +1,4 @@
-var sourcesIndex = JSON.parse('{\
+var srcIndex = JSON.parse('{\
 "reef":["",[],["cap.rs","lib.rs","traits.rs","types.rs"]]\
 }');
-createSourceSidebar();
+createSrcSidebar();
